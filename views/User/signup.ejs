@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zxx">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <link rel="icon" href="/images/user/FAV LOGO.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>paintcont</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/UserCss/bootstrap.min.css">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="/css/UserCss/owl.carousel.min.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="/css/UserCss/all.css">
+    <!-- flaticon CSS -->
+    <link rel="stylesheet" href="/css/UserCss/flaticon.css">
+    <link rel="stylesheet" href="/css/UserCss/themify-icons.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="/css/UserCss/magnific-popup.css">
+    <!-- swiper CSS -->
+    <link rel="stylesheet" href="/css/UserCss/slick.css">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="/css/UserCss/style.css">
+
+    <!-- Custom CSS for the login form container -->
+</head>
+
+<body>
+    <!--================login_part Area =================-->
+    <section class="login_part section_padding ">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6">
+                    <div class="login_part_text text-center">
+                        <div class="login_part_text_iner">
+                            <h2>New to our Shop?</h2>
+                            <p>India's Leading Discount Paint and Painting Supplies Superstore ®</p>
+                            <a href="/login" class="btn_3">Already have an account</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="login_part_form login-form-container">
+                        <div class="login_part_form_iner">
+                            <h3>Welcome to Paintcont<br>Please Sign up now</h3>
+                            <% if (typeof errorMessage !=='undefined' ) { %>
+                                <div class="alert alert-danger" id="signup-alert">
+                                    <p>
+                                        <%= errorMessage %>
+                                    </p>
+                                </div>
+                                <% } %>
+                                    <form class="row contact_form" action="/signup" method="post"
+                                        novalidate="novalidate">
+                                        <div class="col-md-12 form-group p_star">
+                                            <input type="text" class="form-control" id="name" name="name" value=""
+                                                placeholder="Username">
+                                        </div>
+                                        <div class="col-md-12 form-group p_star">
+                                            <input type="phone" class="form-control" id="phone" name="phone" value=""
+                                                placeholder="Phone">
+                                        </div>
+                                        <div class="col-md-12 form-group p_star">
+                                            <input type="email" class="form-control" id="email" name="email" value=""
+                                                placeholder="Email">
+                                        </div>
+                                        <div class="col-md-12 form-group p_star">
+                                            <input type="password" class="form-control" id="password" name="password"
+                                                value="" placeholder="Password">
+                                        </div>
+                                        <div class="col-md-12 form-group">
+                                            <button type="submit" value="submit" class="btn_3">
+                                                Sign up
+                                            </button>
+                                        </div>
+                                    </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================login_part end =================-->
+
+    <!--::footer_part start::-->
+    <footer class="footer_part">
+        <!-- Footer content here (same as the login page) -->
+    </footer>
+</body>
+
+</html>

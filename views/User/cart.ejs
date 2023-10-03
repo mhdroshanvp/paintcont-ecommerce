@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="zxx">
+
+<head>
+    <link rel="icon" href="/images/user/FAV LOGO.png" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>paintcont</title>
+    <link rel="stylesheet" href="/css/UserCss/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/css/UserCss/style.css">
+</head>
+
+<body>
+    <header class="main_menu home_menu">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-12">
+                    <nav class="navbar navbar-expand-lg navbar-light">
+                        <a class="navbar-brand" href="#"> <img src="/images/user/logo-removebg-preview.png" alt="logo"
+                                width="100"> </a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="menu_icon"><i class="fas fa-bars"></i></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse main-menu-item" id="navbarSupportedContent">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/product_list">Products</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">About us</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Contact us</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="contact.html">Login</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="hearer_icon d-flex align-items-center">
+                            <a href="#" id="search_1"><i class="fas fa-search"></i></a>
+                            <a href="#" id="#"><i class="fas fa-shopping-cart"></i></a>
+                        </div>
+                        <div class="hearer_icon d-flex align-items-center">
+                            <a href=""><i class="fas fa-heart"></i></a>
+                            <a href=""><i class="fas fa-user-circle"></i></a>
+                            <a href="/logout"><i class="fas fa-power-off"></i></a>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="user-cart-container" style="overflow-y: auto;">
+                    <div class="container mt-5">
+                        <h2>Shopping Cart</h2>
+                        <% let sum=0 %>
+
+                        <% if (user.cart.length> 0) { %>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Id</th>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Color</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Total</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <% user.cart.forEach((item, index)=> { %>
+                                            <tr>
+                                                <td>
+                                                    <%= index + 1 %>
+                                                </td>
+                                                <td><a
+                                                        href="/products/product-details?productId=<%= item.productId._id %>"><img
+                                                            src="/userimages/<%= item.productId.productPhoto %>"
+                                                            alt="Product Image" class="img-fluid" width="100"></a></td>
+                                                <td>
+                                                    <%= item.productId.productName %>
+                                                </td>
+                                                <td>
+                                                    <%= item.productId.paintColor %>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex ">
+                                                        <button
+                                                            onclick="event.preventDefault();quantity('increase', '<%= item.productId._id %>')"
+                                                            class="fs-5 btn btn-dark mx-1 p-1">+</button>
+                                                        <input id="quantity<%= item.productId._id %>"
+                                                            data-product="<%= item.productId._id %>" type="text"
+                                                            class="form-input text-center quantity"
+                                                            style="max-width: 50px;" value="<%= item.productQuantity %>"
+                                                            readonly>
+                                                        <button
+                                                            onclick="quantity('decrease','<%= item.productId._id %>')"
+                                                            class="fs-5 btn btn-dark mx-1 p-1">-</button>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <!-- Add the unit price here -->
+                                                    <%= item.unit %>
+                                                </td>
+                                                <td class="total" id="total<%= item.productId._id %>">
+                                                    <%= item.productQuantity * item.unit %>
+                                                </td>
+                                                <td>
+                                                    <button onclick="dlt('<%= item.productId._id %>')"
+                                                        class="btn btn-danger btn-sm"
+                                                        data-item-index="<%= item.productId %>">
+                                                        <i class="fas fa-trash"></i> Delete
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <% sum +=item.productQuantity * item.unit %>
+                                                <% }) %>
+                                </tbody>
+                            </table>
+                            
+                            <% } else { %>
+                                <p>Your cart is empty.</p>
+                                <% } %>
+                    </div>
+                </div>
+                <div class="text-end">
+                                <h4>Total: <span id="cartTotal">
+                                        <%= sum %>
+                                    </span></h4>
+                                <a href="/cart/checkout" class="btn btn-primary" id="checkoutBtn">Checkout</a>
+                                <a href="/products" class="btn btn-dark" id="checkoutBtn">Continue Shopping</a>
+                            </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--footer_part:-->
+    <footer class="footer_part">
+        <div class="footer_iner">
+            <div class="container">
+                <hr class="my-4">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+
+                        <div class="footer_menu">
+                            <div class="footer_logo">
+                                <a href="index.html"><img src="/images/user/logo-removebg-preview.png" alt="#"></a>
+                            </div>
+                            <div class="footer_menu_item">
+                                <a href="index.html">Home</a>
+                                <a href="about.html">About</a>
+                                <a href="product_list.html">Products</a>
+                                <a href="#">Pages</a>
+                                <a href="blog.html">Blog</a>
+                                <a href="contact.html">Contact</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="social_icon">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-google-plus-g"></i></a>
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="copyright_part">
+            <div class="container">
+                <div class="row ">
+                    <div class="col-lg-12">
+                        <div class="copyright_text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <script>
+        function dlt(productId) {
+            console.log(productId);
+            console.log('inside function');
+
+            fetch(`/remove-from-cart/${productId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ productId: productId })
+            })
+                .then(function (response) {
+                    if (response.ok) {
+                        console.log("Product removed from cart.");
+                        window.location.reload();
+                    } else {
+                        console.error("Error removing product from cart. Status:", response.status);
+                        return response.text(); // Get the response body as text for more details
+                    }
+                })
+                .then(function (errorText) {
+                    if (errorText) {
+                        console.error("Error details:", errorText);
+                    }
+                })
+                .catch(function (error) {
+                    console.error("Network error:", error);
+                });
+        }
+
+
+        ///////////////////////////////////
+
+        function quantity(actions, productId) {
+            console.log(actions);
+            console.log(productId);
+
+            const url = `/updateqnty/${productId}/${actions}`;
+
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                // You don't need to include actions in the request body since it's in the URL now
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json(); // Parse the response body as JSON
+            })
+                .then(data => {
+                    // This is the data received from the server
+                    // Access 'success' and 'quantity' properties from 'data'
+                    const { success, quantity, total } = data;
+                    console.log(data.qnty); // 'true' if the request was successful
+
+                    document.getElementById(`total${productId}`).innerHTML = total
+                    document.getElementById(`quantity${productId}`).value = data.qnty
+                    // document.getElementById('singleprdprice').innerHTML=`₹ ${quantity*singleprd}`
+                    let updatedTotalAmount = 0;
+
+
+                    for (let i = 0; i < prdsTotal.length; i++) {
+                        const priceText = prdsTotal[i].textContent;
+                        const price = parseFloat(priceText.replace("₹", "").replace("/-", ""));
+                        updatedTotalAmount += price;
+                    }
+
+                    const totalCartElement = document.getElementById('totalCart');
+                    totalCartElement.textContent = `₹ ${updatedTotalAmount.toFixed()}/-`;
+                    // $("#totalCart").text("₹" + updatedTotalAmount.toFixed(2) + "/-");
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+        function updateTotal(itemIndex, newQuantity) {
+            const unitPrice = parseFloat($("#unitPrice-" + itemIndex).text().replace("$", ""));
+            const newTotal = unitPrice * newQuantity;
+            $("#total-" + itemIndex).text("$" + newTotal.toFixed(2));
+            updateCartTotal();
+        }
+
+        //////////////////////////////////////////////////////
+        function quantity(action, productId) {
+            const url = `/updateqnty/${productId}/${action}`;
+
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    const { success, quantity, total } = data;
+                    console.log(data.qnty);
+
+                    document.getElementById(`total${productId}`).innerHTML = total;
+                    document.getElementById(`quantity${productId}`).value = data.qnty;
+
+                    // Calculate the updated total when quantity changes
+                    updateCartTotal();
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        }
+
+        // Function to update the cart total
+        function updateCartTotal() {
+            let cartTotal = 0;
+            $(".total").each(function () {
+                cartTotal += parseFloat($(this).text().replace(" ", ""));
+            });
+
+            // Set the cart total in the "cartTotal" element
+            $("#cartTotal").text(" " + cartTotal.toFixed(2));
+        }
+
+        /////////////////////////////////////////////////////
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.2/dist/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

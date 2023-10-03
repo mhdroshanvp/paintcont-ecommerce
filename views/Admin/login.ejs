@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Paintcont</title>
+  <link rel="stylesheet" href="/css/AdminCss/vertical-layout-light/style.css">
+  <link rel="icon" href="/images/user/FAV LOGO.png" type="image/x-icon">
+
+</head>
+
+<body>
+  <div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
+      <div class="content-wrapper d-flex align-items-center auth px-0">
+        <div class="row w-100 mx-0">
+          <div class="col-lg-4 mx-auto">
+            <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+
+              <div class="brand-logo d-flex justify-content-center">
+                <img src="/images/user/FAV LOGO.png" alt="logo">
+              </div>
+
+              <h2>Hello! Admin</h2>
+
+              <h6 class="font-weight-light">Sign in </h6>
+              <% if (typeof errorMessage !=='undefined' ) { %>
+                <div class="alert alert-danger" id="signup-alert">
+                  <p>
+                    <%= errorMessage %>
+                  </p>
+                </div>
+                <% } %>
+
+                  <form class="pt-3" method="post" action="/admin/login">
+
+                    <div class="form-group">
+                      <input type="email" class="form-control form-control-lg" id="exampleInputEmail1"
+                        placeholder="Admin email" name="email">
+                    </div>
+
+                    <div class="form-group">
+                      <input type="password" class="form-control form-control-lg" id="exampleInputPassword1"
+                        placeholder="Admin Password" name="password">
+                    </div>
+
+                    <div class="mt-3">
+                      <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
+                        type="submit">SIGN IN</button>
+                    </div>
+
+                  </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Paintcont</title>
+  <link rel="stylesheet" href="/css/AdminCss/vertical-layout-light/style.css">
+  <link rel="icon" href="/images/user/FAV LOGO.png" type="image/x-icon">
+
+</head>
+
+<body>
+  <div class="container-scroller">
+
+    <!-- nav bar -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+        <a class="navbar-brand brand-logo mr-5" href="index.html"><img src="/images/user/logo-removebg-preview.png"
+            class="mr-2" alt="logo" /></a>
+        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="#" alt="logo" /></a>
+      </div>
+    </nav>
+
+    <!-- sidebar content -->
+    <div class="container-fluid page-body-wrapper">
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+
+          <li class="nav-item">
+            <a class="nav-link selected" href="/admin/Dashboard">
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+
+          <!-- usermana -->
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="/admin/user" aria-expanded="false"
+              aria-controls="ui-basic">
+              <span class="menu-title">User manager</span>
+            </a>
+          </li>
+
+          <!-- products -->
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="/admin/products" aria-expanded="false"
+              aria-controls="form-elements">
+              <span class="menu-title">Products</span>
+            </a>
+          </li>
+
+          <!-- orders -->
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="/admin/orders" aria-expanded="false">
+              <span class="menu-title">Orders</span>
+            </a>
+          </li>
+
+          <!-- category -->
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="/admin/banners" aria-expanded="false"
+              aria-controls="tables">
+              <span class="menu-title">Banner</span>
+            </a>
+          </li>
+
+          <!-- coupons -->
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="/admin/category" aria-expanded="false" aria-controls="icons">
+              <span class="menu-title">Category</span>
+            </a>
+            <div class="collapse" id="icons">
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="/admin/coupons" aria-expanded="false" aria-controls="icons">
+              <span class="menu-title">Coupons</span>
+            </a>
+            <div class="collapse" id="icons">
+          </li>
+
+          <!-- logout -->
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="/admin/logout" aria-expanded="false" aria-controls="icons">
+              <span class="menu-title">logout</span>
+            </a>
+          </li>
+
+        </ul>
+      </nav>
+
+      <!-- dashboard contents -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="container-fluid d-flex justify-content-center">
+            <div class="col-md-10 grid-margin transparent"> <!-- Increase the width to col-md-10 -->
+              <div class="card card-light-green">
+                <div class="card-body">
+                  <p class="mb-4">User Order Graph</p>
+                  <div id="userOrderChartContainer">
+                    <canvas id="userOrderChart" width="600" height="300"></canvas>
+                    <!-- Increase width and height as needed -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="container-fluid d-flex justify-content-center">
+              <div class="col-md-10 grid-margin transparent"> <!-- Increase the width to col-md-10 -->
+                <div class="card card-light-green">
+                  <div class="card-body">
+                    <div id="userOrderChartContainer">
+                      <canvas id="userOrderChart" width="600" height="300"></canvas>
+                      <!-- Increase width and height as needed -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="main-panel">
+            <div class="content-wrapper">
+              <div class="container-fluid d-flex justify-content-center">
+                <div class="col-md-10 grid-margin transparent"> <!-- Increase the width to col-md-10 -->
+                  <div class="card card-light-green">
+                    <div class="card-body">
+                      <div id="userOrderChartContainer">
+                        <canvas id="userOrderChart" width="600" height="300"></canvas>
+                        <!-- Increase width and height as needed -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+          <script>
+            // Sample data (replace with your data)
+            var userOrderData = {
+              labels: ['January', 'February', 'March', 'April', 'May'],
+              datasets: [{
+                label: 'User Orders',
+                data: [12, 19, 3, 5, 2],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+              }]
+            };
+
+            var userOrderCtx = document.getElementById('userOrderChart').getContext('2d');
+            var userOrderChart = new Chart(userOrderCtx, {
+              type: 'bar',
+              data: userOrderData,
+              options: {
+                scales: {
+                  y: {
+                    beginAtZero: true
+                  }
+                }
+              }
+            });
+          </script>
+
+          <!-- container-scroller -->
+          <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+</body>
+
+</html>

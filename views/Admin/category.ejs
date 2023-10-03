@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Paintcont</title>
+  <link rel="stylesheet" href="/css/AdminCss/vertical-layout-light/style.css">
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
+  <link rel="icon" href="/images/user/FAV LOGO.png" type="image/x-icon">
+
+</head>
+
+<body>
+  <div class="container-scroller">
+
+    <!-- nav bar -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+        <a class="navbar-brand brand-logo mr-5" href="index.html"><img src="/images/user/logo-removebg-preview.png"
+            class="mr-2" alt="logo" /></a>
+        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="#" alt="logo" /></a>
+      </div>
+    </nav>
+
+    <!-- sidebar content -->
+    <div class="container-fluid page-body-wrapper">
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+
+          <li class="nav-item">
+            <a class="nav-link " href="/admin/Dashboard">
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+
+          <!-- usermana -->
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="/admin/user" aria-expanded="false"
+              aria-controls="ui-basic">
+              <span class="menu-title">User manager</span>
+            </a>
+          </li>
+
+          <!-- products -->
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="/admin/products" aria-expanded="false"
+              aria-controls="form-elements">
+              <span class="menu-title">Products</span>
+            </a>
+          </li>
+
+          <!-- orders -->
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="/admin/orders" aria-expanded="false">
+              <span class="menu-title">Orders</span>
+            </a>
+          </li>
+
+          <!-- category -->
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="/admin/banners" aria-expanded="false"
+              aria-controls="tables">
+              <span class="menu-title">Banner</span>
+            </a>
+          </li>
+
+          <!-- coupons -->
+          <li class="nav-item">
+            <a class="nav-link selected" data-toggle="collapse"  href="/admin/category" aria-expanded="false" aria-controls="icons">
+              <span class="menu-title">Category</span>
+            </a>
+            <div class="collapse" id="icons">
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="/admin/coupons" aria-expanded="false" aria-controls="icons">
+              <span class="menu-title">Coupons</span>
+            </a>
+            <div class="collapse" id="icons">
+          </li>
+
+          <!-- logout -->
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="/admin/logout" aria-expanded="false" aria-controls="icons">
+              <span class="menu-title">logout</span>
+            </a>
+          </li>
+
+        </ul>
+      </nav>
+
+      <!-- dashboard contents -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="container-fluid d-flex justify-content-center">
+            <div class="col-md-10 grid-margin transparent"> <!-- Increase the width to col-md-10 -->
+              <div class="card card-light-green">
+                <div class="card-body">
+                  <div id="userOrderChartContainer">
+                    <h1>Add Category </h1>
+                    <br><br><br>
+
+                    <form action="/admin/category" method="post">
+                    <label for="category">add a category</label>
+                    <input type="text" placeholder="category" name="category" style="width: 315px; height: 46px;" class="form-control" required>
+                    <button class="btn btn-success" type="submit" >Add</button>
+                     </form>
+
+                    <!-- Update your HTML code for the category list to include unique identifiers for each category -->
+<% categories.forEach((ctgry, ind) => { %>
+  <table class="table table-bordered table-striped order-table mt-3">
+    <thead class="thead-dark">
+      <tr>
+        <th>Category</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      <tr>
+        <td id="category_<%= ctgry._id %>"><span><%= ctgry.category %></span></td>
+        <td>
+          <!-- Add unique IDs to the buttons and call a function to toggle edit mode -->
+          <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ctgry<%= ctgry._id %>"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+            <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
+          </svg></button>
+          <input type="hidden" name="" id="category<%= ctgry._id %>" value="<%= ctgry.category %>">
+        </td>
+        <td>
+          <!-- Add unique IDs to the buttons and call a function to delete the category -->
+          <button class="btn btn-danger" onclick="deleteCategory('<%= ctgry._id %>')" >Delete Category</button>
+        </td> 
+      </tr>
+    </tbody>
+  </table>
+
+<div class="modal fade" id="ctgry<%= ctgry._id %>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="ctgryForm" method="post" action="/admin/update-category/<%= ctgry._id %>">
+          <label >edit the category</label>
+          <input type="text" name="category" value="<%= ctgry.category %>">
+          <button class="btn btn-danger" type="submit">Save changes</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Understood</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<% }) %>
+               
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </body>
+
+    <script>
+      function deleteCategory(categoryId) {
+  // Confirm the deletion with the user (optional)
+  if (!confirm('Are you sure you want to delete this category?')) {
+    return;
+  }
+
+  // Send a DELETE request to the backend
+  fetch(`/admin/delete-category/${categoryId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        // Optionally, remove the category row from the HTML table upon successful deletion
+        const categoryRow = document.getElementById(`category_${categoryId}`).parentNode.parentNode;
+        categoryRow.remove();
+
+        alert(data.message); // Display a success message
+      } else {
+        alert(data.message); // Display an error message
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      alert('An error occurred while deleting the category');
+    });
+}
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</html>

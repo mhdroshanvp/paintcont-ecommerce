@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="zxx">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <link rel="icon" href="/images/user/FAV LOGO.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>pillloMart</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/UserCss/bootstrap.min.css">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="/css/UserCss/owl.carousel.min.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="/css/UserCss/all.css">
+    <!-- flaticon CSS -->
+    <link rel="stylesheet" href="/css/UserCss/flaticon.css">
+    <!--icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="/css/UserCss/magnific-popup.css">
+    <!-- swiper CSS -->
+    <link rel="stylesheet" href="/css/UserCss/slick.css">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="/css/UserCss/style.css">
+</head>
+<body>
+    <header class="main_menu home_menu">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-12">
+                    <nav class="navbar navbar-expand-lg navbar-light">
+                        <a class="navbar-brand" href="#"> <img src="/images/user/logo-removebg-preview.png" alt="logo"
+                                width="100"> </a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="menu_icon"><i class="fas fa-bars"></i></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse main-menu-item" id="navbarSupportedContent">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/home">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/products">Products</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/error">About us</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/error">Contact us</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="hearer_icon d-flex align-items-center">
+                            <a href="/error" id="search_1"><i class="fas fa-search"></i></a>
+                            <a href="/cart" id="#"><i class="fas fa-shopping-cart"></i></a>
+                        </div>
+                        <div class="hearer_icon d-flex align-items-center">
+                            <a href=""><i class="fas fa-heart"></i></a>
+                            <a href="/profile"><i class="fas fa-user-circle"></i></a>
+                            <a href="/logout"><i class="fas fa-power-off"></i></a>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Header part end-->
+    <!-- Bootstrap JS -->
+    <script src="/js/user/bootstrap.min.js"></script>
+
+    <!-- Category Filter -->
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="category-filter-box">
+                    <h3>Category: <span id="selected-category">All</span></h3>
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><a href="#" onclick="filterProducts('All')">All</a></li>
+                        <% categories.forEach((ctgry, ind) => { %>
+                            <li class="list-inline-item"><a href="#" onclick="filterProducts('<%= ctgry.category %>')"><%= ctgry.category %></a></li>
+                        <% }) %>
+                    </ul>
+                </div>
+            </div>
+<form method="get">
+            <div class="col-md-12">
+                <div class="form-group">
+                  <label for="priceFrom">Price from:</label>
+                  <div class="form-field">
+                    <i class="icon icon-arrow-down3"></i>
+                    <select name="priceFrom" id="priceFrom" class="form-control">
+                      <option value="none">none</option>
+                      <option value="100">100</option>
+                      <option value="200">200</option>
+                      <option value="300">300</option>
+                      <option value="400">400</option>
+                      <option value="1000">1000</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="priceTo">Price to:</label>
+                  <div class="form-field">
+                    <i class="icon icon-arrow-down3"></i>
+                    <select name="priceTo" id="priceTo" class="form-control">
+                      <option value="none">none</option>
+                      <option value="2000">2000</option>
+                      <option value="3000">3000</option>
+                      <option value="4000">4000</option>
+                      <option value="5000">5000</option>
+                      <option value="6000">6000</option>
+                    </select>
+                  </div>
+                </div>
+
+
+        </div>
+    </div>
+    <button class="btn btn-dark">submit</button>
+</form>
+
+    <!-- Product Cards -->
+    <!-- Product Cards -->
+    <div class="container mt-4">
+        <div class="row">
+            <% products.forEach(prd=> { %>
+                <a href="/products/product-details?productId=<%= prd._id %>">
+                    <div class="col-md-3 mb-4">
+                        <div class="card border border-2"> <!-- Add the "border" and "border-2" classes -->
+                            <td><img src="/userimages/<%= prd.productPhoto[0] %>" alt="<%= prd.productName %>" /></td>
+                            <%  if(prd.stock < 1){  %>
+                                <h3 style="color: red;">out of stock!!!</h3>
+                            <% } %>
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <%= prd.productName %>
+                                </h5>
+                                <p class="card-text">Price: ₹<%= prd.productPrice %>
+                                </p>
+                                <button type="button" class="btn btn-danger btn-sm"onclick="addtowishlist('<%= prd._id %>')"><i class="fa fa-star" aria-hidden="true"></i></button>
+                </a>
+                
+        </div>
+    </div>
+    </div>
+    </a>
+    <% }) %>
+        </div>
+        </div>
+
+        <!-- Product card end here -->
+
+
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <% if (currentPage > 1) { %>
+                            <li><a href="/products?page=<%= currentPage - 1 %>&priceFrom=<%= priceFrom %>&priceTo=<%= priceTo %>">&lt;</a></li>
+                          <% } %>
+                          <% for (let i = 1; i <= totalPages; i++) { %>
+                            <li class="<%= i === currentPage ? 'active' : '' %>">
+                              <a href="/products?page=<%= i %>&priceFrom=<%= priceFrom %>&priceTo=<%= priceTo %>"><span><%= i %></span></a>
+                            </li>
+                          <% } %>
+                          <% if (currentPage < totalPages) { %>
+                            <li><a href="/products?page=<%= currentPage + 1 %>&priceFrom=<%= priceFrom %>&priceTo=<%= priceTo %>">&gt;</a></li>
+                          <% } %>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <script>
+            // Function to filter products by category
+            function filterProducts(category) {
+                document.getElementById('selected-category').textContent = category;
+                const productCards = document.querySelectorAll('.col-md-3.mb-4');
+                productCards.forEach(card => {
+                    const cardCategory = card.getAttribute('data-category');
+                    if (category === 'All' || category === cardCategory) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+    
+            // Function to add to cart
+            function addToCart(productId) {
+                const requestData = { productId: productId };
+    
+                fetch(`/add-cart/${productId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(requestData),
+                })
+                .then((response) => {
+                    alert('Product added to the cart successfully');
+                })
+                .catch((error) => {
+                    console.error(error.message);
+                    alert('An error occurred while adding the product to the cart');
+                });
+            }
+        </script>
+        <!-- ... (more product cards) ... -->
+        </div>
+        </div>
+
+        <!-- feature part here -->
+        <hr class="my-4">
+        <section class="feature_part section_padding">
+            <div class="container">
+                <div class="row justify-content-between">
+                    <h3>Safer, Easier Shopping</h3>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="single_feature_part">
+                            <i class="lasticon far fa-credit-card"></i>
+                            <h4>Credit Card Support</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="single_feature_part">
+                            <i class="lasticon fas fa-shopping-bag"></i>
+                            <h4>Online Order</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="single_feature_part">
+                            <i class="lasticon fas fa-truck"></i>
+                            <h4>Free Delivery</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="single_feature_part">
+                            <i class="lasticon fas fa-gift"></i>
+                            <h4>Product with Gift</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- feature part end -->
+        <hr class="my-4">
+        <!--::footer_part start::-->
+        <footer class="footer_part">
+            <div class="footer_iner">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-8">
+                            <div class="footer_menu">
+                                <div class="footer_logo">
+                                    <a href="index.html"><img src="/images/user/logo-removebg-preview.png" alt="#"></a>
+                                </div>
+                                <div class="footer_menu_item">
+                                    <a href="index.html">Home</a>
+                                    <a href="about.html">About</a>
+                                    <a href="product_list.html">Products</a>
+                                    <a href="#">Pages</a>
+                                    <a href="blog.html">Blog</a>
+                                    <a href="contact.html">Contact</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="social_icon">
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-google-plus-g"></i></a>
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="copyright_part">
+                <div class="container">
+                    <div class="row ">
+                        <div class="col-lg-12">
+                            <div class="copyright_text">
+                                <P><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                    Copyright &copy;
+                                    <script>document.write(new Date().getFullYear());</script> All rights reserved |
+                                    This template is made with <i class="ti-heart" aria-hidden="true"></i> by <a
+                                        href="https://colorlib.com" target="_blank">Colorlib</a>
+                                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                </P>
+                                <div class="copyright_link">
+                                    <a href="#">Turms & Conditions</a>
+                                    <a href="#">FAQ</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!--::footer_part end::-->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

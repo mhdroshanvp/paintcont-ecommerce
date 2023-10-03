@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Your existing head content -->
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="mt-4 p-4 border rounded mx-auto">
+      <h1 class="mb-4">Add Product</h1>
+
+      <form action="/admin/addproduct" method="POST" enctype="multipart/form-data">
+        <!-- Paint photo -->
+        <div class="form-group">
+          <label for="productPhoto," class="form-label">Product Photo</label>
+          <input type="file" class="form-control" id="productPhoto" accept="image/*" name="image"
+                 onchange="validateImageFile(this)">
+          <span id="imageError" style="color: red;"></span> <!-- Error message container -->
+        </div>
+        <!-- Other form fields -->
+        <!-- ... -->
+
+        <button type="submit" class="btn btn-success mt-4" name="submit">Add Product</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function validateImageFile(input) {
+      const fileInput = input;
+      const filePath = fileInput.value;
+      const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+      const errorContainer = document.getElementById('imageError');
+
+      if (!allowedExtensions.exec(filePath)) {
+        errorContainer.textContent = 'Please select a valid image file (jpg, jpeg, png, gif).';
+        fileInput.value = '';
+        return false;
+      } else {
+        errorContainer.textContent = ''; // Clear the error message if a valid file is selected
+      }
+    }
+  </script>
+</body>
+
+</html>

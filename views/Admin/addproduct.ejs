@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Paintcont</title>
+  <link rel="stylesheet" href="/css/AdminCss/vertical-layout-light/style.css">
+  <link rel="icon" href="/images/user/FAV LOGO.png" type="image/x-icon">
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="mt-4 p-4 border rounded mx-auto">
+      <h1 class="mb-4">Add Product</h1>
+
+      <form action="/admin/addproduct" method="POST" enctype="multipart/form-data">
+
+        <!-- Paint photo -->
+        <div class="form-group">
+          <label for="productPhoto," class="form-label">Product Photo</label>
+          <input type="file" class="form-control" id="productPhoto" accept="image/*" required multiple name="image"
+            onchange="validateImageFile(this)">
+          <span id="imageError" style="color: red;"></span> <!-- Error message container -->
+        </div>
+        <!-- Paint name -->
+        <div class="form-group">
+          <label for="productName" class="form-label">Product Name</label>
+          <input type="text" class="form-control" id="productName" placeholder="Enter product name" required
+            name="productName">
+        </div>
+
+
+
+        <!-- Paint prize -->
+        <div class="form-group">
+          <label for="productPrice" class="form-label">Product Price</label>
+          <input type="number" class="form-control" id="productPrice" placeholder="Enter product price" required
+            name="productPrice">
+        </div>
+
+        <!-- Paint Category -->
+        <div class="form-group">
+          <label for="productCategory" class="form-label">Paint Category</label>
+          <select class="form-select" id="productCategory" required name="paintCategory">
+            <option value="">Select a category</option>
+            <% categories.forEach((ctgry, ind)=> { %>
+              <option value="<%= ctgry._id %>">
+                <%= ctgry.category %>
+              </option>
+              <% }) %>
+          </select>
+        </div>
+
+        <!-- Paint Color -->
+        <div class="form-group">
+          <label for="productQuantity" class="form-label">Paint Color (hex code)</label>
+          <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="#fff" required maxlength="6"
+            name="paintColor">
+        </div>
+
+
+        <!-- Paint Quantity (Litre) -->
+        <div class="form-group">
+          <label for="productQuantity" class="form-label">Paint Quantity (Litre)</label>
+          <input type="number" class="form-control" id="productQuantity" name="productQuantity"
+            placeholder="Enter paint quantity" required>
+        </div>
+
+
+        <!-- Paint Stock  -->
+        <div class="form-group">
+          <label for="productStock" class="form-label">Paint Stock </label>
+          <input type="number" class="form-control" id="productStock" name="stock" placeholder="Enter product stock"
+            required>
+        </div>
+
+
+        <!-- Product Description -->
+        <div class="form-group">
+          <label for="productDescription" class="form-label">Product Description</label>
+          <textarea class="form-control" id="productDescription" rows="4" placeholder="Enter product description"
+            required name="productDescription"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-success mt-4" name="submit" id="submitBtn">Add Product</button>
+
+      </form>
+    </div>
+  </div>
+
+
+
+  <script>
+    function validateImageFile(input) {
+      const fileInput = input;
+      const filePath = fileInput.value;
+      const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+      const errorContainer = document.getElementById('imageError');
+
+      if (!allowedExtensions.exec(filePath)) {
+        errorContainer.textContent = 'Please select a valid image file (jpg, jpeg, png, gif).';
+        fileInput.value = '';
+        let submitBtn = document.getElementById('submitBtn')
+        submitBtn.setAttribute('disabled', 'true')
+        return false;
+      } else {
+        errorContainer.textContent = '';
+        let submitBtn = document.getElementById('submitBtn')
+        submitBtn.removeAttribute('disabled')// Clear the error message if a valid file is selected
+      }
+    }
+  </script>
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+</body>
+
+</html>

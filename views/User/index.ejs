@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="/images/user/FAV LOGO.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>paintcont</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/UserCss/bootstrap.min.css">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="/css/UserCss/owl.carousel.min.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="/css/UserCss/all.css">
+    <!-- flaticon CSS -->
+    <link rel="stylesheet" href="/css/UserCss/flaticon.css">
+    <!--icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="/css/UserCss/magnific-popup.css">
+    <!-- swiper CSS -->
+    <link rel="stylesheet" href="/css/UserCss/slick.css">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="/css/UserCss/style.css">
+</head>
+
+<body>
+    <!--::header part start::-->
+    <header class="main_menu home_menu">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-12">
+                    <nav class="navbar navbar-expand-lg navbar-light">
+
+                        <a class="navbar-brand" href="#"> <img src="/images/user/logo-removebg-preview.png" alt="logo"
+                                width="100"> </a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="menu_icon"><i class="fas fa-bars"></i></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse main-menu-item" id="navbarSupportedContent">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/home">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/products">Products</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/error">About us</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/error">Contact us</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="hearer_icon d-flex align-items-center">
+                            <a href="/error" id="search_1"><i class="fas fa-search"></i></a>
+                            <a href="/cart" id="#"><i class="fas fa-shopping-cart"></i></a>
+                        </div>
+                        <div class="hearer_icon d-flex align-items-center">
+                            <a href="/error"><i class="fas fa-heart"></i></a>
+                            <a href="/profile"><i class="fas fa-user-circle"></i></a>
+                            <!-- Use "ms-auto" for margin on the left side -->
+                            <a href="/logout"><i class="fas fa-power-off"></i></a>
+                            <!-- Apply Bootstrap button styles -->
+                            <!-- </form> -->
+
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Header part end-->
+
+    <!-- Add these scripts to the end of your HTML file -->
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="/js/user/bootstrap.min.js"></script>
+
+    <!-- Owl Carousel JS -->
+    <script src="/js/user/owl.carousel.min.js"></script>
+
+    <!-- Initialize the Owl Carousel -->
+    <script>
+        $(document).ready(function () {
+            $(".owl-carousel").owlCarousel({
+                items: 3, // Number of items to display at once
+                loop: true, // Infinite loop
+                autoplay: true, // Auto-play the carousel
+                autoplayTimeout: 3000, // Auto-play interval in milliseconds (3 seconds)
+                margin: 20, // Space between items
+                responsiveClass: true,
+                responsive: {
+                    0: {
+                        items: 1, // Number of items to display on smaller screens
+                    },
+                    768: {
+                        items: 2, // Number of items to display on medium screens
+                    },
+                    992: {
+                        items: 3, // Number of items to display on larger screens
+                    },
+                },
+            });
+        });
+    </script>
+
+    <!-- banner part start-->
+
+
+    <section class="banner_part">
+        <div class="banner_img mt-1">
+            <img src="/images/user/bg image.webp" alt="#" class="img-fluid">
+            <div class="centered-div">
+                <div class="card text-center mb-3" style="width: 26rem; ">
+                    <div class="card-body">
+                        <h5 class="card-title">Premium || Vibrant || Reliable</h5>
+                        <p class="card-text">India's Leading Discount Paint and Painting Supplies Superstore®</p>
+                        <a href="/products" class="btn btn-primary">shop now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <!-- banner part start-->
+    <!-- Carousel Section -->
+    <% if (Banner.length> 0) { %>
+        <section class="carousel_section">
+            <div class="container-fluid">
+                <div class="row w-100 m-0">
+                    <div class="col-lg-12 w-100">
+                        <div class="owl-carousel owl-theme w-100 d-flex justify-content-around">
+                            <% Banner.forEach(banners=> { %>
+                                <div class="item" style="width: 500px; padding-right: 40px; padding-left: 40px;">
+                                    <img src="/userimages/<%= banners.bannerImage %>" alt="Carousel Image"
+                                        style="max-width: 100%;">
+                                </div>
+                                <% }) %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <% } %>
+
+
+
+            <!-- product list start-->
+            <section class="single_product_list">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="single_product_iner">
+                                <div class="row align-items-center justify-content-between">
+                                    <div class="col-lg-6 col-sm-6">
+                                        <div class="single_product_img">
+                                            <img src="/images/user/Kid_s World .png" class="img-fluid" alt="#">
+                                            <!-- <img src="/images/user/product_overlay.png" alt="#" class="product_overlay img-fluid"> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5 col-sm-6">
+                                        <div class="single_product_content">
+                                            <h5>New Exterior Painting collections</h5>
+                                            <h2> <a href="single-product.html">Eco Paint: Recyclable, zero CO2 during
+                                                    production.</a> </h2>
+                                            <a href="/products" class="btn_3">Explore Now</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="single_product_iner">
+                                <div class="row align-items-center justify-content-between">
+                                    <div class="col-lg-6 col-sm-6">
+                                        <div class="single_product_img">
+                                            <img src="/images/user/Kid_s World 3.png" class="img-fluid" alt="#">
+                                            <!-- <img src="/images/user/product_overlay.png" alt="#" class="product_overlay img-fluid"> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5 col-sm-6">
+                                        <div class="single_product_content">
+                                            <h5>New wood Painting collections</h5>
+                                            <h2> <a href="single-product.html">Hypoallergenic Paint: 100% natural, safe
+                                                    for all
+                                                    indoors.</a> </h2>
+                                            <a href="/products" class="btn_3">Explore Now</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="single_product_iner">
+                                <div class="row align-items-center justify-content-between">
+                                    <div class="col-lg-6 col-sm-6">
+                                        <div class="single_product_img">
+                                            <img src="/images/user/Kid_s World 2.png" class="img-fluid" alt="#">
+                                            <!-- <img src="/images/user/product_overlay.png" alt="#" class="product_overlay img-fluid"> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5 col-sm-6">
+                                        <div class="single_product_content">
+                                            <h5>New Interior Painting collections</h5>
+                                            <h2> <a href="single-product.html">Artisanal Paint: Handmade strokes filled
+                                                    with
+                                                    passion.</a> </h2>
+                                            <a href="/products" class="btn_3">Explore Now</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- product list end-->
+
+            <!-- trending item start-->
+            <section class="trending_items">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="section_tittle text-center">
+                                <h2>Why Our Paints ?</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="/images/user/quality.png" alt="">
+                    </div>
+                </div>
+            </section>
+            <!-- trending item end-->
+
+
+            <!--testimonial start-->
+
+            <div class="row">
+
+                <div class="col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <img src="/images/user/icon-5359553_1280.png" class="card-img-top" alt="John Doe"
+                            class="ind-img">
+                        <div class="card-body">
+                            <h5 class="card-title">John Doe</h5>
+                            <div class="rating">
+                                <span class="star">&#9733;</span>
+                                <span class="star">&#9733;</span>
+                                <span class="star">&#9733;</span>
+                                <span class="star">&#9733;</span>
+                                <span class="star">&#9733;</span>
+                            </div>
+                            <p class="card-text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                                vitae
+                                suscipit justo. Vestibulum eget ex at mauris consequat."</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <img src="/images/user/icon-5359553_1280.png" class="card-img-top" alt="John Doe"
+                            class="ind-img">
+                        <div class="card-body">
+                            <h5 class="card-title">Muhammed</h5>
+                            <div class="rating">
+                                <span class="star">&#9733;</span>
+                                <span class="star">&#9733;</span>
+                                <span class="star">&#9733;</span>
+                                <span class="star">&#9733;</span>
+                                <span class="star">&#9733;</span>
+                            </div>
+                            <p class="card-text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                                vitae
+                                suscipit justo. Vestibulum eget ex at mauris consequat."</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <img src="/images/user/icon-5359553_1280.png" class="card-img-top" alt="John Doe"
+                            class="ind-img">
+                        <div class="card-body">
+                            <h5 class="card-title">Karthik shankar</h5>
+                            <div class="rating">
+                                <span class="star">&#9733;</span>
+                                <span class="star">&#9733;</span>
+                                <span class="star">&#9733;</span>
+                                <span class="star">&#9733;</span>
+                                <span class="star">&#9733;</span>
+                            </div>
+                            <p class="card-text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                                vitae
+                                suscipit justo. Vestibulum eget ex at mauris consequat."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add similar code for other testimonials -->
+            </div>
+            </div>
+
+            <!--testimonial end-->
+            <!-- Footer section -->
+            <hr class="my-4">
+            <footer class="footer_part">
+                <div class="footer_iner">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-8">
+                                <div class="footer_menu">
+                                    <div class="footer_logo">
+                                        <a href="/home"><img src="/images/user/FAV LOGO.png" alt="#"></a>
+                                    </div>
+                                    <div class="footer_menu_item">
+                                        <a href="/error">Home</a>
+                                        <a href="/error">About</a>
+                                        <a href="/error">Products</a>
+                                        <a href="/error">Products</a>
+                                        <a href="/error">Products</a>
+                                        <a href="/error">Products</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="social_icon">
+                                    <a href="/error"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="/error"><i class="fab fa-instagram"></i></a>
+                                    <a href="/error"><i class="fab fa-google-plus-g"></i></a>
+                                    <a href="/error"><i class="fab fa-linkedin-in"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
+            <!-- bootstrap js -->
+            <!-- <script src="/js/user/bootstrap.min.js"></script> -->
+
+            <!-- carousel js -->
+            <script src="/public/js/user/script.js"></script>
+            <script src="/js/user/owl.carousel.min.js"></script>
+            <script src="/js/user/jquery.nice-select.min.js"></script>
+
+            <!-- custom js -->
+            <script src="/js/custom.js"></script>
+</body>
+
+</html>

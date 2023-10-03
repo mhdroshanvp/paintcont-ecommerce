@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Paintcont</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/AdminCss/vertical-layout-light/style.css">
+  <link rel="icon" href="/images/user/FAV LOGO.png" type="image/x-icon">
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="mt-4 p-4 border rounded mx-auto">
+      <h1 class="mb-4">Edit Product</h1>
+      <% for(let i=0;i<product.productPhoto.length;i++) { %>
+      <div style="width: 200px; height: 200px;">
+        <img src="/userimages/<%= product.productPhoto[i] %>" style="max-width: 100%; max-height: 100%;" />
+      </div>  
+      <% } %>
+      <form action="/admin/products/editproduct?productId=<%= product._id %>" method="POST"
+        enctype="multipart/form-data">
+
+        <div class="form-group">
+          <label for="productPhoto" class="form-label">Product Photo</label>
+          <input type="file" class="form-control" id="productPhoto" accept="image/*" multiple    name="image">
+        </div>
+
+        <!-- Product Name  -->
+        <div class="form-group">
+          <label for="productName" class="form-label">Product Name</label>
+          <input type="text" class="form-control" id="productName" placeholder="Enter product name" required
+            name="productName" value="<%= product.productName %>">
+        </div>
+
+        <!-- Product Price  -->
+        <div class="form-group">
+          <label for="productPrice" class="form-label">Product Price</label>
+          <input type="number" class="form-control" id="productPrice" placeholder="Enter product price" required
+            name="productPrice" value="<%= product.productPrice %>">
+        </div>
+
+        <!-- Paint Category -->
+        <div class="form-group">
+          <label for="productCategory" class="form-label">Paint Category</label>
+          <select class="form-select" id="productCategory" required name="productCategory">
+            <option value="">Select a category</option>
+            <% categories.forEach((ctgry, ind) => { %>
+              <option value="<%= ctgry.category %>" <%= product.paintCategory === ctgry.category ? "selected" : "" %>><%= ctgry.category %></option>
+            <% }) %>
+          </select>
+        </div>        
+
+        <!-- Paint Color-->
+        <div class="form-group">
+          <label for="productColor" class="form-label">Paint Color</label>
+          <select class="form-select" id="productColor" required name="productColor">
+            <option value="Category1" <%=product.paintColor==="white" ? "selected" : "" %>>White</option>
+            <option value="Category2" <%=product.paintColor==="Grey" ? "selected" : "" %>>Grey</option>
+            <option value="Category3" <%=product.paintColor==="Cream" ? "selected" : "" %>>Cream</option>
+          </select>
+        </div>
+
+        <!-- Paint Quantity -->
+        <div class="form-group">
+          <label for="productQuantity" class="form-label">Paint Quantity (Litre)</label>
+          <input type="number" class="form-control" id="productQuantity" name="productQuantity"
+            placeholder="Enter paint quantity" required value="<%= product.paintQuantity %>">
+        </div>
+
+        <!-- Paint Stock  -->
+        <div class="form-group">
+          <label for="productStock" class="form-label">Paint Stock </label>
+          <input type="number" class="form-control" id="productStock" name="stock"
+            placeholder="Enter product stock" value="<%= product.stock %>" required>
+        </div>
+
+        <!-- Product Description -->
+        <div class="form-group">
+          <label for="productDescription" class="form-label">Product Description</label>
+          <textarea class="form-control" id="productDescription" rows="4" placeholder="Enter product description"
+            required name="productDescription"><%= product.productDescription %></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4">Save Changes</button>
+
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

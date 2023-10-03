@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="zxx">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <link rel="icon" href="/images/user/FAV LOGO.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>pillloMart</title>
+    <!-- <link rel="icon" href="img/favicon.png"> -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/UserCss/bootstrap.min.css">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="/css/UserCss/style.css">
+</head>
+
+<body>
+    <header class="main_menu home_menu">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-12">
+                    <nav class="navbar navbar-expand-lg navbar-light">
+                        <a class="navbar-brand" href="#"> <img src="/images/user/logo-removebg-preview.png" alt="logo"
+                                width="100"> </a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="menu_icon"><i class="fas fa-bars"></i></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse main-menu-item" id="navbarSupportedContent">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/product_list">Products</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">About us</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Contact us</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="contact.html">Login</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="hearer_icon d-flex align-items-center">
+                            <a href="#" id="search_1"><i class="fas fa-search"></i></a>
+                            <a href="#" id="#"><i class="fas fa-shopping-cart"></i></a>
+                        </div>
+                        <div class="hearer_icon d-flex align-items-center">
+                            <a href=""><i class="fas fa-heart"></i></a>
+                            <a href=""><i class="fas fa-user-circle"></i></a>
+                            <a href="/logout"><i class="fas fa-power-off"></i></a>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Header part end-->
+    <!-- Carousel Section -->
+
+    <main id="site-main">
+
+        <div class="container">
+            <!-- Order History Table -->
+
+            <div class="table-responsive">
+
+              <table class="table table-bordered table-striped order-table">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>NO</th>
+                    <th>DATE</th>
+                    <th>PRIZE</th>
+                    <th>STATUS</th>
+                    <th>NAME</th>
+                    <th>PRODUCTS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (orderData.length > 0) { %>
+                    <% for (let orderIndex = 0; orderIndex < orderData.length; orderIndex++) { %>
+                      <% const order = orderData[orderIndex]; %>
+                      <% if (order.productDetails && order.productDetails.length > 0) { %>
+                        <% order.productDetails.forEach((product, productIndex) => { %>
+                          <tr>
+                            <!-- Display order-related information only in the first row -->
+                            <% if (productIndex === 0) { %>
+                              <td rowspan="<%= order.productDetails.length %>">
+                                <%= orderIndex + 1 %>
+                              </td>
+                              <td rowspan="<%= order.productDetails.length %>">
+                                <%= order.orderDate.toLocaleDateString() %>
+                                <br>
+                                <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalorder<%= order._id %>">Details</button>
+                              </td>
+                              <!-- Display the total order price only in the first row of each order -->
+                              <td rowspan="<%= order.productDetails.length %>">
+                                ₹<%= order.totalAmount %> <!-- Display the total order price -->
+                              </td>
+                              <td rowspan="<%= order.productDetails.length %>">
+                                <%= order.status %>
+                              </td>
+                              <!-- Show the cancel button only in the first row of each order -->
+                              <td rowspan="<%= order.productDetails.length %>">
+                                <button class="btn btn-danger " onclick="event.preventDefault(); cancelOrder('<%= order._id %>')" >Cancel</button>
+                              </td>
+                            <% } %>
+                            <td>
+                              <!-- Product image -->
+                              <%= product.productName %> (<%= order.products[0].qnty %>)
+                            </td>
+                          </tr>
+                          <!-- Add modal code for each product here -->
+                          <!-- /////////////////////////////////////////////////////////////////// -->
+                          <div class="modal fade" id="modalorder<%= order._id %>" tabindex="-1" aria-labelledby="modalCartLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <!--Header-->
+                                <div class="modal-header">
+                                  <h4 class="modal-title" id="modalCartLabel">Order Details</h4>
+                                  <button type="button" class="btn h-25" data-bs-dismiss="modal" aria-label="Close">x</button>
+                                </div>
+                                <!--Body-->
+                                <div class="modal-body">
+                                  <span data-bs-toggle="modal" data-bs-target="#modalCart"><img src="/userimages/<%= order.productDetails[productIndex].productPhoto %>" alt="Product Image"
+                                      class="img-fluid" width="70px"></span>
+                                  <p>order id:<%= order._id %></p>
+                                  <p>product name : <%= product.productName %></p>
+                                  <p>product prize : <%= product.productPrice %></p>
+                                  <p>product color : <%= product.paintColor %></p>
+                                  <p>product quantity : <%= product.paintQuantity %></p>
+                                  <p>product category : <%= product.paintCategory %></p>
+                                  <p> USER ADDRESS : <%= order.address.city %>,<%= order.address.state %>,<%= order.address.areaAndstreet %>,<%= order.address.pincode %></p>
+                                </div>
+                                <!--Footer-->
+                                <div class="modal-footer text-center justify-content-center d-flex">
+                                  <button class="btn btn-outline-success"><p>Status : <%= order.status %></p></button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        <% }) %>
+                      <% } %>
+                    <% } %>
+                  <% } %>
+                </tbody>
+              </table>
+              
+
+                  
+                  
+                  
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////                   -->
+
+
+            </div>
+        </div>
+    </main>
+
+    <!-- feature part end -->
+    <hr class="my-4">
+    <!--::footer_part start::-->
+    <footer class="footer_part">
+        <div class="footer_iner">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <div class="footer_menu">
+                            <div class="footer_logo">
+                                <a href="index.html"><img src="/images/user/logo-removebg-preview.png" alt="#"></a>
+                            </div>
+                            <div class="footer_menu_item">
+                                <a href="index.html">Home</a>
+                                <a href="about.html">About</a>
+                                <a href="product_list.html">Products</a>
+                                <a href="#">Pages</a>
+                                <a href="blog.html">Blog</a>
+                                <a href="contact.html">Contact</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="social_icon">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-google-plus-g"></i></a>
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- ///////////////////////////////// -->
+    
+
+    <script>
+      
+
+
+  function cancelOrder(orderId) {
+    console.log("hhhhhhhhhhhhjhjhhhhhhhhhhhhhhh");
+    alert()
+  if (!orderId) {
+    console.error('Invalid orderId');
+    return;
+  }
+
+  // Send a POST request to the server to cancel the order
+
+  fetch(`/orders/cancel-order/${orderId}`, {
+    method: 'POST',
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      // Handle the response from the server (e.g., update the UI)
+      if (data.success) {
+        // Order canceled successfully, update the UI or show a confirmation message
+        window.location.reload();
+        // You can also remove the canceled order row from the table if needed.
+      } else {
+        alert('Failed to cancel the order. Please try again later.');
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      alert('An error occurred while canceling the order.');
+    });
+}
+
+
+
+    </script>
+    <!-- //////////////////////////////////////// -->
+    <script>
+        ////////////////////////////////////
+
+
+
+
+        ////////////////////////////////////
+       
+    </script>
+    <!--::footer_part end::-->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
