@@ -13,6 +13,7 @@ const banner = require("../model/banner");
 const Razorpay = require('razorpay')
 require("dotenv").config();
 const Category = require('../model/category')
+const Coupons = require('../model/coupons')
 // -----------------------------------------------
 //================================================
 
@@ -829,9 +830,15 @@ const getCheckout = async (req, res) => {
       model: "Product",
     }).exec();
 
+    const coupon = await Coupons.find({isDeleted:false})
+    console.log(coupon);
+
+    
+
+
     if (user  && user.cart.length > 0 ) {
         
-      res.render("User/checkout", { user });
+      res.render("User/checkout", { user , coupon });
 
     } else {
 
@@ -874,7 +881,10 @@ const postCheckout = async (req, res) => {
       unit,
       totalAmount,
       product,
+      coupon
     } = req.body;
+
+    console.log(req.body,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 
     // console.log(req.body,'<=====inside the body');
 
@@ -1259,9 +1269,77 @@ const submitProductRating = async (req, res) => {
   }
 };
 
-///////////////////RAZOR PAY//////////////////////
+////////////////////////////////////////
 //================================================
+const applyCoupon = async (req,res) =>{
 
+  
+  const couponCode=req.params.cp
+  const prevtotal=req.params.amt
+  console.log(couponCode,prevtotal);
+  
+    try {
+      // Check if the coupon code exists in the database
+      const email = req.session.user
+      const user = await User.findOne({ email:email })
+      const coupon = await Coupons.findOne({ code: couponCode });
+  
+  
+      if (coupon && !coupon.isDeleted) {
+        // Check if the coupon has expired
+        const currentDate = new Date();
+        if (currentDate > coupon.expiry) {
+          res.json({ success: false, message: 'Coupon has expired' });
+          return;
+        }
+  
+  
+        // const minAmount = parseInt(coupon.min)
+  
+  
+        if (coupon.min <= prevtotal) {
+  
+  
+          if (user.usedCoupons.includes(coupon._id)) {
+            res.json({ success: false, message: 'Coupon already used by this user' });
+            return;
+          }
+  
+  
+          let discount = coupon.discount;
+          let discountedPrice;
+  
+          if (coupon.type === "OFF") {
+            const discounted = prevtotal * (discount / 100);
+            discountedPrice = Math.floor(prevtotal - discounted);
+            discount = coupon.discount + "%"
+          } else if (coupon.type === "FLAT") {
+            discountedPrice = prevtotal - discount;
+          }
+  
+          // Respond with the discounted price
+          res.json({ success: true, discountedPrice, message: 'Coupon added', discount });
+  
+        }
+        else {
+          res.json({ success: false, message: 'Coupon limit exceeded' });
+        }
+  
+        // Calculate the discount based on the coupon type
+  
+      } else {
+        // Coupon code is not found in the database
+
+        res.json({ success: false, message: 'Invalid coupon code' });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Internal server error' });
+      res.redirect('/internal-error')
+    }
+
+
+}
 
 
 //================================================
@@ -1355,6 +1433,7 @@ res.status(200).json({ success: true });
 console.log(error.message);
 const statusCode = error.status || 500;
 res.status(statusCode).send(error.message);
+res.redirect('/internal-error')
 }
 };
 
@@ -1428,6 +1507,7 @@ module.exports = {
   getWallet,
   Internalerror,
   verifyPayment,
+  applyCoupon,
   logout,
 };
 

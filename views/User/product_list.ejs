@@ -55,11 +55,11 @@
                             </ul>
                         </div>
                         <div class="hearer_icon d-flex align-items-center">
-                            <a href="/error" id="search_1"><i class="fas fa-search"></i></a>
+                            <!-- <a href="/error" id="search_1"><i class="fas fa-search"></i></a> -->
                             <a href="/cart" id="#"><i class="fas fa-shopping-cart"></i></a>
                         </div>
                         <div class="hearer_icon d-flex align-items-center">
-                            <a href=""><i class="fas fa-heart"></i></a>
+                            <a href="/error"><i class="fas fa-heart"></i></a>
                             <a href="/profile"><i class="fas fa-user-circle"></i></a>
                             <a href="/logout"><i class="fas fa-power-off"></i></a>
                         </div>
@@ -77,53 +77,59 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="category-filter-box">
-                    <h3>Category: <span id="selected-category">All</span></h3>
+                    <form method="get">
                     <ul class="list-inline">
-                        <li class="list-inline-item"><a href="#" onclick="filterProducts('All')">All</a></li>
-                        <% categories.forEach((ctgry, ind) => { %>
-                            <li class="list-inline-item"><a href="#" onclick="filterProducts('<%= ctgry.category %>')"><%= ctgry.category %></a></li>
-                        <% }) %>
+                        <li class="list-inline-item">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                  <label for="priceFrom">Price from:</label>
+                                  <div class="form-field">
+                                    <i class="icon icon-arrow-down3"></i>
+                                    <select name="priceFrom" id="priceFrom" class="form-control">
+                                      <option value="">none</option>
+                                      <option value="100">100</option>
+                                      <option value="200">200</option>
+                                      <option value="300">300</option>
+                                      <option value="400">400</option>
+                                      <option value="1000">1000</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                        </li>
+                        <li class="list-inline-item">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                  <label for="priceTo">Price to:</label>
+                                  <div class="form-field">
+                                    <i class="icon icon-arrow-down3"></i>
+                                    <select name="priceTo" id="priceTo" class="form-control">
+                                      <option value="">none</option>
+                                      <option value="2000">2000</option>
+                                      <option value="3000">3000</option>
+                                      <option value="4000">4000</option>
+                                      <option value="5000">5000</option>
+                                      <option value="6000">6000</option>
+                                    </select>
+                                  </div>
+                                </div>
+                
+                
+                        </div>
+                        </li>
+                        <li class="list-inline-item">
+                            <button class="btn btn-dark">submit</button>
+                        </li>
                     </ul>
+                </form>
                 </div>
             </div>
-<form method="get">
-            <div class="col-md-12">
-                <div class="form-group">
-                  <label for="priceFrom">Price from:</label>
-                  <div class="form-field">
-                    <i class="icon icon-arrow-down3"></i>
-                    <select name="priceFrom" id="priceFrom" class="form-control">
-                      <option value="none">none</option>
-                      <option value="100">100</option>
-                      <option value="200">200</option>
-                      <option value="300">300</option>
-                      <option value="400">400</option>
-                      <option value="1000">1000</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label for="priceTo">Price to:</label>
-                  <div class="form-field">
-                    <i class="icon icon-arrow-down3"></i>
-                    <select name="priceTo" id="priceTo" class="form-control">
-                      <option value="none">none</option>
-                      <option value="2000">2000</option>
-                      <option value="3000">3000</option>
-                      <option value="4000">4000</option>
-                      <option value="5000">5000</option>
-                      <option value="6000">6000</option>
-                    </select>
-                  </div>
-                </div>
 
-
-        </div>
+            
+              
     </div>
-    <button class="btn btn-dark">submit</button>
-</form>
+    
+
 
     <!-- Product Cards -->
     <!-- Product Cards -->
@@ -162,20 +168,25 @@
                 <nav aria-label="Page navigation">
                     <ul class="pagination">
                         <% if (currentPage > 1) { %>
-                            <li><a href="/products?page=<%= currentPage - 1 %>&priceFrom=<%= priceFrom %>&priceTo=<%= priceTo %>">&lt;</a></li>
-                          <% } %>
-                          <% for (let i = 1; i <= totalPages; i++) { %>
-                            <li class="<%= i === currentPage ? 'active' : '' %>">
-                              <a href="/products?page=<%= i %>&priceFrom=<%= priceFrom %>&priceTo=<%= priceTo %>"><span><%= i %></span></a>
+                            <li class="page-item">
+                                <a class="page-link" href="/products?page=<%= currentPage - 1 %>&priceFrom=<%= priceFrom %>&priceTo=<%= priceTo %>">&lt;</a>
                             </li>
-                          <% } %>
-                          <% if (currentPage < totalPages) { %>
-                            <li><a href="/products?page=<%= currentPage + 1 %>&priceFrom=<%= priceFrom %>&priceTo=<%= priceTo %>">&gt;</a></li>
-                          <% } %>
+                        <% } %>
+                        <% for (let i = 1; i <= totalPages; i++) { %>
+                            <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                                <a class="page-link" href="/products?page=<%= i %>&priceFrom=<%= priceFrom %>&priceTo=<%= priceTo %>"><span><%= i %></span></a>
+                            </li>
+                        <% } %>
+                        <% if (currentPage < totalPages) { %>
+                            <li class="page-item">
+                                <a class="page-link" href="/products?page=<%= currentPage + 1 %>&priceFrom=<%= priceFrom %>&priceTo=<%= priceTo %>">&gt;</a>
+                            </li>
+                        <% } %>
                     </ul>
                 </nav>
             </div>
         </div>
+        
 
         <script>
             // Function to filter products by category

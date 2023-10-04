@@ -81,6 +81,8 @@ router.post('/orders/cancel-order/:id',auth.isLoggedIn,auth.isBlocked,userContro
 router.post('/verify-payment',auth.isLoggedIn,auth.isBlocked,userController.verifyPayment)
 //wallet
 router.get('/profile/wallet',auth.isLoggedIn,auth.isBlocked,userController.getWallet)
+//apply coupon
+router.post('/apply-coupon/:cp/:amt',auth.isLoggedIn,auth.isBlocked,userController.applyCoupon)
 //404 page :(
 router.get('/error',auth.isBlocked,userController.error)
 //500 page :(

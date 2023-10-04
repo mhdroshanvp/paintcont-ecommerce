@@ -29,19 +29,16 @@
                         <div class="collapse navbar-collapse main-menu-item" id="navbarSupportedContent">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Home</a>
+                                    <a class="nav-link" href="/home">Home</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/product_list">Products</a>
+                                    <a class="nav-link" href="/products">Products</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">About us</a>
+                                    <a class="nav-link" href="/error">About us</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Contact us</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="contact.html">Login</a>
+                                    <a class="nav-link" href="/error">Contact us</a>
                                 </li>
                             </ul>
                         </div>
@@ -108,11 +105,77 @@
                             <form>
                                 <!-- Add coupon code input field here -->
                                 <div class="form-group">
-                                    <label for="couponCode">Coupon Code</label>
-                                    <input type="text" id="couponCode" name="couponCode" class="form-control">
+                                    <input type="text" id="coupon" name="coupon" placeholder="Enter your coupon code"
+                                        style="border-radius: 10px; background-color: transparent; width: 300px; height: 40px;">
+                                    <button class="btn btn-outline-dark" id="applyCouponBtn" type="button"
+                                        style="border-radius: 10px; margin-left: .2rem; letter-spacing: .2px; padding: 1px 5px 1px 5px;">Apply
+                                    </button>
+                                    <button class="btn btn-dark" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop"
+                                        style="border-radius: 10px; margin-left: .2rem; letter-spacing: .2px; padding: 1px 5px 1px 5px;">Available
+                                        Coupons
+                                    </button>
                                 </div>
+
+                                <hr>
                                 <!-- Include a apply button to apply the coupon -->
-                                <button type="button" class="btn btn-primary ">Apply Coupon</button>
+
+                                <div class="d-flex align-items-center">
+
+                                </div>
+
+                                <input type="hidden" id="discountinput" name="discountinput" value="">
+
+
+                                <div class="w-100 d-flex justify-content-start">
+                                    <p class="text-success" id="alert_tag"></p>
+                                </div>
+
+                                <!-- modals!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+                                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+                                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="modal-body">
+                                                    <h5>Coupon Information</h5>
+                                                    <hr>
+                                                    <table class="table">
+                                                        <thead>
+                                                        <tbody>
+                                                            <% console.log(coupon,"============================================="); %>
+                                                    <% if(coupon.length > 0) { %>
+                                                    <% for(let i=0; i<coupon.length; i++) { %>
+                                                <tr>
+                                                    <h2> <b><%= coupon[i].code %></b> </h2> <h4><%= coupon[i].type %> <%= coupon[i].discount %>!!!</h4>
+                                                    <hr>
+                                                </tr>
+                                                <!-- Add more rows as needed -->
+                                                <% } %>
+                                                <% }else { %> 
+                                                    <p>No coupons Available :(</p>
+                                                <% } %> 
+                                                
+                                            </tbody>
+                                            </table>
+                                          </div>
+                                          
+                                      </div>
+                                      <div class=" modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- modals!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+
+
+
                             </form>
                         </div>
                     </div>
@@ -146,7 +209,7 @@
                                                         name="product">
                                                     <td><a
                                                             href="/products/product-details?productId=<%= item.productId._id %>"><img
-                                                                src="/userimages/<%= item.productId.productPhoto %>"
+                                                                src="/userimages/<%= item.productId.productPhoto[0] %>"
                                                                 alt="Product Image" class="img-fluid" width="100"></a>
                                                     </td>
                                                     <td>
@@ -171,29 +234,47 @@
                                                     <% }) %>
                                     </tbody>
                                 </table>
-                                <!-- Calculate and display the total price -->
-                                <h3>Total: <span id="cartTotal">
-                                        <%= sum %>
-                                    </span></h3>
-                                <input type="hidden" name="totalAmount" value="<%= sum %>">
 
-                                <!-- Add this checkbox for payment method -->
-                                <div class="form-check">
-                                    <input type="radio" class="form-check-input" id="onlinePayment" name="paymentMethod"
-                                        value="online">
-                                    <label class="form-check-label" for="onlinePayment">Pay Online</label>
+                                <div>
+                                    <p class="mb-0" id="discount">
+                                    </p>
+                                    <!-- <p class="mb-0 font-monospace" id="walletalert" value=""></p> -->
                                 </div>
 
-                                <div class="form-check">
-                                    <input type="radio" class="form-check-input" id="cashOnDelivery"
-                                        name="paymentMethod" value="cash">
-                                    <label class="form-check-label" for="cashOnDelivery">Cash on Delivery</label>
-                                </div>
-                                <hr>
-                                <button type="submit" class="btn btn-success">Place Order</button>
-                                <% } else { %>
-                                    <p>Sorry !!!</p>
-                                    <% } %>
+                                <%const prev=sum %>
+                                    <input type="hidden" id="prevamt" value="<%= prev %>">
+                                    <h3 id="cartTotal">Total : <%= sum %>
+                                    </h3>
+
+
+
+
+
+
+
+
+
+
+
+                                    <input type="hidden" name="totalAmount" id="totalamount" value="<%= sum %>">
+
+                                    <!-- Add this checkbox for payment method -->
+                                    <div class="form-check">
+                                        <input type="radio" class="form-check-input" id="onlinePayment"
+                                            name="paymentMethod" value="online">
+                                        <label class="form-check-label" for="onlinePayment">Pay Online</label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input type="radio" class="form-check-input" id="cashOnDelivery"
+                                            name="paymentMethod" value="cash">
+                                        <label class="form-check-label" for="cashOnDelivery">Cash on Delivery</label>
+                                    </div>
+                                    <hr>
+                                    <button type="submit" class="btn btn-success">Place Order</button>
+                                    <% } else { %>
+                                        <p>Sorry !!!</p>
+                                        <% } %>
                         </div>
                     </div>
                 </div>
@@ -201,71 +282,113 @@
         </form>
     </main>
     <script>
-function checkout() {
-  fetch("/cart/checkout", {
-    method: "POST",
-    body: new URLSearchParams($('#checkoutForm').serialize()),
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    }
-  })
-  .then(response => response.json())
-  .then(res => {
-    if (res.codSuccess) {
-      alert("order")
-    } else if (res.razorSuccess) {
-        console.log('inside front < ===========================');
-      const order = {
-        "key": "" + res.key_id + "",
-        "amount": "" + res.amount + "",
-        "currency": "INR",
-        "name": "" + res.name + "",
-        "prefill": {
-          "contact": "" + res.contact + "",
-          "name": "" + res.name + "",
-          "email": "" + res.email + ""
-        },
-        "handler": function (response) {
-            // alert("paymentDone")
-            verifypayment()
-            updateOrderStatus(res.orderId, "paid");
-          },
+        /////////////////////////////////////////////////////////////////////////////////////////
 
+        document.getElementById('applyCouponBtn').addEventListener('click', async () => {
+            const selectedCoupon = document.getElementById('coupon').value;
+            const totalamountInput = document.getElementById('totalamount');
+            const prevAmount = document.getElementById('prevamt').value
+
+            const discountElement = document.getElementById('discount');
+            const subtotalElement = document.getElementById('cartTotal');
+            const discountInput = document.getElementById('discountinput');
+
+            console.log(selectedCoupon);
+
+            // Send a request to your server to apply the selected coupon
+            const response = await fetch(`/apply-coupon/${selectedCoupon}/${prevAmount}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const data = await response.json();
+
+            console.log(data);
+            if (data.success) {
+                console.log('======fsdfdsfsadf========================ff');
+                // Update the displayed subtotal with the discounted price
+                document.getElementById('cartTotal').innerHTML = `Total: ₹ ${data.discountedPrice}`;
+
+
+                document.getElementById('alert_tag').innerHTML = `${data.message}`;
+
+                discountElement.innerHTML = `Discount: ₹ -${data.discount}`;
+                discountInput.value = data.discount;
+                totalamountInput.value = data.discountedPrice;
+            } else {
+                // Display an error message for invalid coupons
+                document.getElementById('alert_tag').innerHTML = `${data.message}`;
+            }
+        });
+
+        /////////////////////////////////////////////////////////////////////////////////////////
+        function checkout() {
+            fetch("/cart/checkout", {
+                method: "POST",
+                body: new URLSearchParams($('#checkoutForm').serialize()),
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                }
+            })
+                .then(response => response.json())
+                .then(res => {
+                    if (res.codSuccess) {
+                        alert("order")
+                    } else if (res.razorSuccess) {
+                        console.log('inside front < ===========================');
+                        const order = {
+                            "key": "" + res.key_id + "",
+                            "amount": "" + res.amount + "",
+                            "currency": "INR",
+                            "name": "" + res.name + "",
+                            "prefill": {
+                                "contact": "" + res.contact + "",
+                                "name": "" + res.name + "",
+                                "email": "" + res.email + ""
+                            },
+                            "handler": function (response) {
+                                // alert("paymentDone")
+                                verifypayment()
+                                updateOrderStatus(res.orderId, "paid");
+                            },
+
+                        }
+                        console.log('<<<<<<<<<<<<<<<<<<<<<<<<');
+
+                        const razorpay = new Razorpay(order);
+
+                        const done = razorpay.open();
+
+                    } else {
+                        window.location.href = '/cart/checkout/orderSuccess'
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                });
         }
-        console.log('<<<<<<<<<<<<<<<<<<<<<<<<');
 
-        const razorpay = new Razorpay(order);
-
-        const done = razorpay.open();
-
-    }else{
-        window.location.href = '/cart/checkout/orderSuccess'
-    }
-  })
-  .catch(err => {
-    console.error(err);
-  });
-}
-
-// =================
-function verifypayment() {
-  fetch("/verify-payment", {
-    method: "POST",
-    body: new URLSearchParams($('#checkoutForm').serialize()),
-  })
-    .then((response) => {
-      if (response.ok) {
-        // Handle success, e.g., show a modal or redirect
-        window.location.href='/cart/checkout/orderSuccess'
-      } else {
-        // Handle error
-        console.error("Payment verification failed");
-      }
-    })
-    .catch((error) => {
-      console.error("Error while verifying payment:", error);
-    });
-}
+        // =================
+        function verifypayment() {
+            fetch("/verify-payment", {
+                method: "POST",
+                body: new URLSearchParams($('#checkoutForm').serialize()),
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        // Handle success, e.g., show a modal or redirect
+                        window.location.href = '/cart/checkout/orderSuccess'
+                    } else {
+                        // Handle error
+                        console.error("Payment verification failed");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error while verifying payment:", error);
+                });
+        }
 
     </script>
 
@@ -284,7 +407,7 @@ function verifypayment() {
                             <div class="footer_logo">
                                 <a href="index.html"><img src="/images/user/logo-removebg-preview.png" alt="#"></a>
                             </div>
-                            <div class="footer_menu_item">
+                            <div class="footer_menu_item">`
                                 <a href="index.html">Home</a>
                                 <a href="about.html">About</a>
                                 <a href="product_list.html">Products</a>
@@ -329,8 +452,10 @@ function verifypayment() {
             $("#cartTotal").text(" " + cartTotal.toFixed(2));
         }
     </script>
-   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.2/dist/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

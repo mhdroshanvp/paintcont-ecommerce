@@ -45,7 +45,7 @@
         <div class="form-group">
           <label for="productCategory" class="form-label">Paint Category</label>
           <select class="form-select" id="productCategory" required name="productCategory">
-            <option value="">Select a category</option>
+           
             <% categories.forEach((ctgry, ind) => { %>
               <option value="<%= ctgry.category %>" <%= product.paintCategory === ctgry.category ? "selected" : "" %>><%= ctgry.category %></option>
             <% }) %>

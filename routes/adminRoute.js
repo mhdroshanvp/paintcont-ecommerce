@@ -29,6 +29,8 @@ router.post('/login', adminController.postLogin);
 router.get('/dashboard',adminAuth.loggedIn,adminController.getdashboard)
 //get user
 router.get('/user',adminAuth.loggedIn,adminController.getusermanagement)
+//search user
+router.post('/search',adminController.getSearchUser)
 //patch userblock
 router.patch('/user/block',adminController.blockUser)
 //patch userUnblock
@@ -62,9 +64,10 @@ router.post('/cancel-order',adminController.cancelOrder)
 //status update 
 router.post('/update-status/:id',adminController.updateStatus)
 //coupon get
-router.get('/coupon',adminController.getCoupon)
-//coupon post
-router.post('/coupon',adminController.postCoupon)
+router.get("/coupons",adminAuth.loggedIn,adminController.getAllCoupons)
+router.post("/create-coupon",adminAuth.loggedIn,adminController.createCoupon)
+router.post("/update-coupon/:id",adminAuth.loggedIn,adminController.updateCoupons)
+router.post("/unlist-coupon/:id",adminAuth.loggedIn,adminController.unListCoupons)
 //category
 router.get('/category',adminAuth.loggedIn,adminController.getCateogory)
 router.post('/update-category/:categoryId',adminController.postUpdtCat)

@@ -8,6 +8,7 @@ const path = require("path");
 let Jimp = require("jimp");
 const { log } = require("console");
 const Category = require('../model/category')
+const Coupons = require('../model/coupons')
 
 // Create an object to define various controller functions
 const controllers = {
@@ -78,6 +79,23 @@ const controllers = {
       res.render("Admin/usermanage", { data });
     } catch (error) {
       console.log(error.message);
+      res.redirect('/Admin/internal-error')
+    }
+  },
+
+  getSearchUser : async (req,res) =>{
+    try {
+      const searchElem = req.body.search
+      
+      const user = await User.find({  
+        $or:[
+          {name: {$regex: searchElem, $options: 'i'}},
+          {email: {$regex: searchElem, $options: 'i'}}
+        ]
+      })
+
+      res.render('Admin/usermanage',{data : user})
+    } catch (error) {
       res.redirect('/Admin/internal-error')
     }
   },
@@ -403,6 +421,7 @@ const controllers = {
   } catch (error) {
     console.error('Error updating order status:', error);
     res.status(500).json({ error: 'Internal server error' });
+    res.redirect('/Admin/internal-error')
   }
 },
   
@@ -481,6 +500,7 @@ console.log(upd,"                            " ,categoryId);
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: 'An error occurred while updating the category' });
+    res.redirect('/Admin/internal-error')
   }
 },
 
@@ -503,20 +523,91 @@ DltCat: async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: 'An error occurred while deleting the category' });
+    res.redirect('/Admin/internal-error')
   }
 },
 
 
-getCoupon : (req,res) =>{
-  res.render('Admin/coupons')
-},
-postCoupon : (req,res) =>{
+
+
+
+createCoupon : async (req, res) => {
   try {
-    
-  } catch (error) {
-    console.log(error);
+    const coupon = {
+      code: req.body.code,
+      type: req.body.type,
+      expiry: req.body.expiry,
+      discount: req.body.discount,
+      min: req.body.min
+    }
+
+
+
+    const exist = await Coupons.findOne({ code: req.body.code })  
+
+    if (exist) {
+      res.send("already exist in the code")
+      res.redirect('/admin/coupon')
+    } else {
+      const newCoupon = await Coupons.create(coupon);
+      res.redirect('/admin/coupons')
+    }
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).json({ error: 'An error occurred while creating the coupon.' });
+    res.redirect('/Admin/internal-error')
   }
+},
+
+
+
+getAllCoupons : async (req, res) => {
+  try {
+    const coupons = await Coupons.find();
+    res.render('admin/coupons', { coupons, users: false })
+  } catch (error) {
+    throw new Error(error)
+    res.redirect('/Admin/internal-error')
+  }
+},
+
+
+
+updateCoupons : async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const updatecoupon = await Coupons.findByIdAndUpdate(id, req.body, { new: true });
+    res.redirect('/admin/coupons')
+    res.json(updatecoupon);
+  } catch (error) {
+    console.error(error.message);
+    res.redirect('/Admin/internal-error')
+  }
+},
+
+
+
+unListCoupons : async (req, res) => {
+  const couponId = req.params.id;
+
+
+  const coupon = await Coupons.findById(couponId);
+
+ 
+
+  if (!coupon) {
+    return res.status(404).send("coupon not found");
+  }
+
+  coupon.isDeleted = !coupon.isDeleted;
+
+  await coupon.save();
+
+  res.redirect("/admin/coupons");
 }
+
+
 
 
 
