@@ -75,44 +75,6 @@
             </div>
         </div>
     </header>
-    <!-- Header part end-->
-
-    <!-- Add these scripts to the end of your HTML file -->
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Bootstrap JS -->
-    <script src="/js/user/bootstrap.min.js"></script>
-
-    <!-- Owl Carousel JS -->
-    <script src="/js/user/owl.carousel.min.js"></script>
-
-    <!-- Initialize the Owl Carousel -->
-    <script>
-        $(document).ready(function () {
-            $(".owl-carousel").owlCarousel({
-                items: 3, // Number of items to display at once
-                loop: true, // Infinite loop
-                autoplay: true, // Auto-play the carousel
-                autoplayTimeout: 3000, // Auto-play interval in milliseconds (3 seconds)
-                margin: 20, // Space between items
-                responsiveClass: true,
-                responsive: {
-                    0: {
-                        items: 1, // Number of items to display on smaller screens
-                    },
-                    768: {
-                        items: 2, // Number of items to display on medium screens
-                    },
-                    992: {
-                        items: 3, // Number of items to display on larger screens
-                    },
-                },
-            });
-        });
-    </script>
-
-    <!-- banner part start-->
 
 
     <section class="banner_part">
@@ -158,70 +120,65 @@
 
 
             <!-- product list start-->
-            <section class="single_product_list">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="single_product_iner">
-                                <div class="row align-items-center justify-content-between">
-                                    <div class="col-lg-6 col-sm-6">
-                                        <div class="single_product_img">
-                                            <img src="/images/user/Kid_s World .png" class="img-fluid" alt="#">
-                                            <!-- <img src="/images/user/product_overlay.png" alt="#" class="product_overlay img-fluid"> -->
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-5 col-sm-6">
-                                        <div class="single_product_content">
-                                            <h5>New Exterior Painting collections</h5>
-                                            <h2> <a href="single-product.html">Eco Paint: Recyclable, zero CO2 during
-                                                    production.</a> </h2>
-                                            <a href="/products" class="btn_3">Explore Now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="single_product_iner">
-                                <div class="row align-items-center justify-content-between">
-                                    <div class="col-lg-6 col-sm-6">
-                                        <div class="single_product_img">
-                                            <img src="/images/user/Kid_s World 3.png" class="img-fluid" alt="#">
-                                            <!-- <img src="/images/user/product_overlay.png" alt="#" class="product_overlay img-fluid"> -->
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-5 col-sm-6">
-                                        <div class="single_product_content">
-                                            <h5>New wood Painting collections</h5>
-                                            <h2> <a href="single-product.html">Hypoallergenic Paint: 100% natural, safe
-                                                    for all
-                                                    indoors.</a> </h2>
-                                            <a href="/products" class="btn_3">Explore Now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="single_product_iner">
-                                <div class="row align-items-center justify-content-between">
-                                    <div class="col-lg-6 col-sm-6">
-                                        <div class="single_product_img">
-                                            <img src="/images/user/Kid_s World 2.png" class="img-fluid" alt="#">
-                                            <!-- <img src="/images/user/product_overlay.png" alt="#" class="product_overlay img-fluid"> -->
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-5 col-sm-6">
-                                        <div class="single_product_content">
-                                            <h5>New Interior Painting collections</h5>
-                                            <h2> <a href="single-product.html">Artisanal Paint: Handmade strokes filled
-                                                    with
-                                                    passion.</a> </h2>
-                                            <a href="/products" class="btn_3">Explore Now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+<section class="single_product_list">
+    <div class="container">
+        <div class="row justify-content-center"> <!-- Center align the cards -->
+            <div class="col-lg-4 col-md-6">
+                <!-- First Product Card -->
+                <div class="card mb-4 card-with-border">
+                    <img src="/images/user/maxresdefault.jpg" class="card-img" alt="#">
+                    <div class="card-body card-height"> <!-- Added card-height class -->
+                        <h3 class="card-title">New Exterior Painting Collections</h3>
+                        <p class="card-text" style="font-size: 14px;">Eco Paint: Recyclable, zero CO2 during production.</p>
+                        <a href="/products" class="btn btn-primary btn-block" style="margin-top: 100px;">Explore Now</a> <!-- Make the button full-width -->
                     </div>
                 </div>
-            </section>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <!-- Second Product Card -->
+                <div class="card mb-4 card-with-border">
+                    <img src="/images/user/maxresdefault-1.jpg" class="card-img" alt="#">
+                    <div class="card-body card-height"> <!-- Added card-height class -->
+                        <h3 class="card-title">New Wood Painting Collections</h3>
+                        <p class="card-text" style="font-size: 14px;">Hypoallergenic Paint: 100% natural, safe for all indoors.</p>
+                        <a href="/products" class="btn btn-primary btn-block" style="margin-top: 100px;">Explore Now</a> <!-- Make the button full-width -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <!-- Third Product Card -->
+                <div class="card mb-4 card-with-border">
+                    <img src="/images/user/maxresdefault-2.jpg" class="card-img" alt="#">
+                    <div class="card-body card-height"> <!-- Added card-height class -->
+                        <h3 class="card-title">New Interior Painting Collections</h3>
+                        <p class="card-text" style="font-size: 14px;">Artisanal Paint: Handmade strokes filled with passion.</p>
+                        <a href="/products" class="btn btn-primary btn-block" style="margin-top: 100px;">Explore Now</a> <!-- Make the button full-width -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .card-with-border {
+        border: 2px solid #ccc; /* Default border color */
+        transition: border-color 0.3s ease; /* Smooth transition for border color */
+    }
+
+    .card-with-border:hover {
+        border-color: #562424; /* Border color on hover */
+    }
+
+    .card-height {
+        min-height: 250px; /* Adjust the desired height */
+    }
+</style>
+
+            
+            
             <!-- product list end-->
 
             <!-- trending item start-->
@@ -235,10 +192,19 @@
                         </div>
                     </div>
                     <div>
-                        <img src="/images/user/quality.png" alt="">
+                        <img src="/images/user/quality.png" alt="" class="img-fluid img-hover">
                     </div>
                 </div>
             </section>
+            
+            <style>
+                .img-hover:hover {
+                    /* Add your hover effect styles here */
+                    transform: scale(1.1); /* Example: Enlarge the image on hover */
+                    transition: transform 0.3s ease; /* Add a smooth transition */
+                }
+            </style>
+            
             <!-- trending item end-->
 
 

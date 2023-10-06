@@ -30,34 +30,28 @@ router.get('/dashboard',adminAuth.loggedIn,adminController.getdashboard)
 //get user
 router.get('/user',adminAuth.loggedIn,adminController.getusermanagement)
 //search user
-router.post('/search',adminController.getSearchUser)
+router.post('/search',adminController.getUserSearchUser)
+//search product
+router.post('/prd-search',adminController.getPrdSearch)
 //patch userblock
 router.patch('/user/block',adminController.blockUser)
-//patch userUnblock
 router.patch('/user/unblock',adminController.unblock)
 //get adddprod
+router.get('/products',adminAuth.loggedIn,adminController.getProductListing);
 router.get('/addproduct',adminAuth.loggedIn, adminController.addProductGet);
-//post addprod
 router.post('/addproduct', upload.array('image',4), adminController.addProductPost);
-// patch list
 router.patch('/products/list',adminController.patchList)
-//patch unlist
 router.patch('/products/unlist',adminController.patchUnList)
-//get editprod
 router.get('/products/editproduct',adminAuth.loggedIn,adminController.editProductGet)
-//post edit prod
 router.post('/products/editproduct',upload.array('image',4),adminController.editProductPost)
+router.get('/products/editproduct/delete-edtImage', adminAuth.loggedIn, adminController.DltEdtImg);
 //get orders
 router.get('/orders',adminAuth.loggedIn,adminController.getOrders)
-//get logout
-router.get('/products',adminAuth.loggedIn,adminController.getProductListing);
 // get logout
 router.get('/logout',adminController.logout)
 //route for banner management
 router.get('/banners',adminAuth.loggedIn,adminController.getBannerManage)
-//post banner
 router.post('/add-banners',upload.single('image'),adminController.adminBannersPost)
-//banner deletion
 router.get('/delete-banner',adminAuth.loggedIn,adminController.deletBanner)
 //order cancelled 
 router.post('/cancel-order',adminController.cancelOrder)
@@ -72,12 +66,10 @@ router.post("/unlist-coupon/:id",adminAuth.loggedIn,adminController.unListCoupon
 router.get('/category',adminAuth.loggedIn,adminController.getCateogory)
 router.post('/update-category/:categoryId',adminController.postUpdtCat)
 router.delete('/delete-category/:categoryId',adminController.DltCat)
-//post category
 router.post('/category',adminController.postCategory)
 // ========================================================
-//404 page not found:(
+//404 / 505 errors 
 router.get('/error',adminController.error)
-//500 internal error :(
 router.get('/internal-error',adminController.Internalerror)
 // ========================================================
 module.exports = router

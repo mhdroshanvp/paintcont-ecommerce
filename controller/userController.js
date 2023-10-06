@@ -689,7 +689,7 @@ const getOrders = async (req, res) => {
           localField: "products.product",
           foreignField: "_id",
           as: "productDetails",
-        },
+        },  
       },
     ]);
 
@@ -762,6 +762,8 @@ const getCart = async (req, res) => {
         model: "Product",
       })
       .exec();
+      // const category = await Category.find()
+      // console.log(category,"<<<<<<<<<<<<<<<<<<<==========================================="); 
     console.log(user.cart);
 
     res.render("User/cart", { user });

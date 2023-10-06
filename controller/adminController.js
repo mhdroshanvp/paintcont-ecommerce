@@ -83,7 +83,7 @@ const controllers = {
     }
   },
 
-  getSearchUser : async (req,res) =>{
+  getUserSearchUser : async (req,res) =>{
     try {
       const searchElem = req.body.search
       
@@ -100,7 +100,25 @@ const controllers = {
     }
   },
 
-  // Block a user based on their ID
+  getPrdSearch : async (req,res) =>{
+    // console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+    try {
+      const searchPrd = req.body.search
+      // console.log(searchPrd);
+      const products = await Product.find({
+        $or:[
+        {productName: {$regex: searchPrd, $options : 'i'}},
+        {paintCategory: {$regex: searchPrd, $options : 'i'}}
+        ]
+      })
+
+      res.render('Admin/productListing',{products})
+    } catch (error) {
+      res.redirect('/Admin/internal-error') 
+    }
+  },
+
+// Block a user based on their ID
   blockUser: async (req, res) => {
     try {
       const id = req.body.id;
@@ -169,6 +187,10 @@ const controllers = {
       } = req.body;
 
 
+      trimmedProductName = productName.trim()
+      trimmedPaintColor = paintColor.trim()
+      trimmedDescription = productDescription.trim()
+
 
       const productPhoto = req.files.map((file) => file.filename )
 
@@ -176,12 +198,12 @@ const controllers = {
 
       const newProduct = new Product({
         productPhoto,
-        productName,
+        productName : trimmedProductName,
         productPrice,
         paintCategory,
-        paintColor,
+        paintColor : trimmedPaintColor,
         paintQuantity: productQuantity,
-        productDescription,
+        productDescription :trimmedDescription,
         stock,
       });
 
@@ -198,6 +220,7 @@ const controllers = {
   getProductListing: async (req, res) => {
     try {
       const products = await Product.find();
+      console.log(products);
       res.render("Admin/productListing", { products });
     } catch (error) {
       console.log(error.message);
@@ -275,8 +298,7 @@ const controllers = {
   editProductPost: async (req, res) => {
     try {
 
-      const productPhoto = req.files.map((file) => file.filename )
-      console.log(productPhoto);// Default to the uploaded file
+      // Default to the uploaded file
 
       const productId = req.query.productId;
 
@@ -286,54 +308,114 @@ const controllers = {
         return res.status(404).send("Product not found");
       }
 
-      if (!req.file && !productPhoto) {
-        const { productName,productPrice,productCategory,productColor,productQuantity,productDescription, stock,} = req.body;
-      } else {
-        const {productName,productPrice,productCategory,productColor,productQuantity,productDescription,stock,} = req.body;
 
-        product.productPhoto = productPhoto; 
-        product.productName = productName;
-        product.productPrice = productPrice;
-        product.paintCategory = productCategory;
-        product.paintColor = productColor;
-        product.paintQuantity = productQuantity;
-        product.productDescription = productDescription;
-        product.stock = stock;
+      const {productName,productPrice,paintCategory,paintColor,productQuantity,productDescription,stock} = req.body;
+
+
+      const trimmedProductName = productName.trim()
+      const trimmedPaintColor = paintColor.trim()
+      const trimmedProductDescription = productDescription.trim()
+
+
+      const updatedProductData = {
+      productName : trimmedProductName ,
+      productPrice,
+      paintCategory,
+      paintColor : trimmedPaintColor,
+      paintQuantity:productQuantity,
+      productDescription : trimmedProductDescription,
+      stock
       }
 
-      await product.save();
-      res.redirect("/admin/products");
-    } catch (error) {
+      if (req.files && req.files.length > 0) {
+        updatedProductData.productPhoto = req.files.map((file) => file.filename);
+      } else {
+        updatedProductData.productPhoto = product.productPhoto;
+      }
+
+      const updatedProduct = await Product.findOneAndUpdate(
+    { _id: productId },
+    { $set: updatedProductData },
+    { new: true }
+  );
+
+  
+  res.redirect("/admin/products");
+
+      }catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");
-    }
-  },
-
-  getOrders: async (req, res) => {
-    try {
-      const user = await User.find();
-      let orders = await order.find().populate('products.product').populate('user')
-      // console.log(orders);
-      const product = await Product.find()
-      console.log(orders, "<== we found orders!!!!!!!!!!!!!!!!!!!!");
-      console.log(user, "<== we found users!!!!!!!!!!!!!!!!!!!!");
-      
-      orders = await Promise.all(
-        orders.map(async (order) => {
-          const user = await User.findById(order.user);
-          if (user) {
-            order.userAddress = user.address[0]; // Assuming you want to display the first address in the array
-          }
-          return order;
-        })
-      );
-
-      res.render("Admin/orderlisting",{orders});
-    } catch (error) {
-      console.log(error);
       res.redirect('/Admin/internal-error')
     }
   },
+
+
+
+  DltEdtImg: async (req, res) => {
+    try {
+      const DltEdtImgId = req.query.id;
+      const imageIndex = parseInt(req.query.index);
+  
+      // Retrieve the product by ID
+      const product = await Product.findById(DltEdtImgId);
+  
+      if (!product) {
+        return res.status(404).send("Edit product not found");
+      }
+  
+      // Check if the imageIndex is valid
+      if (imageIndex >= 0 && imageIndex < product.productPhoto.length) {
+        // Remove the image at the specified index
+        product.productPhoto.splice(imageIndex, 1);
+        
+        // Save the updated product
+        await product.save();
+      } else {
+        return res.status(400).send("Invalid image index");
+      }
+  
+      res.redirect("/admin/products");
+    } catch (error) {
+      console.log(error);
+      res.redirect('/Admin/internal-error');
+    }
+  },
+  
+
+  
+
+  getOrders: async (req, res) => {
+    try {
+      const users = await User.find();
+      const products = await Product.find();
+  
+      const orders = await order
+        .find({})
+        .sort({ orderDate: -1 })
+        .populate([
+          {
+            path: "products.product",
+            model: "Product", // Specify the name of the Product model
+          },
+          {
+            path: "user",
+            model: "User", // Specify the name of the User model
+            select: "name",
+          },
+        ]);
+  
+      console.log(orders, "========================================================================");
+  
+      res.render("Admin/orderlisting", { orders, products });
+    } catch (error) {
+      console.log(error);
+      res.redirect('/Admin/internal-error');
+    }
+  },
+  
+
+
+
 
   // Render the page to manage banners
   getBannerManage: async (req, res) => {
@@ -361,7 +443,7 @@ const controllers = {
     } catch (error) {
       console.error("Error adding banner:")
       res.status(500).send("internal server error");
-      // res.redirect('/Admin/internal-error')
+      res.redirect('/Admin/internal-error')
     }
   },  
 
@@ -461,6 +543,10 @@ const controllers = {
     try {
 
       const {category} = req.body
+
+      category = category.trim()
+
+
       console.log(category);
 
       await Category.create({category})
@@ -478,31 +564,62 @@ const controllers = {
     }
     
 },
+
+
+postCategory: async (req, res) => {
+  try {
+    let { category } = req.body;
+
+    // Trim the category string to remove leading and trailing white spaces
+    category = category.trim();
+
+    console.log(category);
+
+    const newCategory = await Category.create({ category });
+
+    if (newCategory) {
+      res.redirect('/admin/category');
+    } else {
+      throw new Error('Category creation failed.');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error adding the category: ' + error.message);
+    res.redirect('/Admin/internal-error');
+  }
+},
+
 postUpdtCat: async (req, res) => {
   const categoryId = req.params.categoryId;
-  const upd = req.body.editCat; // Assuming req.body.editCat contains the update data
-console.log(upd,"                            " ,categoryId);
+  const updCat = req.body.editCat;
+
   try {
-    // Use findByIdAndUpdate to update the category by its ID
+    if (updCat !== undefined) {
+      updCat = updCat.trim();
+    } else {
+      // Handle the case where editCat is undefined
+      // You can choose to skip the trimming or handle it differently here
+      console.log('cannot trim :(');
+    }
+
     const updatedCategory = await Category.findByIdAndUpdate(
       categoryId,
-      req.body,
-      { new: true } // To get the updated category as the result
+      { category: updCat },
+      { new: true }
     );
 
     if (!updatedCategory) {
-      // Handle the case where the category with the given ID was not found
       return res.redirect('/admin/category');
     }
 
-    // Successfully updated the category, redirect to a success page or route
     return res.redirect('/admin/category');
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: 'An error occurred while updating the category' });
-    res.redirect('/Admin/internal-error')
+    res.redirect('/Admin/internal-error');
   }
 },
+
 
 
 DltCat: async (req, res) => {
@@ -528,36 +645,32 @@ DltCat: async (req, res) => {
 },
 
 
-
-
-
-createCoupon : async (req, res) => {
+createCoupon: async (req, res) => {
   try {
     const coupon = {
-      code: req.body.code,
-      type: req.body.type,
-      expiry: req.body.expiry,
-      discount: req.body.discount,
-      min: req.body.min
-    }
+      code: req.body.code.trim(),
+      type: req.body.type.trim(),
+      expiry: req.body.expiry.trim(),
+      discount: req.body.discount.trim(),
+      min: req.body.min.trim(),
+    };
 
-
-
-    const exist = await Coupons.findOne({ code: req.body.code })  
+    const exist = await Coupons.findOne({ code: coupon.code });
 
     if (exist) {
-      res.send("already exist in the code")
-      res.redirect('/admin/coupon')
+      res.send("Coupon code already exists.");
+      return res.redirect('/admin/coupon');
     } else {
       const newCoupon = await Coupons.create(coupon);
-      res.redirect('/admin/coupons')
+      return res.redirect('/admin/coupons');
     }
   } catch (e) {
     console.error(e.message);
     res.status(500).json({ error: 'An error occurred while creating the coupon.' });
-    res.redirect('/Admin/internal-error')
+    return res.redirect('/Admin/internal-error');
   }
 },
+
 
 
 

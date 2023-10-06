@@ -17,6 +17,9 @@ const productSchema = mongoose.Schema({
     type: Number,
     required: true,
   },
+  paintCategory:{
+    type:String
+  },
   paintColor: {
     type: String,
     required: true,

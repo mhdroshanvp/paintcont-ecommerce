@@ -76,7 +76,8 @@
         </ul>
       </nav>
       <div class="container mt-5">
-        <form action="/admin/add-banners" method="post" enctype="multipart/form-data">
+          <form action="/admin/add-banners" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+
           <div class="mb-3">
             <label for="productPhoto" class="form-label" style="margin-top: 40px;">Choose a Banner Photo</label>
             <input type="file" class="form-control" id="productPhoto" accept="image/*" name="image"
@@ -129,6 +130,31 @@
           color: red;
         }
       </style>
+
+
+
+    <!-- ///////validation for without image//////// -->
+    <script>
+      function validateForm() {
+        const fileInput = document.getElementById('productPhoto');
+        const errorContainer = document.getElementById('imageError');
+        const dis = document.getElementById('disable');
+    
+        if (fileInput.files.length === 0) {
+          errorContainer.textContent = 'Please select an image before submitting.';
+          dis.setAttribute('disabled', 'true');
+          return false; // Prevent form submission
+        } else {
+          errorContainer.textContent = '';
+          dis.removeAttribute('disabled');
+          return true; // Allow form submission
+        }
+      }
+    </script>
+    
+    <!-- /////////////////////////////////////////// -->
+
+
   <script>
     function validateImageFile(input) {
       const fileInput = input;
@@ -158,7 +184,7 @@
         const imageUrl = 'https://example.com/image.jpg'; // Replace with your image URL
 
         // Specify the destination path where you want to save the image
-        const destinationPath = 'path/to/destination/folder/image.jpg'; // Replace with your desired file path
+        const destinationPath = '\images\bannerURLimgs'
 
         // Use fetch to download the image
         fetch(imageUrl)
