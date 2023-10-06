@@ -23,6 +23,16 @@
     <link rel="stylesheet" href="/css/UserCss/slick.css">
     <!-- style CSS -->
     <link rel="stylesheet" href="/css/UserCss/style.css">
+    
+    
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
 </head>
 
 <body>
@@ -77,109 +87,101 @@
     </header>
 
 
-    <section class="banner_part">
-        <div class="banner_img mt-1">
-            <img src="/images/user/bg image.webp" alt="#" class="img-fluid">
-            <div class="centered-div">
-                <div class="card text-center mb-3" style="width: 26rem; ">
-                    <div class="card-body">
-                        <h5 class="card-title">Premium || Vibrant || Reliable</h5>
-                        <p class="card-text text-danger " style="font-size: 20px;">India's Leading Discount Paint and Painting Supplies Superstore®</p>
-                        <br> 
-                        <a href="/products" class="btn btn-primary">shop now</a>
-                    </div>
+
+
+    <!-- Header -->
+    <header class="w3-container w3-red w3-center"
+        style="padding:128px 16px; background-image: url(/images/user/bedroom-416062_1920.jpg); background-size: cover;">
+        <h1 class="margin w3-jumbo times-font">PAINTCONT™</h1>
+
+        <p class="w3-xlarge courier-font">Premium || Vibrant || Reliable</p>
+
+        <button class="w3-button w3-black w3-padding-large w3-large w3-margin-top"><a href="/products" class="">Get Started</a></button>
+    </header> 
+
+
+    <!-- First Grid -->
+    <div class="w3-row-padding w3-padding-64 w3-container" style="text-align: center;">
+        <h1>"Unleash Your Creativity with Every Can of Paint."</h1>
+    </div>
+    <br>
+    <br>
+
+
+
+        <section>
+            <div class="bg-danger mx-auto text-center" style="width: 800px; height: 300px; position: relative;">
+              <div id="carouselExample" class="carousel slide" data-ride="carousel" data-interval="3000">
+                <div class="carousel-inner">
+                  <% if (Banner.length > 0) { %>
+                    <% Banner.forEach((banners, index) => { %>
+                      <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                        <img src="/userimages/<%= banners.bannerImage %>" class="d-block mx-auto" alt="">
+                      </div>
+                    <% }) %>
+                  <% } %> 
                 </div>
+                <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExample" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </div>
             </div>
-        </div>
-    </section>
+          </section>
 
-
-
-
-    <!-- banner part start-->
-    <!-- Carousel Section -->
-    <% if (Banner.length> 0) { %>
-        <section class="carousel_section">
-            <div class="container-fluid">
-                <div class="row w-100 m-0">
-                    <div class="col-lg-12 w-100">
-                        <div class="owl-carousel owl-theme w-100 d-flex justify-content-around">
-                            <% Banner.forEach(banners=> { %>
-                                <div class="item" style="width: 500px; padding-right: 40px; padding-left: 40px;">
-                                    <img src="/userimages/<%= banners.bannerImage %>" alt="Carousel Image"
-                                        style="max-width: 100%;">
+          
+            <section class="single_product_list">
+                <div class="container">
+                    <div class="row justify-content-center"> <!-- Center align the cards -->
+                        <div class="col-lg-4 col-md-6">
+                            <!-- First Product Card -->
+                            <div class="card mb-4 card-with-border">
+                                <img src="/images/user/maxresdefault.jpg" class="card-img" alt="#">
+                                <div class="card-body card-height"> <!-- Added card-height class -->
+                                    <h3 class="card-title">New Exterior Painting Collections</h3>
+                                    <p class="card-text" style="font-size: 14px;">Eco Paint: Recyclable, zero CO2 during
+                                        production.</p>
+                                    <a href="/products" class="btn btn-primary btn-block"
+                                        style="margin-top: 100px;">Explore Now</a> <!-- Make the button full-width -->
                                 </div>
-                                <% }) %>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <!-- Second Product Card -->
+                            <div class="card mb-4 card-with-border">
+                                <img src="/images/user/maxresdefault-1.jpg" class="card-img" alt="#">
+                                <div class="card-body card-height"> <!-- Added card-height class -->
+                                    <h3 class="card-title">New Wood Painting Collections</h3>
+                                    <p class="card-text" style="font-size: 14px;">Hypoallergenic Paint: 100% natural,
+                                        safe for all indoors.</p>
+                                    <a href="/products" class="btn btn-primary btn-block"
+                                        style="margin-top: 100px;">Explore Now</a> <!-- Make the button full-width -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <!-- Third Product Card -->
+                            <div class="card mb-4 card-with-border">
+                                <img src="/images/user/maxresdefault-2.jpg" class="card-img" alt="#">
+                                <div class="card-body card-height"> <!-- Added card-height class -->
+                                    <h3 class="card-title">New Interior Painting Collections</h3>
+                                    <p class="card-text" style="font-size: 14px;">Artisanal Paint: Handmade strokes
+                                        filled with passion.</p>
+                                    <a href="/products" class="btn btn-primary btn-block"
+                                        style="margin-top: 100px;">Explore Now</a> <!-- Make the button full-width -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-        <% } %>
+            </section>
 
-
-
-            <!-- product list start-->
-<section class="single_product_list">
-    <div class="container">
-        <div class="row justify-content-center"> <!-- Center align the cards -->
-            <div class="col-lg-4 col-md-6">
-                <!-- First Product Card -->
-                <div class="card mb-4 card-with-border">
-                    <img src="/images/user/maxresdefault.jpg" class="card-img" alt="#">
-                    <div class="card-body card-height"> <!-- Added card-height class -->
-                        <h3 class="card-title">New Exterior Painting Collections</h3>
-                        <p class="card-text" style="font-size: 14px;">Eco Paint: Recyclable, zero CO2 during production.</p>
-                        <a href="/products" class="btn btn-primary btn-block" style="margin-top: 100px;">Explore Now</a> <!-- Make the button full-width -->
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6">
-                <!-- Second Product Card -->
-                <div class="card mb-4 card-with-border">
-                    <img src="/images/user/maxresdefault-1.jpg" class="card-img" alt="#">
-                    <div class="card-body card-height"> <!-- Added card-height class -->
-                        <h3 class="card-title">New Wood Painting Collections</h3>
-                        <p class="card-text" style="font-size: 14px;">Hypoallergenic Paint: 100% natural, safe for all indoors.</p>
-                        <a href="/products" class="btn btn-primary btn-block" style="margin-top: 100px;">Explore Now</a> <!-- Make the button full-width -->
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6">
-                <!-- Third Product Card -->
-                <div class="card mb-4 card-with-border">
-                    <img src="/images/user/maxresdefault-2.jpg" class="card-img" alt="#">
-                    <div class="card-body card-height"> <!-- Added card-height class -->
-                        <h3 class="card-title">New Interior Painting Collections</h3>
-                        <p class="card-text" style="font-size: 14px;">Artisanal Paint: Handmade strokes filled with passion.</p>
-                        <a href="/products" class="btn btn-primary btn-block" style="margin-top: 100px;">Explore Now</a> <!-- Make the button full-width -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<style>
-    .card-with-border {
-        border: 2px solid #ccc; /* Default border color */
-        transition: border-color 0.3s ease; /* Smooth transition for border color */
-    }
-
-    .card-with-border:hover {
-        border-color: #562424; /* Border color on hover */
-    }
-
-    .card-height {
-        min-height: 250px; /* Adjust the desired height */
-    }
-</style>
-
-            
-            
-            <!-- product list end-->
 
             <!-- trending item start-->
             <section class="trending_items">
@@ -187,7 +189,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="section_tittle text-center">
-                                <h2>Why Our Paints ?</h2>
+                                <h2 style="color: white; font-weight: bolder; font-family: Verdana, Geneva, Tahoma, sans-serif;">Why Our Paints ?</h2>
                             </div>
                         </div>
                     </div>
@@ -196,15 +198,10 @@
                     </div>
                 </div>
             </section>
+
+
             
-            <style>
-                .img-hover:hover {
-                    /* Add your hover effect styles here */
-                    transform: scale(1.1); /* Example: Enlarge the image on hover */
-                    transition: transform 0.3s ease; /* Add a smooth transition */
-                }
-            </style>
-            
+
             <!-- trending item end-->
 
 
@@ -309,10 +306,76 @@
                 </div>
             </footer>
 
+            <style>
+                body,
+                h1,
+                h2,
+                h3,
+                h4,
+                h5,
+                h6 {
+                    font-family: "Lato", sans-serif
+                }
+        
+                .w3-bar,
+                h1,
+                button {
+                    font-family: "Montserrat", sans-serif
+                }
+            </style>
+
+            <!-- cards -->
+            <style>
+                .card-with-border {
+                    border: 2px solid #ccc;
+                    /* Default border color */
+                    transition: border-color 0.3s ease;
+                    /* Smooth transition for border color */
+                }
+
+                .card-with-border:hover {
+                    border-color: #562424;
+                    /* Border color on hover */
+                }
+
+                .card-height {
+                    min-height: 250px;
+                    /* Adjust the desired height */
+                }
+            </style>
+
+            <!-- why out product -->
+            <style>
+                .img-hover:hover {
+                    /* Add your hover effect styles here */
+                    transform: scale(1.1);
+                    /* Example: Enlarge the image on hover */
+                    transition: transform 0.3s ease;
+                    /* Add a smooth transition */
+                }
+
+                .trending_items {
+                    background-image: url(/images/user/backgroundBanner.png);
+                    /* Replace with the path to your background image */
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    padding: 100px 0;
+                    /* Add padding as needed */
+                    text-align: center;
+                    /* Center the content within the section */
+                    color: #fff;
+                    /* Set text color to white or a suitable color for readability */
+                }
+            </style>
+
             <!-- bootstrap js -->
             <!-- <script src="/js/user/bootstrap.min.js"></script> -->
 
             <!-- carousel js -->
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
             <script src="/public/js/user/script.js"></script>
             <script src="/js/user/owl.carousel.min.js"></script>
             <script src="/js/user/jquery.nice-select.min.js"></script>

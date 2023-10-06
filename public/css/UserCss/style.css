@@ -9144,3 +9144,60 @@ h1 {
 
 
 /* /////////// home//////////// */
+@font-face {
+  font-family: 'Nanum Brush Script';
+  src: url('/path-to-font/NanumBrushScript-Regular.woff2') format('woff2'), /* Update the path to your font file */
+       url('/path-to-font/NanumBrushScript-Regular.woff') format('woff'); /* Update the path to your font file */
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+.times-font {
+  font-family: 'Times New Roman', Times, serif;
+}
+.courier-font {
+  font-family: 'Courier New', Courier, monospace;
+}
+.font-copperplate {
+  font-family: 'Copperplate', 'Copperplate Gothic Light', serif;
+}
+
+
+
+
+/* news bulletin */
+
+.news-ticker {
+  background-color: #333;
+  color: #fff;
+  padding: 2px;
+  overflow: hidden;
+}
+
+.news-ticker ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  animation: ticker 20s linear infinite;
+  display: inline-block; /* Added to prevent the container from wrapping */
+  width: 100%; /* Added to make sure the ticker doesn't wrap */
+}
+
+.news-ticker li {
+  display: inline-block;
+  margin-right: 120px; /* Adjust spacing between news items */
+  font-size: 14px;
+}
+
+/* for animations */
+@keyframes ticker {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
