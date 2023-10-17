@@ -9,6 +9,7 @@
     <title>paintcont</title>
     <!-- <link rel="icon" href="img/favicon.png"> -->
     <!-- Bootstrap CSS -->
+    
     <link rel="stylesheet" href="/css/UserCss/bootstrap.min.css">
     <!-- owl carousel CSS -->
     <link rel="stylesheet" href="/css/UserCss/owl.carousel.min.css">
@@ -51,6 +52,11 @@
                                         placeholder="Enter email">
                                 </div>
                                 <div class="col-md-12 form-group">
+                                    <% if(errorMessage) { %>
+                                    <p class="error-message">
+                                        <%= errorMessage %>
+                                    </p>
+                                    <% } %>
                                     <button type="submit" value="submit" class="btn_3">
                                         Send otp
                                     </button>

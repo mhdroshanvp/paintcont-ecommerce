@@ -67,6 +67,10 @@ router.get('/category',adminAuth.loggedIn,adminController.getCateogory)
 router.post('/update-category/:categoryId',adminController.postUpdtCat)
 router.delete('/delete-category/:categoryId',adminController.DltCat)
 router.post('/category',adminController.postCategory)
+
+router.get('/user-stats',adminController.userStatus)
+
+router.get('/dashboard/sales',adminAuth.loggedIn,adminController.salesReport)
 // ========================================================
 //404 / 505 errors 
 router.get('/error',adminController.error)

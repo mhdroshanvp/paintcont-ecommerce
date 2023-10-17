@@ -206,7 +206,7 @@
         $.ajax({
           url: "/admin/user/block",
           type: "PATCH",
-          data: { id }, // The expected data type of the response
+          data: { id },
           success: function (response) {
             window.location.reload()
           },
@@ -220,7 +220,7 @@
         $.ajax({
           url: "/admin/user/unblock",
           type: "PATCH",
-          data: { id }, // The expected data type of the response
+          data: { id },
           success: function (response) {
             window.location.reload()
           },

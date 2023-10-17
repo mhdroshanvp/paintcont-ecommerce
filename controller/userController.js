@@ -105,20 +105,21 @@ const getSendOTPmail = (req, res) => {
 // Route to handle OTP sending
 const postSendOTPmail = async (req, res) => {
   try {
-    req.session.email = email;
-    const otp = generateOTP();
+    const email = req.session.email.trim(); // Trim white spaces from the email
 
     if (!email) {
       return res.redirect("/login");
     }
 
+    const otp = generateOTP();
     req.session.otp = otp;
 
     await sendOTPByEmail(email, otp);
   } catch (error) {
-    res.redirect('/internal-error')
+    res.redirect('/internal-error');
   }
 };
+
 
 // -----------------------------------------------
 
@@ -132,16 +133,23 @@ const getOtp = (req, res) => {
 };
 
 // Route to handle OTP verification
+// Route to handle OTP verification
 const postOtp = (req, res) => {
   try {
-    if (req.body.otp == req.session.otp) {
+    const enteredOtp = req.body.otp.trim(); // Trim white spaces from the entered OTP
+
+    if (enteredOtp === req.session.otp) {
       res.redirect("/home");
+    } else {
+      // Handle incorrect OTP
+      res.redirect("/signup"); // You might want to add an error message here
     }
   } catch (error) {
     console.log(error);
-    res.redirect('/internal-error')
+    res.redirect('/internal-error');
   }
 };
+
 
 
 // -----------------------------------------------
@@ -149,8 +157,14 @@ const postOtp = (req, res) => {
 // Route to get email for OTP
 const getMail4otp = (req, res) => {
   try {
+    let errorMessage = req.session.mailOTPerror
+
+    setTimeout(() => {
+      delete req.session.mailOTPerror;
+    }, 5000);
     
-    res.render("User/email4otp");
+    
+    res.render("User/email4otp",{errorMessage});
   } catch (error) {
     res.redirect('/internal-error')
   }
@@ -180,14 +194,14 @@ const postLogin = async (req, res) => {
     const user = await User.findOne({ email: email });
 
     if (!user) {
-      return res.render("user/login", { errorMessage: "Invalid email :(" });
+      return res.render("user/login", { errorMessage: "type something" });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
       return res.render("user/login", {
-        errorMessage: "Invalid username or password :(",
+        errorMessage: "Invalid username or password",
       });
     }
     req.session.user = user.email;
@@ -207,13 +221,13 @@ const postLogin = async (req, res) => {
 
 // Route to display the signup form
 const getSignup = (req, res) => {
-  let errorMessage;
+  let  errorMessage
 
-  if (req.session.errorMessage) {
-    errorMessage = req.session.errorMessage;
-    delete req.session.errorMessage;
-  }
-
+//   if (req.session.errorMessage) {
+//  errorMessage = req.session.errorMessage;
+//     delete req.session.errorMessage;
+//   }
+ 
   if (req.session.user) {
     res.redirect("/home");
   } else {
@@ -236,12 +250,24 @@ const postSignup = async (req, res) => {
       return res.render("User/signup", { errorMessage });
     }
 
+    if(req.body.phone < 0){
+
+      const errorMessage = "Values must be greater than or equal to 0"
+      return res.render("User/signup", {errorMessage})
+
+    }
+
     let { name, phone, email, password } = req.body;
 
-    name = name.trim();
+    name = name.trim()
     phone = phone.trim();
     email = email.trim();
     password = password.trim();
+
+    if(!name||!phone||!email||!password) {
+     errorMessage = "Required fields are missing";
+      return res.render("User/signup", { errorMessage });
+    }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -255,7 +281,7 @@ const postSignup = async (req, res) => {
     req.session.email = email;
     req.session.otp = otp;
 
-    // Check if email is already registered
+    
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       const errorMessage =
@@ -319,26 +345,30 @@ const getResetPass = async (req, res) => {
 
 // -----------------------------------------------
 
-//post for reset password
 const postResetPass = async (req, res) => {
   try {
-    let email = req.session.email;
+    const password = req.body.new_password.trim(); // Trim white spaces from the new password
+    const hashedPassword = bcrypt.hashSync(password, 5);
+    const email = req.session.email;
     console.log(email);
     const user = await User.findOne({ email: email });
     console.log(user);
+
     const updt = await User.updateOne(
       { email: email },
-      { $set: { password: req.body.new_password } }
+      { $set: { password: hashedPassword } }
     );
+
     if (updt) {
       res.redirect("/home");
     } else {
       res.redirect("/login");
     }
   } catch (error) {
-    res.redirect('/internal-error')
+    res.redirect('/internal-error');
   }
 };
+
 
 //================================================
 // -----------------------------------------------
@@ -352,13 +382,8 @@ const getProducts = async (req, res) => {
     const skip = (page - 1) * limit;
     const { priceFrom, priceTo } = req.query;
 
+
     let productQuery = { list: false };
-
-    // Handle category filtering
-    if (req.query.category && req.query.category !== 'All') {
-      productQuery.category = req.query.category;
-    }
-
     // Handle price filtering
     if (priceFrom && priceTo) {
       productQuery.productPrice = { $gte: priceFrom, $lte: priceTo };
@@ -390,31 +415,37 @@ const getProducts = async (req, res) => {
 //================================================
 // -----------------------------------------------
 
-// Route to post email for OTP
 const PostMail4otp = async (req, res) => {
   try {
-    const { email } = req.body;
+    const email = req.body.email.trim(); // Trim white spaces from the provided email
+
     req.session.email = email;
     const alreadymail = await User.findOne({ email });
+
     if (!alreadymail) {
       console.log(error.message);
-    } else if (alreadymail.email == email) {
-      req.session.email = email;
+      req.session.mailOTPerror = "email not found"
+      
+      setTimeout(() => {
+        delete req.session.mailOTPerror;
+      }, 5000);      
 
-      console.log(req.session.email);
+
+      res.redirect('/mail4otp')
+    } else if (alreadymail) {
+      req.session.email = email;
+      console.log(req.session.email, "<<<<<<<<<<<<<<<<<<<<<mail in the mail 4 OTP page");
       const otp = generateOTP();
       req.session.otp = otp;
       await sendOTPByEmail(email, otp);
       res.redirect("/forgetotp");
-    } else {
-      console.log(error.message);
-      res.status(402).json({ error: "incorrect email" });
     }
   } catch (error) {
     console.log("error 123");
-    res.redirect('/internal-error')
+    res.redirect('/internal-error');
   }
 };
+
 
 //================================================
 // -----------------------------------------------
@@ -435,14 +466,16 @@ const getforgetotp = async (req, res) => {
 // Route to post forget OTP
 const postforgetotp = async (req, res) => {
   try {
-    if (req.body.otp == req.session.otp) {
+    const providedOTP = req.body.otp.trim(); // Trim white spaces from the provided OTP
+
+    if (providedOTP === req.session.otp) {
       res.redirect("/reset-pass");
     } else {
-      console.log(error, { message: "invalid otp try again" });
+      res.render('User/forgetOTP', { error: "Invalid OTP, please try again" });
     }
   } catch (error) {
     console.log(error.message);
-    res.redirect('/internal-error')
+    res.redirect('/internal-error');
   }
 };
 
@@ -516,12 +549,17 @@ const getProfileEdit = async (req, res) => {
 // Route to update user profile
 const postProfileEdit = async (req, res) => {
   try {
-    const email = req.session.user;
-    const user = await User.findOne({ email: email });
+    const currentEmail = req.session.user; // Rename the variable
+    const user = await User.findOne({ email: currentEmail });
 
-    user.name = req.body.name;
-    user.email = req.body.email;
-    user.phone = req.body.phone;
+    // Validate and trim white spaces from user inputs
+    const name = req.body.name ? req.body.name.trim() : '';
+    // const newEmail = req.body.email ? req.body.email.trim() : ''; // Rename the variable
+    const phone = req.body.phone ? req.body.phone.trim() : '';
+
+    user.name = name;
+    // user.email = newEmail; // Use the renamed variable here
+    user.phone = phone;
 
     await user.save();
 
@@ -529,9 +567,12 @@ const postProfileEdit = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
-    res.redirect('/internal-error')
+    res.redirect('/internal-error');
   }
 };
+
+
+
 
 
 //================================================
@@ -558,14 +599,22 @@ const getAddressEdit = async (req, res) => {
 const postAddressEdit = async (req, res) => {
   try {
     const email = req.session.user;
-    // const userData = await User.findOne({ email:email })
     console.log("here", req.body.addressId, email);
+
+
+
+console.log(req.body);
+
+
+
     const data = {
-      pincode: req.body.pincode,
-      States: req.body.state,
-      city: req.body.city,
-      areaAndstreet: req.body.areaAndstreet,
+      pincode: req.body.pincode ? req.body.pincode.trim() : '',
+      state: req.body.State ? req.body.State.trim() : '',
+      city: req.body.city ? req.body.city.trim() : '',
+      areaAndstreet: req.body.areaAndstreet ? req.body.areaAndstreet.trim() : '',
     };
+
+
     await User.updateOne(
       {
         email: email,
@@ -574,7 +623,7 @@ const postAddressEdit = async (req, res) => {
       {
         $set: {
           "address.$.pincode": data.pincode,
-          "address.$.state": data.States,
+          "address.$.state": data.state,
           "address.$.city": data.city,
           "address.$.areaAndstreet": data.areaAndstreet,
         },
@@ -584,17 +633,22 @@ const postAddressEdit = async (req, res) => {
     res.redirect("/profile");
   } catch (error) {
     console.log(error);
-    res.redirect('/internal-error')
+    // res.redirect('/internal-error');
   }
 };
+
 
 
 //================================================
 // -----------------------------------------------
 
 // Route to get add address form
-const getAddAddress = (req, res) => {
+const getAddAddress = async (req, res) => {
   if (req.session.user) {
+
+
+
+
     res.render("User/add_address");
   } else {
     res.redirect("/login");
@@ -609,22 +663,22 @@ const postAddAddress = async (req, res) => {
     console.log(
       "Reached here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
     );
-    if (
-      !req.body.pincode ||
-      !req.body.state ||
-      !req.body.areaAndstreet ||
-      !req.body.city
-    ) {
-      return res.status(400).send("Required fields are missing");
+    if (!req.body.pincode ||!req.body.state ||!req.body.areaAndstreet ||!req.body.city) {
+      return res.render("User/add_address",{error : "Required fields are missing" });
     }
 
     let { pincode, state, areaAndstreet, city } = req.body;
 
+    const trimPincode = pincode.trim()
+    const trimState = state.trim()
+    const trimArea = areaAndstreet.trim()
+    const trimCity = city.trim()
+
     const address = {
-      pincode,
-      state,
-      areaAndstreet,
-      city,
+      pincode : trimPincode,
+      state : trimState,
+      areaAndstreet : trimArea,
+      city : trimCity,
     };
     console.log(address);
     const email = req.session.user;
@@ -791,10 +845,13 @@ const postCart = async (req, res) => {
       );
 
       if (existingCartItem) {
+        
+        if(existingCartItem.productQuantity < product.stock){
         existingCartItem.productQuantity += quantity;
 
         existingCartItem.total =
           existingCartItem.productQuantity * existingCartItem.unit;
+        }
       } else {
         user.cart.push({
           productPhoto: productPhoto,
@@ -873,31 +930,36 @@ const razorpay = new Razorpay({
 //route for post checkout
 const postCheckout = async (req, res) => {
   try {
+    const add=req.body.userAddress
 
-    const {
-      userAddress,
-      couponCode,
-      paymentMethod,
-      cartTotal,
-      qnty,
-      unit,
-      totalAmount,
-      product,
-      coupon
-    } = req.body;
+
+    if(!add){
+      return res.json({ error: true, message: "Please add an address , go to the profile for add address" });
+  }
+  
+      const {
+        userAddress,
+        couponCode,
+        paymentMethod,
+        cartTotal,
+        qnty,
+        unit,
+        totalAmount,
+        product,
+        wallet,
+        prevTotal
+
+      } = req.body;
 
     console.log(req.body,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 
-    // console.log(req.body,'<=====inside the body');
 
     const email = req.session.user;
     const user = await User.findOne({ email: email });
     const userData = user._id;
     console.log(product,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-    const address = await user.address.find(
-      (item) => item._id.toString() == userAddress
-    );
+    const address = await user.address.find((item) => item._id.toString() == userAddress);
 
     console.log(req.body);
 
@@ -967,10 +1029,118 @@ const postCheckout = async (req, res) => {
       res.json({ success: true, message: "Order placed successfully!" });
 
 
+
+
+
     }else if(paymentMethod === 'online'){
-      console.log('inside online <===================================');
+      // console.log('inside online <===================================');
 
       let amount = totalAmount
+
+      if(prevTotal > 0){
+        
+      
+      let Walletused;
+
+      if(wallet){
+
+
+        let userWallet = user.wallet.balance;
+        
+        if (userWallet >= prevTotal) {
+
+
+          userWallet = userWallet - prevTotal;
+          
+      
+          if (Array.isArray(productId)) {
+            productId.forEach((product, index) => {
+              products.push({
+                product: new mongoose.Types.ObjectId(product),
+                quantity: parseInt(quantity[index]),
+                price: parseInt(price[index]),
+              });
+            });
+          } else {
+            products.push({
+              product: new mongoose.Types.ObjectId(productId),
+              quantity: parseInt(quantity),
+              price: parseInt(price),
+            });
+          }
+      
+          const orderNumber = shortid.generate();
+          const order = new order({
+            orderNumber,
+            products,
+            customer: userId,
+            totalAmount:prev,
+            status: 'pending',
+            payment: selectedPaymentOption,
+            address: addressObjects,
+            orderId: orderNumber,
+            discount: discount,
+          });
+      
+          await order.save();
+      
+          // deleting product from the cart
+          await User.findByIdAndUpdate(userId, {
+            $pull: { cart: { product: { $in: products.map(item => item.product) } } },
+          });
+      
+          // decrease the stock
+          if (product && product.stock >= quantity) {
+            product.stock -= quantity;
+            await product.save();
+          }
+      
+          // is there any coupon its code saved in used coupons
+
+          if(coupon){
+
+            if(couponId!==null){
+              const userdata = await User.findOneAndUpdate(
+                { _id: userId },
+                { $push: { usedCoupons: couponId } },
+                { new: true }
+              );
+
+            }
+           
+
+          }
+
+         
+
+         
+          const updatedUser = await User.findOneAndUpdate(
+            { _id: userId },
+            { $set: { 'wallet.balance': userWallet } },
+            { new: true }
+          );
+
+          
+      
+          // req.session.ordered = true;
+         return res.json({ walletSuccess: true });
+
+
+        } else if (prev > userWallet) {
+
+         
+
+          
+          amount = prev - userWallet;
+
+          
+         walletused=true;
+
+         
+        }
+      }
+
+      
 
       const randomOrderID = Math.floor(Math.random() * 1000000).toString();
         const options = {
@@ -1000,6 +1170,7 @@ const postCheckout = async (req, res) => {
             });
 
     }
+  }
 
   } catch (error) {
     console.error("Error:", error);
@@ -1192,15 +1363,17 @@ const postUpdtqnty = async (req, res) => {
     const cartItems = user.cart.find(
       (item) => item.productId.toString() === productId
     );
-    if (cartItems.productQuantity + 1 < product.stock) {
+    
       if (actions === "increase") {
+        if (cartItems.productQuantity < stock) {
         console.log("Increasing quantity");
         cartItems.productQuantity++;
+      }
       } else if (actions === "decrease" && cartItems.productQuantity > 1) {
         console.log("Decreasing quantity");
         cartItems.productQuantity--;
       }
-    }
+    
 
     cartItems.total = parseInt(cartItems.productQuantity * unitPrice);
     console.log("Updated:", cartItems);
@@ -1272,76 +1445,110 @@ const submitProductRating = async (req, res) => {
 };
 
 ////////////////////////////////////////
-//================================================
-const applyCoupon = async (req,res) =>{
 
-  
-  const couponCode=req.params.cp
-  const prevtotal=req.params.amt
-  console.log(couponCode,prevtotal);
-  
-    try {
-      // Check if the coupon code exists in the database
-      const email = req.session.user
-      const user = await User.findOne({ email:email })
-      const coupon = await Coupons.findOne({ code: couponCode });
-  
-  
-      if (coupon && !coupon.isDeleted) {
-        // Check if the coupon has expired
-        const currentDate = new Date();
-        if (currentDate > coupon.expiry) {
-          res.json({ success: false, message: 'Coupon has expired' });
+
+
+
+const applyCoupon = async (req, res) => {
+  const couponCode = req.params.cp.trim();
+  const prevTotal = req.params.amt;
+  const productId=req.params.prdId
+  console.log(productId);
+  // const userCategory = req.body.userCategory; // Assuming you have a way to get the user's category
+
+  // console.log(userCategory);
+
+  try {
+    // Check if the coupon code exists in the database
+    const email = req.session.user;
+    const user = await User.findOne({ email });
+    const coupon = await Coupons.findOne({ code: couponCode });
+    const product=await Product.findOne({_id:productId})
+
+
+    console.log(product);
+
+    let cgt=[]
+
+
+
+    let prdCategory = product.paintCategory
+    console.log(product.paintCategory,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+console.log(coupon.category,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    if (coupon && !coupon.isDeleted) {
+      // Check if the coupon has expired
+      const currentDate = new Date();
+      if (currentDate > coupon.expiry) {
+        res.json({ success: false, message: 'Coupon has expired' });
+        return;
+      }
+
+      // Check if the coupon is applicable to the user's category
+      if(coupon.category){
+
+        if (coupon.category!==prdCategory) {
+          res.json({ success: false, message: 'Coupon is not applicable to your category' });
+          return;
+        }
+        if (coupon.min > prevTotal) {
+          res.json({ success: false, message: 'Minimum purchase amount not met' });
           return;
         }
   
-  
-        // const minAmount = parseInt(coupon.min)
-  
-  
-        if (coupon.min <= prevtotal) {
-  
-  
-          if (user.usedCoupons.includes(coupon._id)) {
-            res.json({ success: false, message: 'Coupon already used by this user' });
-            return;
-          }
-  
-  
-          let discount = coupon.discount;
-          let discountedPrice;
-  
-          if (coupon.type === "OFF") {
-            const discounted = prevtotal * (discount / 100);
-            discountedPrice = Math.floor(prevtotal - discounted);
-            discount = coupon.discount + "%"
-          } else if (coupon.type === "FLAT") {
-            discountedPrice = prevtotal - discount;
-          }
-  
-          // Respond with the discounted price
-          res.json({ success: true, discountedPrice, message: 'Coupon added', discount });
-  
-        }
-        else {
-          res.json({ success: false, message: 'Coupon limit exceeded' });
+        if (user.usedCoupons.includes(coupon._id)) {
+          res.json({ success: false, message: 'Coupon already used by this user' });
+          return;
         }
   
-        // Calculate the discount based on the coupon type
+        let discount = coupon.discount;
+        let discountedPrice;
   
-      } else {
-        // Coupon code is not found in the database
+        if (coupon.type === 'OFF') {
+          const discounted = prevTotal * (discount / 100);
+          discountedPrice = Math.floor(prevTotal - discounted);
+          discount = coupon.discount + '%';
+        } else if (coupon.type === 'FLAT') {
+          discountedPrice = prevTotal - discount;
+        }
 
-        res.json({ success: false, message: 'Invalid coupon code' });
+
+        res.json({ success: true, discountedPrice, message: 'Coupon added', discount });
       }
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, message: 'Internal server error' });
-      res.redirect('/internal-error')
+
+      // Check the minimum purchase amount
+      if (coupon.min > prevTotal) {
+        res.json({ success: false, message: 'Minimum purchase amount not met' });
+        return;
+      }
+
+      if (user.usedCoupons.includes(coupon._id)) {
+        res.json({ success: false, message: 'Coupon already used by this user' });
+        return;
+      }
+
+      let discount = coupon.discount;
+      let discountedPrice;              
+
+      if (coupon.type === 'OFF') {
+        const discounted = prevTotal * (discount / 100);
+        discountedPrice = Math.floor(prevTotal - discounted);
+        discount = coupon.discount + '%';
+      } else if (coupon.type === 'FLAT') { 
+        discountedPrice = prevTotal - discount;
+      }
+
+      // Respond with the discounted price
+      res.json({ success: true, discountedPrice, message: 'Coupon added', discount });
+    } else {
+      // Coupon code is not found in the database
+      res.json({ success: false, message: 'Invalid coupon code' });
     }
-
-
-}
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+    // res.redirect('/internal-error');
+  }
+};
 
 
 //================================================
@@ -1371,7 +1578,7 @@ const cancelOrder = async (req,res) =>{
 
     // console.log(userId,"'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''");
 
-    await order.findByIdAndUpdate(orderID, { status: 'Canceled' });
+    await order.findByIdAndUpdate(orderID, { status: 'cancelled' });
     
  
     const cancelledOrder = await order.findById(orderID);
@@ -1389,6 +1596,11 @@ const cancelOrder = async (req,res) =>{
     }
 // ===================================
 if(cancelledOrder.paymentMethod==="online"){
+  const currentDate = new Date();
+  const date =  currentDate.toDateString();
+
+  console.log(date,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Current date<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+
 
   const updatedOrder = await order.findByIdAndUpdate(
     orderID,
@@ -1398,7 +1610,17 @@ if(cancelledOrder.paymentMethod==="online"){
 
   await User.findByIdAndUpdate(userId, {
     $inc: { 'wallet.balance': totalAmount },
-    $push: { 'wallet.transactions': updatedOrder._id.toString() }
+
+    $push: {
+      'wallet.transactions': {
+        id: updatedOrder._id,
+        date: date, // Replace this with the actual date value
+        amount: updatedOrder.totalAmount, // Replace this with the actual amount value
+        status: true, // Replace this with the actual status value
+      }
+    }
+
+    
   });
   }else if(cancelledOrder.paymentMethod==="COD"){
 
@@ -1456,8 +1678,34 @@ const getWallet = async (req,res) =>{
 //================================================
 //================================================
 
+
+const return_Request = async (req, res) => {
+
+  // const userId = req.session.userId;
+  const email = req.session.user
+  const user = await User.findOne({email:email})
+  const userId = user._id
+
+  try {
+
+    const orderId = req.params.id
+    
+    const Orders = await order.findByIdAndUpdate(orderId,{ $set: { status: 'Return requested' } },{ new: true });
+    
+    res.status(200).json({ success: true });
+
+  } catch (e) {
+
+    console.log(e.message)
+  }
+}
+
+
+//================================================
+//================================================
+
 const Internalerror = (req,res) =>{
-  res.render('/500pageInternalError')
+  res.render('User/500pageInternalError')
 }
 
 const error = (Req, res) => {
@@ -1510,6 +1758,7 @@ module.exports = {
   Internalerror,
   verifyPayment,
   applyCoupon,
+  return_Request,
   logout,
 };
 

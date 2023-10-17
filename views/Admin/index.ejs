@@ -8,6 +8,8 @@
   <title>Paintcont</title>
   <link rel="stylesheet" href="/css/AdminCss/vertical-layout-light/style.css">
   <link rel="icon" href="/images/user/FAV LOGO.png" type="image/x-icon">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
 
 </head>
 
@@ -15,7 +17,7 @@
   <div class="container-scroller">
 
     <!-- nav bar -->
-    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style="background-color: white;">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
         <a class="navbar-brand brand-logo mr-5" href="index.html"><img src="/images/user/logo-removebg-preview.png"
             class="mr-2" alt="logo" /></a>
@@ -36,45 +38,42 @@
 
           <!-- usermana -->
           <li class="nav-item">
-            <a class="nav-link"  href="/admin/user" aria-expanded="false"
-              aria-controls="ui-basic">
+            <a class="nav-link" href="/admin/user" aria-expanded="false" aria-controls="ui-basic">
               <span class="menu-title">User manager</span>
             </a>
           </li>
 
           <!-- products -->
           <li class="nav-item">
-            <a class="nav-link"  href="/admin/products" aria-expanded="false"
-              aria-controls="form-elements">
+            <a class="nav-link" href="/admin/products" aria-expanded="false" aria-controls="form-elements">
               <span class="menu-title">Products</span>
             </a>
           </li>
 
           <!-- orders -->
           <li class="nav-item">
-            <a class="nav-link"  href="/admin/orders" aria-expanded="false">
+            <a class="nav-link" href="/admin/orders" aria-expanded="false">
               <span class="menu-title">Orders</span>
             </a>
           </li>
 
           <!-- category -->
           <li class="nav-item">
-            <a class="nav-link"  href="/admin/banners" aria-expanded="false"
-              aria-controls="tables">
+            <a class="nav-link" href="/admin/banners" aria-expanded="false" aria-controls="tables">
               <span class="menu-title">Banner</span>
             </a>
           </li>
 
           <!-- coupons -->
           <li class="nav-item">
-            <a class="nav-link"  href="/admin/category" aria-expanded="false" aria-controls="icons">
+            <a class="nav-link" href="/admin/category" aria-expanded="false" aria-controls="icons">
               <span class="menu-title">Category</span>
             </a>
             <div class="collapse" id="icons">
           </li>
 
           <li class="nav-item">
-            <a class="nav-link"  href="/admin/coupons" aria-expanded="false" aria-controls="icons">
+            <a class="nav-link" href="/admin/coupons" aria-expanded="false" aria-controls="icons">
               <span class="menu-title">Coupons</span>
             </a>
             <div class="collapse" id="icons">
@@ -82,7 +81,7 @@
 
           <!-- logout -->
           <li class="nav-item">
-            <a class="nav-link"  href="/admin/logout" aria-expanded="false" aria-controls="icons">
+            <a class="nav-link" href="/admin/logout" aria-expanded="false" aria-controls="icons">
               <span class="menu-title">logout</span>
             </a>
           </li>
@@ -90,74 +89,187 @@
         </ul>
       </nav>
 
-      <!-- dashboard contents -->
-      <div class="main-panel">
-        <div class="content-wrapper">
-          <div class="container-fluid d-flex justify-content-center">
-            <div class="col-md-10 grid-margin transparent"> <!-- Increase the width to col-md-10 -->
-              <div class="card card-light-green">
-                <div class="card-body">
-                  <p class="mb-4">User Order Graph</p>
-                  <div id="userOrderChartContainer">
-                    <canvas id="userOrderChart" width="600" height="300"></canvas>
-                    <!-- Increase width and height as needed -->
+
+
+      <div class="container">
+
+
+        <div class="row" style="margin-top: -89px;">
+          <style>
+            .hover-card:hover {
+                background-color: #f0f0f0; /* Change the background color on hover */
+                transition: background-color 0.3s ease; /* Add a smooth transition effect */
+            }
+        </style>
+
+          <!-- Earnings (Monthly) Card Example -->
+          <div class="col-xl-3 col-md-6 mb-4" style="padding-top: 100px; margin-top: 100px;">
+            <div class="card border-left-primary shadow py-2 hover-card" style="width: 228px;height: 97px;">
+              <!-- Adjust width and height -->
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1 text-center  d-flex justify-content-center align-items-cente">
+                      TOTAL ORDERS</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800 text-center  d-flex justify-content-center align-items-cente">
+                      <%= totalOrders %>
+                    </div>
+                  </div>
+                  <div class="col-auto">
+                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="main-panel">
-          <div class="content-wrapper">
-            <div class="container-fluid d-flex justify-content-center">
-              <div class="col-md-10 grid-margin transparent"> <!-- Increase the width to col-md-10 -->
-                <div class="card card-light-green">
-                  <div class="card-body">
-                    <div id="userOrderChartContainer">
-                      <canvas id="userOrderChart" width="600" height="300"></canvas>
-                      <!-- Increase width and height as needed -->
+
+          <!-- Earnings (Monthly) Card Example -->
+          <div class="col-xl-3 col-md-6 mb-4" style="padding-top: 100px; margin-top: 100px;">
+            <div class="card border-left-primary shadow py-2 hover-card" style="width: 228px;height: 97px;">
+              <!-- Adjust width and height -->
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1 text-center  d-flex justify-content-center align-items-cente">
+                      TOTAL PRODUCTS</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800 text-center  d-flex justify-content-center align-items-cente">
+                      <%= totalProducts %>
+                    </div>
+                  </div>
+                  <div class="col-auto">
+                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pending Requests Card Example -->
+          <div class="col-xl-3 col-md-6 mb-4" style="padding-top: 100px; margin-top: 100px;">
+            <div class="card border-left-primary shadow py-2 hover-card" style="width: 228px;height: 97px;">
+              <!-- Adjust width and height -->
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1 text-center  d-flex justify-content-center align-items-cente">
+                      TOTAL SALES</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800 text-center  d-flex justify-content-center align-items-cente">₹<%=totalSales%>
+                    </div>
+                  </div>
+                  <div class="col-auto">
+                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          <!-- Pending Requests Card Example -->
+          <div class="col-xl-3 col-md-6 mb-4" style="padding-top: 100px; margin-top: 100px;">
+            <div class="card border-left-primary shadow py-2 hover-card" style="width: 228px;height: 97px;">
+              <!-- Adjust width and height -->
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <a href="/admin/dashboard/sales" style="text-decoration: none;"><div  class="text-xs font-weight-bold text-danger text-uppercase text-center mt-2 d-flex justify-content-center align-items-center">SALES REPORTS</div></a>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="main-panel">
-            <div class="content-wrapper">
-              <div class="container-fluid d-flex justify-content-center">
-                <div class="col-md-10 grid-margin transparent"> <!-- Increase the width to col-md-10 -->
-                  <div class="card card-light-green">
-                    <div class="card-body">
-                      <div id="userOrderChartContainer">
-                        <canvas id="userOrderChart" width="600" height="300"></canvas>
-                        <!-- Increase width and height as needed -->
-                      </div>
-                    </div>
-                  </div>
-                </div>
+
+
+
+
+
+
+          <!-- /////////////////////////////////////////////////////////////////////////////////////////// -->
+          <div class="container p-0 mt-3 d-flex justify-content-around ">
+           
+            <div class="text-center" style="width: 30%; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); height: 350px; margin-top: 50px;">
+              <div class=" bg-white rounded p-3 w-100 " >
+              
+                  <canvas id="myChart" style="margin-top:10px;"></canvas>
+                <div id="userCounts" data-blocked-count="<%= blockedUsers %>"
+                  data-non-blocked-count="<%= unblockedUsers %>"></div>
+                  <input type="hidden" name="monthlySales" id="monthlySales" value="<%= JSON.stringify(monthSales) %>">
               </div>
             </div>
+
+            <div style="width: 700px; height: 400px; margin-top: 50px;"> <!-- Adjust the width and height as needed -->
+              <canvas id="myCharts"></canvas>
           </div>
+          
+          </div>
+
+            <!-- /////////////////////////////////////////////////////////////////////////////////////////// -->
+          
+
 
           <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+          <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
           <script>
-            // Sample data (replace with your data)
-            var userOrderData = {
-              labels: ['January', 'February', 'March', 'April', 'May'],
-              datasets: [{
-                label: 'User Orders',
-                data: [12, 19, 3, 5, 2],
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-              }]
-            };
 
-            var userOrderCtx = document.getElementById('userOrderChart').getContext('2d');
-            var userOrderChart = new Chart(userOrderCtx, {
+            /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            const ctx = document.getElementById('myChart');
+            const userCountsElement = document.getElementById('userCounts');
+            const blockedUserCount = parseInt(userCountsElement.getAttribute('data-blocked-count'));
+            const nonBlockedUserCount = parseInt(userCountsElement.getAttribute('data-non-blocked-count'));
+            const totalUserCount = blockedUserCount + nonBlockedUserCount;
+
+
+            new Chart(ctx, {
+              type: 'pie',
+              data: {
+                labels: ['Blocked Users', 'Non-Blocked Users', "All Users"],
+                datasets: [{
+                  data: [blockedUserCount, nonBlockedUserCount, totalUserCount],
+                  backgroundColor: ['#f00', '#1fe074', "#0069c0"],
+                  borderWidth: 0
+                }]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+              }
+            });
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////////z
+
+            const ctxi = document.getElementById('myCharts');
+
+            let monthlySales = document.getElementById('monthlySales').value;
+            let monthlySalesArray = JSON.parse(monthlySales);
+            let monthlySalesAmount = []
+            for (let i = 0; i <= 12; i++) {
+              for (let j = 0; j < monthlySalesArray.length; j++) {
+                if ((monthlySalesArray[j].month - 1) == i) {
+                  monthlySalesAmount[i] = monthlySalesArray[j].monthlySales
+                  break
+                }
+              }
+              if (!monthlySalesAmount[i]) {
+                monthlySalesAmount[i] = 0
+              }
+            }
+
+
+            new Chart(ctxi, {
               type: 'bar',
-              data: userOrderData,
+              data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                  label: `Sales of Month on ${monthlySalesArray[0].year}`,
+                  data: monthlySalesAmount,
+                  borderWidth: 1,
+                  backgroundColor: "#1fe074"
+                }]
+              },
               options: {
                 scales: {
                   y: {
@@ -167,10 +279,19 @@
               }
             });
           </script>
-
-          <!-- container-scroller -->
           <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+        </div>
+
+
+      </div>
+
+
+
+
+      <!-- dashboard contents -->
+
 </body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </html>

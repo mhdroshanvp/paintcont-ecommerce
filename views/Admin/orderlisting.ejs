@@ -106,7 +106,7 @@
                     <% console.log(data); %>
                     <tr>
                       <td>
-                          <%= index+1 %>
+                        <%=index+1%>
                         </td>
                         <td rowspan>
                           <%= data.orderDate.toLocaleDateString() %>
@@ -137,7 +137,6 @@
                                     <br>
                                     <hr>
                                     <p>order id : <%= data._id %></p>
-                                    <p>username : <%= data.name%></p>
                                     <p> user address : <%= data.address.city %>,<%= data.address.state %>,<%= data.address.areaAndstreet %>,<%= data.address.pincode %></p>
                                   </div>
                                   
@@ -175,13 +174,22 @@
                               <option value="" disabled selected>
                                 <%=data.status%>
                               </option>
-                              <option name="newValue" value="pending">Pending</option>
-                              <option name="newValue" value="processing">Processing</option>
-                              <option name="newValue" value="shipped">Shipped</option>
-                              <option name="newValue" value="out for delivery">Out for Delivery</option>
-                              <option name="newValue" value="delivered">Delivered</option>
-                              <option name="newValue" value="cancelled">Cancelled</option>
 
+                              <% if(data.status === "Return requested") { %>
+                                <option name="newValue" value="returned">Approved</option>
+                                <% }else { %>
+
+                                <option name="newValue" value="pending">Pending</option>
+                                <option name="newValue" value="processing">Processing</option>
+                                <option name="newValue" value="shipped">Shipped</option>
+                                <option name="newValue" value="out for delivery">Out for Delivery</option>
+                                <option name="newValue" value="delivered">Delivered</option>
+                                <option name="newValue" value="cancelled">Cancelled</option>
+
+                                <% } %>
+  
+                                
+                              
                             </select>
                           </form>
                         </td>

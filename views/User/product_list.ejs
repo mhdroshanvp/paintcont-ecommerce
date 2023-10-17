@@ -9,6 +9,8 @@
     <title>pillloMart</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/css/UserCss/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <!-- owl carousel CSS -->
     <link rel="stylesheet" href="/css/UserCss/owl.carousel.min.css">
     <!-- font awesome CSS -->
@@ -24,12 +26,14 @@
     <!-- style CSS -->
     <link rel="stylesheet" href="/css/UserCss/style.css">
 </head>
+
 <body>
     <header class="main_menu home_menu">
         <div class="container">
             <div class="row align-items-center justify-content-center">
                 <div class="col-lg-12">
                     <nav class="navbar navbar-expand-lg navbar-light">
+
                         <a class="navbar-brand" href="#"> <img src="/images/user/logo-removebg-preview.png" alt="logo"
                                 width="100"> </a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -41,27 +45,22 @@
                         <div class="collapse navbar-collapse main-menu-item" id="navbarSupportedContent">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/home">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/products">Products</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/error">About us</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/error">Contact us</a>
+                                    <a class="nav-link" href="/products"></a>
                                 </li>
                             </ul>
                         </div>
                         <div class="hearer_icon d-flex align-items-center">
-                            <!-- <a href="/error" id="search_1"><i class="fas fa-search"></i></a> -->
+                            <a href="/home" id="search_1"><i class="fas fa-home"></i></a>
+                            <a href="/products" id="search_1"><i class="fas fa-shopping-bag"></i></a>
                             <a href="/cart" id="#"><i class="fas fa-shopping-cart"></i></a>
                         </div>
                         <div class="hearer_icon d-flex align-items-center">
-                            <a href="/error"><i class="fas fa-heart"></i></a>
                             <a href="/profile"><i class="fas fa-user-circle"></i></a>
+                            <!-- Use "ms-auto" for margin on the left side -->
                             <a href="/logout"><i class="fas fa-power-off"></i></a>
+                            <!-- Apply Bootstrap button styles -->
+                            <!-- </form> -->
+
                         </div>
                     </nav>
                 </div>
@@ -73,100 +72,129 @@
     <script src="/js/user/bootstrap.min.js"></script>
     <div class="news-ticker">
         <ul>
-            <li>🔴USE  'COUPON05' FLAT 5!!!</li>
-            <li>🔴USE  'PAINCONT' OFF 50!!!</li>
-            <li>🔴USE  'PAIN007' OFF 40!!!</li>
-            <li>🔴USE  'SALE-2023' OFF 20!!!</li>
-            <li>🔴USE  'NEWYEAR24' FLAT 50!!!</li>
+            <li>🔴USE 'COUPON05' FLAT 5!!!</li>
+            <li>🔴USE 'PAINCONT' OFF 50!!!</li>
+            <li>🔴USE 'PAIN007' OFF 40!!!</li>
+            <li>🔴USE 'SALE-2023' OFF 20!!!</li>
+            <li>🔴USE 'NEWYEAR24' FLAT 50!!!</li>
         </ul>
-          <!-- Add more news items here -->
+        <!-- Add more news items here -->
         </ul>
-      </div>    
+    </div>
     <!-- Category Filter -->
     <div class="container mt-4">
         <div class="row">
             <div class="col-md-12">
                 <div class="category-filter-box">
                     <form method="get">
-                    <ul class="list-inline">
-                        <li class="list-inline-item">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                  <label for="priceFrom">Price from:</label>
-                                  <div class="form-field">
-                                    <i class="icon icon-arrow-down3"></i>
-                                    <select name="priceFrom" id="priceFrom" class="form-control">
-                                      <option value="">none</option>
-                                      <option value="100">100</option>
-                                      <option value="200">200</option>
-                                      <option value="300">300</option>
-                                      <option value="400">400</option>
-                                      <option value="1000">1000</option>
-                                    </select>
-                                  </div>
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="priceFrom">Price from:</label>
+                                        <div class="form-field">
+                                            <i class="icon icon-arrow-down3"></i>
+                                            <select name="priceFrom" id="priceFrom" class="form-control">
+                                                <option value="">none</option>
+                                                <option value="100">100</option>
+                                                <option value="200">200</option>
+                                                <option value="300">300</option>
+                                                <option value="400">400</option>
+                                                <option value="1000">1000</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
-                              </div>
-                        </li>
-                        <li class="list-inline-item">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                  <label for="priceTo">Price to:</label>
-                                  <div class="form-field">
-                                    <i class="icon icon-arrow-down3"></i>
-                                    <select name="priceTo" id="priceTo" class="form-control">
-                                      <option value="">none</option>
-                                      <option value="2000">2000</option>
-                                      <option value="3000">3000</option>
-                                      <option value="4000">4000</option>
-                                      <option value="5000">5000</option>
-                                      <option value="6000">6000</option>
-                                    </select>
-                                  </div>
+                            </li>
+                            <li class="list-inline-item">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="priceTo">Price to:</label>
+                                        <div class="form-field">
+                                            <i class="icon icon-arrow-down3"></i>
+                                            <select name="priceTo" id="priceTo" class="form-control">
+                                                <option value="">none</option>
+                                                <option value="2000">2000</option>
+                                                <option value="3000">3000</option>
+                                                <option value="4000">4000</option>
+                                                <option value="5000">5000</option>
+                                                <option value="6000">6000</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
                                 </div>
-                
-                
-                        </div>
-                        </li>
-                        <li class="list-inline-item">
-                            <button class="btn btn-dark">submit</button>
-                        </li>
-                    </ul>
-                </form>
+                            </li>
+                            <li class="list-inline-item">
+                                <button class="btn btn-dark">submit</button>
+                            </li>
+                        </ul>
+                    </form>
                 </div>
             </div>
 
-            
-              
-    </div>
-    
 
 
-    <!-- Product Cards -->
-    <!-- Product Cards -->
-    <div class="container mt-4">
-        <div class="row">
-            <% products.forEach(prd=> { %>
-                <a href="/products/product-details?productId=<%= prd._id %>">
-                    <div class="col-md-3 mb-4">
-                        <div class="card border border-2"> <!-- Add the "border" and "border-2" classes -->
-                            <td><img src="/userimages/<%= prd.productPhoto[0] %>" alt="<%= prd.productName %>" /></td>
-                            <%  if(prd.stock < 1){  %>
-                                <h3 style="color: red;">out of stock!!!</h3>
-                            <% } %>
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <%= prd.productName %>
-                                </h5>
-                                <p class="card-text">Price: ₹<%= prd.productPrice %>
-                                </p>
-                                <button type="button" class="btn btn-danger btn-sm"onclick="addtowishlist('<%= prd._id %>')"><i class="fa fa-star" aria-hidden="true"></i></button>
-                </a>
-                
         </div>
-    </div>
+
+
+
+        <!-- Product Cards -->
+
+        <div class="container mt-4">
+            <div class="row">
+              <% products.forEach((prd, index) => { %>
+                <div class="col-md-3 mb-4">
+                  <a href="/products/product-details?productId=<%= prd._id %>">
+                    <div class="card border border-2" style="width: 272px; height: 350px;">
+
+                        <td>
+                            <img class="mx-auto" style="width: 200px;" src="/userimages/<%= prd.productPhoto[0] %>" alt="<%= prd.productName %>" />
+                          </td>
+                     
+                      
+                <% if (prd.stock < 1) { %>
+
+                      <div class="card-body">
+                        <h5 class="card-title" style="text-decoration: line-through;">
+                          <%= prd.productName %>
+                        </h5>
+                        
+                        <h3 style="color: red;">out of stock!!!</h3>
+                        
+                        <p style="font-size: medium; color: red; text-decoration: line-through;" class="card-text">Price: ₹<%= prd.productPrice %></p>
+                      </div>
+                      
+                <% } %>
+                      
+                      <div class="card-body">
+                        <h5 class="card-title">
+                          <%= prd.productName %>
+                        </h5>
+                        <p style="font-size: medium; color: red;" class="card-text">Price: ₹<%= prd.productPrice %></p>
+                      </div>
+
+                    </div>
+                  </a>
+                </div>
+                
+                <% if ((index + 1) % 4 === 0) { %>
+                </div>
+                <div class="row">
+                <% } %>
+                
+              <% }) %>
+            </div>
+          </div>
+          
+
+
+
+          
     </div>
     </a>
-    <% }) %>
+    
         </div>
         </div>
 
@@ -177,46 +205,37 @@
             <div class="row justify-content-center">
                 <nav aria-label="Page navigation">
                     <ul class="pagination">
-                        <% if (currentPage > 1) { %>
+                        <% if (currentPage> 1) { %>
                             <li class="page-item">
-                                <a class="page-link" href="/products?page=<%= currentPage - 1 %>&priceFrom=<%= priceFrom %>&priceTo=<%= priceTo %>">&lt;</a>
+                                <a class="page-link"
+                                    href="/products?page=<%= currentPage - 1 %>&priceFrom=<%= priceFrom %>&priceTo=<%= priceTo %>">&lt;</a>
                             </li>
-                        <% } %>
-                        <% for (let i = 1; i <= totalPages; i++) { %>
-                            <li class="page-item <%= i === currentPage ? 'active' : '' %>">
-                                <a class="page-link" href="/products?page=<%= i %>&priceFrom=<%= priceFrom %>&priceTo=<%= priceTo %>"><span><%= i %></span></a>
-                            </li>
-                        <% } %>
-                        <% if (currentPage < totalPages) { %>
-                            <li class="page-item">
-                                <a class="page-link" href="/products?page=<%= currentPage + 1 %>&priceFrom=<%= priceFrom %>&priceTo=<%= priceTo %>">&gt;</a>
-                            </li>
-                        <% } %>
+                            <% } %>
+                                <% for (let i=1; i <=totalPages; i++) { %>
+                                    <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                                        <a class="page-link"
+                                            href="/products?page=<%= i %>&priceFrom=<%= priceFrom %>&priceTo=<%= priceTo %>"><span>
+                                                <%= i %>
+                                            </span></a>
+                                    </li>
+                                    <% } %>
+                                        <% if (currentPage < totalPages) { %>
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                    href="/products?page=<%= currentPage + 1 %>&priceFrom=<%= priceFrom %>&priceTo=<%= priceTo %>">&gt;</a>
+                                            </li>
+                                            <% } %>
                     </ul>
                 </nav>
             </div>
         </div>
-        
+
 
         <script>
-            // Function to filter products by category
-            function filterProducts(category) {
-                document.getElementById('selected-category').textContent = category;
-                const productCards = document.querySelectorAll('.col-md-3.mb-4');
-                productCards.forEach(card => {
-                    const cardCategory = card.getAttribute('data-category');
-                    if (category === 'All' || category === cardCategory) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            }
-    
             // Function to add to cart
             function addToCart(productId) {
                 const requestData = { productId: productId };
-    
+
                 fetch(`/add-cart/${productId}`, {
                     method: "POST",
                     headers: {
@@ -224,13 +243,13 @@
                     },
                     body: JSON.stringify(requestData),
                 })
-                .then((response) => {
-                    alert('Product added to the cart successfully');
-                })
-                .catch((error) => {
-                    console.error(error.message);
-                    alert('An error occurred while adding the product to the cart');
-                });
+                    .then((response) => {
+                        alert('Product added to the cart successfully');
+                    })
+                    .catch((error) => {
+                        console.error(error.message);
+                        alert('An error occurred while adding the product to the cart');
+                    });
             }
         </script>
         <!-- ... (more product cards) ... -->
@@ -274,61 +293,6 @@
         </section>
 
         <!-- feature part end -->
-        <hr class="my-4">
-        <!--::footer_part start::-->
-        <footer class="footer_part">
-            <div class="footer_iner">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-lg-8">
-                            <div class="footer_menu">
-                                <div class="footer_logo">
-                                    <a href="index.html"><img src="/images/user/logo-removebg-preview.png" alt="#"></a>
-                                </div>
-                                <div class="footer_menu_item">
-                                    <a href="index.html">Home</a>
-                                    <a href="about.html">About</a>
-                                    <a href="product_list.html">Products</a>
-                                    <a href="#">Pages</a>
-                                    <a href="blog.html">Blog</a>
-                                    <a href="contact.html">Contact</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="social_icon">
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-instagram"></i></a>
-                                <a href="#"><i class="fab fa-google-plus-g"></i></a>
-                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="copyright_part">
-                <div class="container">
-                    <div class="row ">
-                        <div class="col-lg-12">
-                            <div class="copyright_text">
-                                <P><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                                    Copyright &copy;
-                                    <script>document.write(new Date().getFullYear());</script> All rights reserved |
-                                    This template is made with <i class="ti-heart" aria-hidden="true"></i> by <a
-                                        href="https://colorlib.com" target="_blank">Colorlib</a>
-                                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                                </P>
-                                <div class="copyright_link">
-                                    <a href="#">Turms & Conditions</a>
-                                    <a href="#">FAQ</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
         <!--::footer_part end::-->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>

@@ -26,9 +26,9 @@ router.get('/resend-otp', userController.resendOtp);
 //otp send
 router.get('/send-otp',userController.getSendOTPmail)
 //pasword reset route
-router.post('/reset-pass',userController.getResetPass)
+router.get('/reset-pass',userController.getResetPass)
 //password reset post
-router.get('/reset-pass',userController.postResetPass)
+router.post('/reset-pass',userController.postResetPass)
 //mail for otp
 router.get('/mail4otp',userController.getMail4otp)
 //post mailforotp
@@ -52,9 +52,9 @@ router.get('/profile/edit_address',auth.isLoggedIn,auth.isBlocked,userController
 //post edit address
 router.post('/profile/edit_address',auth.isLoggedIn,auth.isBlocked,userController.postAddressEdit)
 //add address
-router.get('/profile/add_address',auth.isLoggedIn,auth.isBlocked,userController.getAddAddress)
+router.get('/profile/add_address',userController.getAddAddress)
 //post add address
-router.post('/profile/add_address',auth.isLoggedIn,auth.isBlocked,userController.postAddAddress)
+router.post('/profile/add_address',userController.postAddAddress)
 //user orders
 router.get('/orders',auth.isLoggedIn,auth.isBlocked,userController.getOrders)
 // Define routes for the cart
@@ -64,30 +64,33 @@ router.get('/cart/checkout',auth.isLoggedIn,auth.isBlocked,userController.getChe
 //post checkout
 router.post('/cart/checkout',auth.isLoggedIn,auth.isBlocked,userController.postCheckout)
 //post add to cart
-router.post('/add-cart/:id',auth.isLoggedIn,auth.isBlocked, userController.postCart)
+router.post('/add-cart/:id', userController.postCart)
 //post update qnty
-router.post('/updateqnty/:id/:actions',auth.isLoggedIn,auth.isBlocked,userController.postUpdtqnty)
+router.post('/updateqnty/:id/:actions',userController.postUpdtqnty)
 //post remove qnty
-router.post('/remove-from-cart/:id',auth.isLoggedIn,auth.isBlocked, userController.getRemoveCart)
+router.post('/remove-from-cart/:id', userController.getRemoveCart)
 //logout
 router.get('/logout',userController.logout)
 //delete address
-router.delete('/profile/edit_address/dltAddress', auth.isLoggedIn,auth.isBlocked,userController.deleteAddress);
+router.delete('/profile/edit_address/dltAddress',userController.deleteAddress);
 //order success
 router.get('/cart/checkout/orderSuccess',auth.isLoggedIn,auth.isBlocked,userController.getOrderSuccess)
 //for cancel order
-router.post('/orders/cancel-order/:id',auth.isLoggedIn,auth.isBlocked,userController.cancelOrder)
+router.post('/orders/cancel-order/:id',userController.cancelOrder)
 //confirm order
 router.post('/verify-payment',auth.isLoggedIn,auth.isBlocked,userController.verifyPayment)
 //wallet
 router.get('/profile/wallet',auth.isLoggedIn,auth.isBlocked,userController.getWallet)
 //apply coupon
-router.post('/apply-coupon/:cp/:amt',auth.isLoggedIn,auth.isBlocked,userController.applyCoupon)
+router.post('/apply-coupon/:cp/:amt/:prdId',auth.isLoggedIn,auth.isBlocked,userController.applyCoupon)
+//return order
+router.patch('/return-request/:id',auth.isLoggedIn, userController.return_Request)
+// ========================================================
 //404 page :(
-router.get('/error',auth.isBlocked,userController.error)
+router.get('/error',userController.error)
 //500 page :(
-router.get('/internal-error',auth.isBlocked,userController.Internalerror)
+router.get('/internal-error',userController.Internalerror)
 
-// ===========================================================
+// ========================================================
 
 module.exports = router;

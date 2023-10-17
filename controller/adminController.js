@@ -33,8 +33,8 @@ const controllers = {
   // Handle the login form submission
   postLogin: async (req, res) => {
     try {
-      const email = req.body.email;
-      const password = req.body.password;
+      const email = req.body.email.trim();
+      const password = req.body.password.trim();
 
       const adminMail = process.env.adminEmail;
       const adminPass = process.env.adminPassword;
@@ -58,19 +58,81 @@ const controllers = {
     }
   },
 
-  // Render the admin dashboard if authenticated, otherwise redirect to the login page
-  getdashboard: (req, res) => {
+  
+  getdashboard: async (req, res) => {
     try {
-      if (req.session.admin) {
-        res.render("Admin/index");
-      } else {
-        res.redirect("/admin/login");
-      }
+        if (req.session.admin) {
+            const totalOrders = await order.countDocuments({});
+            const totalProducts = await Product.countDocuments();
+
+            // Calculate the total sales amount for delivered orders
+            const deliveredOrders = await order.find({ status: 'delivered' }); // Assuming 'delivered' is the status for delivered orders
+            let totalSales = 0;
+            for (const order of deliveredOrders) {
+                totalSales += order.totalAmount; // Assuming your order schema has a field called totalAmount for each order
+            }
+
+            const blockedUsers = await User.countDocuments({ block: true });
+            // console.log(blockedUsers,"blocked users");
+            const unblockedUsers = await User.countDocuments({ block: false });
+
+            ///////////////////////////////////////////////////////////////////////////////////////////
+            const monthSales = await order.aggregate([
+              {
+                $match: {
+                  status: "delivered"
+                }
+              },
+              {
+                $unwind: "$products"
+              },
+              {
+                $project: {
+                  year: { $year: "$orderDate" },
+                  month: { $month: "$orderDate" },
+                  monthlySales: {
+                    $multiply: ["$products.price", "$products.qnty"]
+                  }
+                }
+              },
+              {
+                $group: {
+                  _id: {
+                    year: "$year",
+                    month: "$month"
+                  },
+                  monthlySales: { $sum: "$monthlySales" }
+                }
+              },
+              {
+                $project: {
+                  _id: 0,
+                  year: "$_id.year",
+                  month: "$_id.month",
+                  monthlySales: 1
+                }
+              },
+              {
+                $sort: {
+                  year: 1,
+                  month: 1
+                }
+              }
+            ]);
+            ///////////////////////////////////////////////////////////////////////////////////////////
+            console.log(monthSales);
+
+            res.render("Admin/index", { totalOrders, totalProducts, totalSales, blockedUsers, unblockedUsers , monthSales});
+        } else {
+            res.redirect("/admin/login");
+        }
     } catch (error) {
-      console.log(error.message);
-      res.redirect('/Admin/internal-error')
+        console.log(error.message);
+        res.redirect('/Admin/internal-error');
     }
-  },
+},
+
+  
 
   // Retrieve user data and render the user management page
   getusermanagement: async (req, res) => {
@@ -374,7 +436,7 @@ const controllers = {
         return res.status(400).send("Invalid image index");
       }
   
-      res.redirect("/admin/products");
+      res.redirect(`/admin/products/editproduct?productId=${DltEdtImgId}`);
     } catch (error) {
       console.log(error);
       res.redirect('/Admin/internal-error');
@@ -486,10 +548,18 @@ const controllers = {
     }o
   },
 
+
+
   updateStatus: async (req, res) => {
     const orderId=req.params.id;
     const { newValue } = req.body;
+    const orderdata = await order.findOne({_id:orderId})
 
+    const totalAmount = orderdata.totalAmount
+
+    const userId = orderdata.user
+
+    
   try {
     // Find the order by ID and update the order status
     const updatedOrder = await order.findByIdAndUpdate(orderId, { status: newValue }, { new: true });
@@ -498,12 +568,27 @@ const controllers = {
       return res.status(404).json({ error: 'Order not found' });
     }
 
+    if(newValue === "returned"){
+      const updatedOrder = await order.findByIdAndUpdate(
+        orderId,
+        { $set: { status: newValue } },
+        { new: true }
+      );
+
+      
+      await User.updateOne(
+        { _id: userId },
+        { $inc: { "wallet.balance": totalAmount },
+          $push: { "wallet.transactions": orderdata._id.toString() } }
+      );``
+    }
+
     // Send a success response
     res.redirect('/admin/orders')
   } catch (error) {
     console.error('Error updating order status:', error);
     res.status(500).json({ error: 'Internal server error' });
-    res.redirect('/Admin/internal-error')
+    // res.redirect('/Admin/internal-error')
   }
 },
   
@@ -630,6 +715,8 @@ DltCat: async (req, res) => {
     // Use the category ID to find and delete the category
     const deletedCategory = await Category.findByIdAndDelete(categoryId);
 
+    // const deletedCategory = await Category.findByIdAndUpdate({categoryId},{$set: {isDeleted:true}});
+
     if (!deletedCategory) {
       // Handle the case where the category with the given ID was not found
       return res.status(404).json({ success: false, message: 'Category not found' });
@@ -653,7 +740,11 @@ createCoupon: async (req, res) => {
       expiry: req.body.expiry.trim(),
       discount: req.body.discount.trim(),
       min: req.body.min.trim(),
+      category:req.body.category
     };
+
+    log
+
 
     const exist = await Coupons.findOne({ code: coupon.code });
 
@@ -667,7 +758,7 @@ createCoupon: async (req, res) => {
   } catch (e) {
     console.error(e.message);
     res.status(500).json({ error: 'An error occurred while creating the coupon.' });
-    return res.redirect('/Admin/internal-error');
+    // return res.redirect('/Admin/internal-error');
   }
 },
 
@@ -677,7 +768,9 @@ createCoupon: async (req, res) => {
 getAllCoupons : async (req, res) => {
   try {
     const coupons = await Coupons.find();
-    res.render('admin/coupons', { coupons, users: false })
+    const categories = await Category.find()
+    console.log(categories,'<<<<<<<<<<<<<<<<<<<<<<<<<<<+++++++++++++++++++++++++++++++++++');
+    res.render('admin/coupons', { coupons, users: false , categories})
   } catch (error) {
     throw new Error(error)
     res.redirect('/Admin/internal-error')
@@ -718,6 +811,33 @@ unListCoupons : async (req, res) => {
   await coupon.save();
 
   res.redirect("/admin/coupons");
+},
+
+
+
+
+userStatus: async (req,res) =>{
+  try {
+
+    const blockedUsersCount = await User.countDocuments({ block: true });
+
+    const unblockedUsersCount = await User.countDocuments({ block: false });
+    
+    res.json({ blockedUsersCount, unblockedUsersCount });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+},
+
+
+salesReport: async (req,res) =>{
+  try {
+    res.render('Admin/salesReport')
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 

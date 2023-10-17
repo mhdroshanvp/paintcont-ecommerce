@@ -5,6 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <link rel="icon" href="/images/user/FAV LOGO.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>pillloMart</title>
     <!-- <link rel="icon" href="img/favicon.png"> -->
@@ -15,6 +16,9 @@
     <!-- font awesome CSS -->
     <link rel="stylesheet" href="/css/UserCss/all.css">
     <!-- flaticon CSS -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
     <link rel="stylesheet" href="/css/UserCss/flaticon.css">
     <!--icons-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -32,6 +36,7 @@
             <div class="row align-items-center justify-content-center">
                 <div class="col-lg-12">
                     <nav class="navbar navbar-expand-lg navbar-light">
+
                         <a class="navbar-brand" href="#"> <img src="/images/user/logo-removebg-preview.png" alt="logo"
                                 width="100"> </a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -43,27 +48,22 @@
                         <div class="collapse navbar-collapse main-menu-item" id="navbarSupportedContent">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/home">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/products">Products</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/error">About us</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/error">Contact us</a>
+                                    <a class="nav-link" href="/products"></a>
                                 </li>
                             </ul>
                         </div>
                         <div class="hearer_icon d-flex align-items-center">
-                            <!-- <a href="#" id="search_1"><i class="fas fa-search"></i></a> -->
-                            <a href="#" id="#"><i class="fas fa-shopping-cart"></i></a>
+                            <a href="/home" id="search_1"><i class="fas fa-home"></i></a>
+                            <a href="/products" id="search_1"><i class="fas fa-shopping-bag"></i></a>
+                            <a href="/cart" id="#"><i class="fas fa-shopping-cart"></i></a>
                         </div>
                         <div class="hearer_icon d-flex align-items-center">
-                            <a href=""><i class="fas fa-heart"></i></a>
-                            <a href=""><i class="fas fa-user-circle"></i></a>
+                            <a href="/profile"><i class="fas fa-user-circle"></i></a>
+                            <!-- Use "ms-auto" for margin on the left side -->
                             <a href="/logout"><i class="fas fa-power-off"></i></a>
+                            <!-- Apply Bootstrap button styles -->
+                            <!-- </form> -->
+
                         </div>
                     </nav>
                 </div>
@@ -80,8 +80,10 @@
                     <div class="address">
                         <div class="btn-group" role="group" aria-label="Basic outlined example">
                             <!-- <a href="/profile" class="btn btn-outline-primary">My Profile</a> -->
-                            <a href="/orders" class="btn btn-outline-primary">My Orders</a>
-                            <a href="/profile/wallet" class="btn btn-outline-primary">Wallet</a>
+                            <a href="/orders" class="btn btn-outline-primary"><i class="fas fa-shopping-bag"></i>
+                            </a>
+                            <a href="/profile/wallet" class="btn btn-outline-primary"><i class="fas fa-wallet"></i>
+                            </a>
                         </div>
                         <h2>User Address</h2>
                         <hr>
@@ -100,13 +102,21 @@
                                                     <%= user.address[i].areaAndstreet %>
                                                 </p>
                                             </div>
+                                            <div class="d-flex justify-content-around w-25 mt-2 mb-2">
                                             <a href="/profile/edit_address?index=<%=i%>"
-                                                class="btn btn-warning mb-2  ">Edit Addresses</a>
+                                                class="btn btn-warning   "><i class="fas fa-pencil-alt"></i></a>
+                                                
+                                                <a type="button" class="btn btn-danger "
+                                                onclick="deleteAddress('<%= user.address[i]._id %>')"><i class="fas fa-trash-alt"></i>
+                                            </a>
+                                        </div>
                                             <% } %>
+                                            
                                     </div>
                                 </div>
                                 <br>
-                                <a href="/profile/add_address" class="btn btn-dark">Add Addresses</a>
+                                <a href="/profile/add_address" class="btn btn-dark"><i class="fas fa-plus"></i>
+                                </a>
                             </form>
                         </div>
                     </div>
@@ -121,19 +131,20 @@
                     <!-- User Information Fields -->
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="username" value="<%= user.name %>">
+                        <input type="text" class="form-control" id="username" disabled value="<%= user.name %>">
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" value="<%= user.email %>">
+                        <input type="email" class="form-control" id="email" disabled value="<%= user.email %>">
                     </div>
                     <div class="mb-3">
                         <label for="number" class="form-label">Number</label>
-                        <input type="text" class="form-control" id="number" value="<%= user.phone %>">
+                        <input type="text" class="form-control" id="number" disabled value="<%= user.phone %>">
                     </div>
 
                     <!-- Edit Personal Information Button -->
-                    <a href="/profile/edit_personal" class="btn btn-warning">Edit Personal Information</a>
+                    <a href="/profile/edit_personal" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
+                   
 
                 </div>
 
@@ -152,59 +163,38 @@
             aria-hidden="true">
             <!-- Modal content goes here -->
         </div>
+
+
+            <script>
+
+
+        function deleteAddress(addressId) {
+            if (confirm("Are you sure you want to delete this address?")) {
+                fetch(`/profile/edit_address/dltAddress?addressId=${addressId}`, {
+                    method: 'DELETE',
+                })
+                    .then((response) => {
+                        if (response.ok) {
+                            console.log(`Address ${addressId} has been deleted.`);
+                            window.location.reload();
+                        } else {
+                            console.error(`Failed to delete address ${addressId}.`);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            }
+        }
+
+
+    </script>
 
 
 
         <!-- Include Bootstrap JS and Popper.js -->
         <script src="https://cdn.jsdelivr.net/npm/popper.js@2.11.6/dist/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.2/dist/js/bootstrap.min.js"></script>
-
-
-        <!--::footer_part start::-->
-        <footer class="footer_part">
-            <div class="footer_iner">
-                <div class="container">
-                    <hr class="my-4">
-                    <div class="row align-items-center">
-                        <div class="col-lg-8">
-
-                            <div class="footer_menu">
-                                <div class="footer_logo">
-                                    <a href="index.html"><img src="/images/user/logo-removebg-preview.png" alt="#"></a>
-                                </div>
-                                <div class="footer_menu_item">
-                                    <a href="index.html">Home</a>
-                                    <a href="about.html">About</a>
-                                    <a href="product_list.html">Products</a>
-                                    <a href="#">Pages</a>
-                                    <a href="blog.html">Blog</a>
-                                    <a href="contact.html">Contact</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="social_icon">
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-instagram"></i></a>
-                                <a href="#"><i class="fab fa-google-plus-g"></i></a>
-                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="copyright_part">
-                <div class="container">
-                    <div class="row ">
-                        <div class="col-lg-12">
-                            <div class="copyright_text">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
         <!--::footer_part end::-->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>

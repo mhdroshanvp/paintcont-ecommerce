@@ -6,7 +6,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>paintcont</title>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="/css/UserCss/bootstrap.min.css">
     <link rel="stylesheet" href="/css/UserCss/style.css">
 </head>
@@ -17,6 +18,7 @@
             <div class="row align-items-center justify-content-center">
                 <div class="col-lg-12">
                     <nav class="navbar navbar-expand-lg navbar-light">
+
                         <a class="navbar-brand" href="#"> <img src="/images/user/logo-removebg-preview.png" alt="logo"
                                 width="100"> </a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -28,27 +30,22 @@
                         <div class="collapse navbar-collapse main-menu-item" id="navbarSupportedContent">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/home">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/products">Products</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/error">About us</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/error">Contact us</a>
+                                    <a class="nav-link" href="/products"></a>
                                 </li>
                             </ul>
                         </div>
                         <div class="hearer_icon d-flex align-items-center">
-                            <!-- <a href="#" id="search_1"><i class="fas fa-search"></i></a> -->
-                            <a href="#" id="#"><i class="fas fa-shopping-cart"></i></a>
+                            <a href="/home" id="search_1"><i class="fas fa-home"></i></a>
+                            <a href="/products" id="search_1"><i class="fas fa-shopping-bag"></i></a>
+                            <a href="/cart" id="#"><i class="fas fa-shopping-cart"></i></a>
                         </div>
                         <div class="hearer_icon d-flex align-items-center">
-                            <a href=""><i class="fas fa-heart"></i></a>
-                            <a href=""><i class="fas fa-user-circle"></i></a>
+                            <a href="/profile"><i class="fas fa-user-circle"></i></a>
+                            <!-- Use "ms-auto" for margin on the left side -->
                             <a href="/logout"><i class="fas fa-power-off"></i></a>
+                            <!-- Apply Bootstrap button styles -->
+                            <!-- </form> -->
+
                         </div>
                     </nav>
                 </div>
@@ -67,13 +64,13 @@
                                 <!-- Pincode -->
                                 <div class="form-group">
                                     <label for="pincode" class="form-label">Pincode</label>
-                                    <input type="text" class="form-control" id="pincode" name="pincode"
-                                        placeholder="Enter Pincode">
-                                </div>
+                                    <input type="number" class="form-control" id="pincode" name="pincode" placeholder="Enter Pincode" min="0" pattern="[0-9]*" inputmode="numeric">
+                                  </div>
+                                  
                                 <!-- state(Dropdown) -->
                                 <div class="form-group">
                                     <label for="state" class="form-label">States</label>
-                                    <select class="form-select" id="city" name="state">
+                                    <select class="form-select"  id="city" name="state">
                                         <option value="">Choose States</option>
                                         <option value="Andaman nicobar">Andaman nicobar</option>
                                         <option value="Andhra pradhesh">Andhra pradhesh</option>
@@ -92,72 +89,30 @@
                                 <!-- city -->
                                 <div class="form-group">
                                     <label for="pincode" class="form-label">city</label>
-                                    <input type="text" class="form-control" id="city" name="city" placeholder="city">
+                                    <input type="text"   class="form-control" id="city" name="city" placeholder="city">
                                 </div>
                                 <!-- area and street -->
                                 <div class="form-group">
                                     <label for="pincode" class="form-label">Address(area and street)</label>
-                                    <input type="text" class="form-control" id="areaAndstreet" name="areaAndstreet"
+                                    <input type="text"  class="form-control" id="areaAndstreet" name="areaAndstreet"
                                         placeholder="308 Ryder Forest Apt. 915,Port Lilianton">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-success mt-4 ml-3">Add Address</button>
+                <% if(typeof error !== 'undefined') { %>
+                    <p class="error-message text-danger" style="margin-top: 10px;    margin-left: 16px;    margin-bottom: -17px;">
+                        <%= error %>
+                    </p>  
+                    <% } %>  
+                <button type="submit" class="btn btn-success mt-4 ml-3"><i class="fas fa-save"></i>
+                </i>
+                </button>
             </form>
         </div>
     </div>
 
-    <!-- Add Address Modal -->
-    <div class="modal fade" id="addAddressModal" tabindex="-1" role="dialog" aria-labelledby="addAddressModalLabel"
-        aria-hidden="true">
-    </div>
-
-    <!--footer_part start-->
-    <footer class="footer_part">
-        <div class="footer_iner">
-            <div class="container">
-                <hr class="my-4">
-                <div class="row align-items-center">
-                    <div class="col-lg-8">
-
-                        <div class="footer_menu">
-                            <div class="footer_logo">
-                                <a href="index.html"><img src="/images/user/logo-removebg-preview.png" alt="#"></a>
-                            </div>
-                            <div class="footer_menu_item">
-                                <a href="index.html">Home</a>
-                                <a href="about.html">About</a>
-                                <a href="product_list.html">Products</a>
-                                <a href="#">Pages</a>
-                                <a href="blog.html">Blog</a>
-                                <a href="contact.html">Contact</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="social_icon">
-                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#"><i class="fab fa-instagram"></i></a>
-                            <a href="#"><i class="fab fa-google-plus-g"></i></a>
-                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="copyright_part">
-            <div class="container">
-                <div class="row ">
-                    <div class="col-lg-12">
-                        <div class="copyright_text">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/popper.js@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.2/dist/js/bootstrap.min.js"></script>

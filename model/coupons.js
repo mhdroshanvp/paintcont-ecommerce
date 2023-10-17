@@ -22,8 +22,7 @@ const couponSchema=mongoose.Schema({
     },min:{
         type:Number,
         required:true,
-    }
-    ,
+    },
     isDeleted:{
         type:Boolean,
         default:false
@@ -31,7 +30,6 @@ const couponSchema=mongoose.Schema({
     category:{
         type:String
     }
-    
 });
 
 module.exports=mongoose.model("coupon",couponSchema)
