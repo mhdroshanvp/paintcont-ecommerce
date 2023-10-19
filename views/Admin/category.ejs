@@ -127,7 +127,11 @@
         </td>
         <td>
           <!-- Add unique IDs to the buttons and call a function to delete the category -->
-          <button class="btn btn-danger" onclick="deleteCategory('<%= ctgry._id %>')">Delete Category</button>
+          <!-- <button class="btn btn-danger" >Delete Category</button> -->
+
+          <button onclick="deleteCategory('<%= ctgry._id %>')"  class="btn btn-<%= ctgry.isDelete ? 'danger' : 'success' %> p-1 rounded" style="width: 70px;">
+            <%= ctgry.isDelete ? 'Unlist' : 'List' %>
+                                      </button>
         </td>
       </tr>
     <% }) %>
@@ -151,7 +155,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Understood</button>
+
         </div>
       </div>
     </div>
@@ -170,7 +174,7 @@
     <script>
       function deleteCategory(categoryId) {
   // Confirm the deletion with the user (optional)
-  if (!confirm('Are you sure you want to delete this category?')) {
+  if (!confirm(`This is will delete your product also that related to this category!!! , are you sure want to delete that ? `)) {
     return;
   }
 
@@ -184,12 +188,15 @@
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-        // Optionally, remove the category row from the HTML table upon successful deletion
+
         const categoryRow = document.getElementById(`category_${categoryId}`).parentNode.parentNode;
         categoryRow.remove();
-        window.location.reload()
-
-        alert(data.message); // Display a success message
+        swal("Ok", data.message, "success").then((value) => {
+  if (value) {
+    location.reload(); // Reload the page
+  }
+});
+ // Display a success message
       } else {
         alert(data.message); // Display an error message
       }
@@ -200,6 +207,8 @@
     });
 }
 
+
     </script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </html>

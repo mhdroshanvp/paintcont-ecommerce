@@ -94,6 +94,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <% console.log(user.wallet,"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"); %>
                                         <% user.wallet.transactions.forEach(transaction => { %>
                                             <tr>
                                                 <td><%= transaction.date.toDateString() %></td>

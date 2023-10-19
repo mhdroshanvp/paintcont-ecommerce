@@ -118,7 +118,13 @@
         </p>
         <h3 class="mt-4">Price: ₹<%= product.productPrice %>
         </h3>
+      
+       <% if(product.stock < 1) { %>
+        <button type="button" disabled class="btn btn-primary mt-4" >Add toCart</button>
+        <p style="color: red;">out of Stock!!!</p>
+        <% }else{ %>
         <button type="button" class="btn btn-primary mt-4" onclick="addToCart('<%= product._id %>')">Add toCart</button>
+        <% } %>
         <p class="mt-4">Product Description:</p>
         <p>
           <%= product.productDescription %>

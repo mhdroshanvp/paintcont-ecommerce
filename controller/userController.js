@@ -134,11 +134,73 @@ const getOtp = (req, res) => {
 
 // Route to handle OTP verification
 // Route to handle OTP verification
-const postOtp = (req, res) => {
+const postOtp = async(req, res) => {
+
   try {
     const enteredOtp = req.body.otp.trim(); // Trim white spaces from the entered OTP
 
     if (enteredOtp === req.session.otp) {
+
+
+    let userData=req.session.signup
+
+
+let refferal=userData.refferal
+
+
+
+
+const amountToIncrement = 100;
+let wallet=false
+
+const refferedUser = await User.findOne({ MyRefferalCode: refferal });
+
+if (refferedUser) {
+
+  refferedUser.wallet.balance += parseInt(amountToIncrement);
+
+  await refferedUser.save();
+
+
+ wallet=true;
+
+} else {
+  console.log(`User with referral code ${refferal} not found.`);
+}
+
+let newUser;
+
+if (wallet) {
+  // If a wallet exists, set the new user's wallet balance to 50 Rs
+   newUser = {
+    name: userData.name,
+    password: userData.hashedPassword,
+    phone: userData.phone,
+    email: userData.email,
+    joinedDate: new Date(),
+    wallet: {
+      balance: 50, // Set the wallet balance to 50 Rs
+      transactions: [], // You can initialize this as an empty array
+    },
+  };
+} else {
+  // If no wallet exists, create a new user without a wallet
+  newUser = {
+    name: userData.name,
+    password: userData.hashedPassword,
+    phone: userData.phone,
+    email: userData.email,
+    joinedDate: new Date(),
+  };
+}
+
+
+// const user = new User(newUser);
+// await user.save();
+
+await User.create(newUser);
+
+
       res.redirect("/home");
     } else {
       // Handle incorrect OTP
@@ -239,13 +301,17 @@ const getSignup = (req, res) => {
 
 // Route to handle signup
 const postSignup = async (req, res) => {
+  // const userEmail = req.session.user
+  
+
+  // console.log(refferal,"lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll");
+  // const usersRefferal = user.MyRefferalCode
+
+  // console.log(usersRefferal,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>USERR>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
   try {
     if (
-      !req.body.name ||
-      !req.body.phone ||
-      !req.body.email ||
-      !req.body.password
-    ) {
+      !req.body.name ||!req.body.phone ||!req.body.email ||!req.body.password) {
       const errorMessage = "Required fields are missing";
       return res.render("User/signup", { errorMessage });
     }
@@ -257,7 +323,7 @@ const postSignup = async (req, res) => {
 
     }
 
-    let { name, phone, email, password } = req.body;
+    let { name, phone, email, password,refferal } = req.body;
 
     name = name.trim()
     phone = phone.trim();
@@ -276,38 +342,43 @@ const postSignup = async (req, res) => {
       return res.render("User/signup", { errorMessage });
     }
 
-    const otp = generateOTP();
-
-    req.session.email = email;
-    req.session.otp = otp;
-
+    
     
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       const errorMessage =
-        "Email is already registered. Please choose a different email.";
+      "Email is already registered. Please choose a different email.";
       return res.render("User/signup", { errorMessage });
     }
+    
+    
+    const otp = generateOTP();
 
+    req.session.email = email;
+    req.session.otp = otp;
+    
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = {
+    
+    let user={
       name,
       phone,
       email,
-      password: hashedPassword,
-      joinedDate: Date.now(),
-    };
+      hashedPassword,
+      refferal
+    }
+    
+    req.session.signup=user
+    
+  
+    
+    
 
     await sendOTPByEmail(email, otp);
 
-    const result = await User.create(newUser);
-    if (result) {
-      return res.render("user/otp");
-    } else {
-      const errorMessage = "Error creating user";
-      return res.render("User/signup", { errorMessage });
-    }
+   
+  
+    return res.render("user/otp");
+   
   } catch (error) {
     console.error(error);
     const errorMessage = "Internal Server Error";
@@ -512,6 +583,7 @@ const getProfile = async (req, res) => {
       const user = await User.findOne({ email: email });
       console.log(user);
       res.render("User/profile", { user: user });
+
     } else {
       res.redirect("/login");
     }
@@ -816,9 +888,13 @@ const getCart = async (req, res) => {
         model: "Product",
       })
       .exec();
+
+      // console.log(user,"UUUUUUUUSSSSSSSSSSSEEEEEEEEEEEEEEEERRRRRRRRRRRRRRR");
+
+      // console.log(user.ca);
       // const category = await Category.find()
       // console.log(category,"<<<<<<<<<<<<<<<<<<<==========================================="); 
-    console.log(user.cart);
+    console.log(user.cart,"hehehehhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
 
     res.render("User/cart", { user });
   } else {
@@ -932,24 +1008,28 @@ const postCheckout = async (req, res) => {
   try {
     const add=req.body.userAddress
 
-
     if(!add){
       return res.json({ error: true, message: "Please add an address , go to the profile for add address" });
   }
   
       const {
         userAddress,
-        couponCode,
+        coupon,
         paymentMethod,
         cartTotal,
         qnty,
         unit,
         totalAmount,
         product,
-        wallet,
-        prevTotal
+        prevTotal,
+        wallet
 
       } = req.body;
+
+      const Coupon = await Coupons.find({code:coupon})
+      console.log(Coupon,"couponnnnnnnnnnnnnnn");
+
+      let discount = Coupon.discount
 
     console.log(req.body,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 
@@ -1009,7 +1089,7 @@ const postCheckout = async (req, res) => {
         status: "Pending",
         paymentMethod: paymentMethod,
         address: addresses,
-        discount: couponCode,
+        discount: discount,
         orderDate: new Date(),
       });
 
@@ -1033,72 +1113,99 @@ const postCheckout = async (req, res) => {
 
 
     }else if(paymentMethod === 'online'){
-      // console.log('inside online <===================================');
+      console.log(req.body,"''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''")
+      // console.log('<==================================================<<<<<<<<<<<<<<<</<<<<<<<<<<<<<<<<<<<<<<<<==============================');
+     
 
       let amount = totalAmount
 
-      if(prevTotal > 0){
-        
-      
-      let Walletused;
+      // console.log(prevTotal,"'<==================================================<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<=============================='");
 
-      if(wallet){
+      if(totalAmount > 0){
 
+        console.log();
 
-        let userWallet = user.wallet.balance;
-        
-        if (userWallet >= prevTotal) {
+        let walletused;
 
-
-          userWallet = userWallet - prevTotal;
           
-      
-          if (Array.isArray(productId)) {
-            productId.forEach((product, index) => {
-              products.push({
-                product: new mongoose.Types.ObjectId(product),
-                quantity: parseInt(quantity[index]),
-                price: parseInt(price[index]),
-              });
-            });
-          } else {
-            products.push({
-              product: new mongoose.Types.ObjectId(productId),
-              quantity: parseInt(quantity),
-              price: parseInt(price),
-            });
-          }
-      
-          const orderNumber = shortid.generate();
-          const order = new order({
-            orderNumber,
-            products,
-            customer: userId,
-            totalAmount:prev,
-            status: 'pending',
-            payment: selectedPaymentOption,
-            address: addressObjects,
-            orderId: orderNumber,
-            discount: discount,
+
+        if(wallet){
+
+          console.log('joooooo');
+
+          const userId = userData
+          let userWallet = parseInt(user.wallet.balance)
+
+
+// console.log(userWallet,"---------------------------------------------------------");
+          if(userWallet >= totalAmount){
+            
+
+            userWallet = userWallet - totalAmount
+
+
+
+            console.log(userWallet)
+            
+      if (Array.isArray(product)) {
+
+        product.forEach((prd, index) => {
+
+          products.push({
+            product: new mongoose.Types.ObjectId(prd),
+            qnty: parseInt(qnty[index]),
+            price: parseInt(unit[index]),
           });
+
+        });
+
+      } else {
+        
+        products.push({
+          product: new mongoose.Types.ObjectId(product),
+          qnty: parseInt(qnty),
+          price: parseInt(unit),
+        });
+
+      }
+
+
+      const order = new orders({
+        products,
+        user: userData,
+        totalAmount,
+        status: "Pending",
+        paymentMethod: paymentMethod,
+        address: addresses,
+        discount: discount,
+        orderDate: new Date(),
+      });
+
+      await order.save();
       
-          await order.save();
+     
       
-          // deleting product from the cart
-          await User.findByIdAndUpdate(userId, {
-            $pull: { cart: { product: { $in: products.map(item => item.product) } } },
-          });
-      
+      await User.findByIdAndUpdate(userData, {
+        $pull: {
+          cart: { productId: { $in: products.map((item) => item.product) } },
+        },
+      });
+
+      if (productdata && productdata.stock >= qnty) {
+        productdata.stock -= qnty;
+        await productdata.save();
+      }
           // decrease the stock
-          if (product && product.stock >= quantity) {
-            product.stock -= quantity;
-            await product.save();
-          }
+          
+
+
       
           // is there any coupon its code saved in used coupons
 
-          if(coupon){
 
+          if(Coupon){
+
+            let couponId = Coupon._id
             if(couponId!==null){
               const userdata = await User.findOneAndUpdate(
                 { _id: userId },
@@ -1111,34 +1218,36 @@ const postCheckout = async (req, res) => {
 
           }
 
-         
 
-         
           const updatedUser = await User.findOneAndUpdate(
             { _id: userId },
             { $set: { 'wallet.balance': userWallet } },
             { new: true }
           );
 
-          
-      
-          // req.session.ordered = true;
-         return res.json({ walletSuccess: true });
+
+          console.log(updatedUser,"ppppppppppppppppppppppppppppppppppppppppppppppppp")
+
+            // req.session.ordered = true;
+      return res.json({ walletSuccess: true });
 
 
-        } else if (prev > userWallet) {
 
-         
+        }else if(totalAmount > userWallet) {
 
-          
-          amount = prev - userWallet;
+          amount = totalAmount - userWallet
+          console.log('amount',amount);
+          walletused = true;
 
-          
-         walletused=true;
-
-         
-        }
+        }          
       }
+      
+      
+      req.session.orderamount = amount;
+      req.session.usedwallet=walletused;
+
+   
+        
 
       
 
@@ -1148,6 +1257,9 @@ const postCheckout = async (req, res) => {
           currency: "INR",
           receipt: randomOrderID,
         };
+
+
+
             
         razorpay.orders.create(options, (err) => {
               if (!err) {
@@ -1161,32 +1273,70 @@ const postCheckout = async (req, res) => {
                   email: user.email,
                 });
 
-                console.log('inside res <===================================');
-
               } else {
                 console.error("Razorpay Error:", err);
                 res.status(400).send({ razorSuccess: false, msg: "Error creating order with Razorpay" });
               }
             });
 
-    }
-  }
+
+
+
+          }
+
+        }else{
+
+                // Handle other payment options or scenarios
+      res.status(404).send("Invalid payment option");
+
+        }
+
 
   } catch (error) {
     console.error("Error:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Order failed. Please try again." });
-      res.redirect('/internal-error')
+    res.status(500).json({ success: false, message: "Order failed. Please try again." });
+    res.redirect('/internal-error')
   }
 };
 
 
 const verifyPayment = async (req,res) =>{
-  try {
+
+
+  
+
+  const email = req.session.user
+    
+    const user = await User.findOne({email:email})
+    
+    const userId = user._id
+  
+    try {
+
+
+    if(req.session.usedwallet){
+      const wallet =req.session.usedwallet
+
+      if(wallet){
+        const updatedUser = await User.findOneAndUpdate(
+          { _id: userId },
+          { $set: { 'wallet.balance': 0} },
+          { new: true }
+        );
+
+
+        delete req.session.usedwallet
+      }
+      
+    }
+
+
+
+
+  
     const {
       userAddress,
-      couponCode,
+      coupon,
       paymentMethod,
       cartTotal,
       qnty,
@@ -1194,6 +1344,9 @@ const verifyPayment = async (req,res) =>{
       totalAmount,
       product,
     } = req.body;
+
+    let Coupon  = await Coupons.findOne({code:coupon})
+    let discount = Coupon.discount
 
     // console.log(req.body);
 
@@ -1253,7 +1406,7 @@ const verifyPayment = async (req,res) =>{
         status: "Pending",
         paymentMethod: paymentMethod,
         address: addresses,
-        discount: couponCode,
+        discount: discount,
         orderDate: new Date(),
       });
 
@@ -1697,8 +1850,55 @@ const return_Request = async (req, res) => {
   } catch (e) {
 
     console.log(e.message)
+    res.redirect('/internal-error')
   }
 }
+//================================================
+//================================================
+
+const invoice = async (req,res) => {
+  try {
+    // console.log("gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg");
+    const orderId = req.params.OrderId
+    const email = req.session.user
+    const user = await User.findOne({email:email})
+    const userId = user._id
+    // console.log(orderId,"||||||||||||||||||||||||||||||||||||||||||||||||||||||||");
+
+
+
+
+    // let order = await order.find({ user: userId });
+
+   let order = await orders.aggregate([
+      {
+        $match: { user: userId },
+      },
+      {
+        $sort: { orderDate: -1 },
+      },
+      {
+        $lookup: {
+          from: "products",
+          localField: "products.product",
+          foreignField: "_id",
+          as: "productDetails",
+        },  
+      },
+    ]);
+
+    // console.log(order.)
+
+    
+      
+    // console.log(order,"//////////////////////////////////////////////////////");
+  res.render('User/invoice',{order , user})
+  } catch (error) {
+    console.log(error);
+    res.redirect('/internal-error')
+  }
+}
+
 
 
 //================================================
@@ -1759,6 +1959,7 @@ module.exports = {
   verifyPayment,
   applyCoupon,
   return_Request,
+  invoice,
   logout,
 };
 

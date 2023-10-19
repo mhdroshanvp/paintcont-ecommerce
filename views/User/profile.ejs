@@ -125,6 +125,48 @@
 
             <!-- User Profile Section (Right Side) -->
             <div class="col-md-6">
+
+                <!-- text copiable field -->
+<!-- ... Your HTML ... -->
+<div class="refferal-coupon-container border rounded d-flex justify-content-center align-items-center" style="width: 580px; height: 100px;">
+    <div class="text-center">
+        <p style="color: black;">Refer your friend using this referral code, and you can receive <span style="color: red;">₹100</span> in your Wallet!</p>
+        <label class="btn border rounded" style="margin-top: 7px;"><%= user.MyRefferalCode %></label>
+        <button class="btn border rounded" id="copyButton">copy</button>
+        <div id="copyMessage" style="display: none; color: rgb(255, 0, 0); margin-left: 10px;">Copied</div>
+    </div>
+    <input type="hidden" id="refferal" value="<%= user.MyRefferalCode %>">
+
+    <script>
+        const copyButton = document.getElementById('copyButton');
+        const copyMessage = document.getElementById('copyMessage');
+        const referralCode = document.getElementById('refferal').value;
+
+        copyButton.addEventListener('click', function() {
+            const tempInput = document.createElement("input");
+            tempInput.setAttribute("value", referralCode);
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            copyMessage.style.display = 'block';
+            setTimeout(function() {
+                copyMessage.style.display = 'none';
+            }, 2000);
+        });
+    </script>
+</div>
+<!-- ... More of your HTML ... -->
+
+                
+
+
+                
+                <br>
+
+
+
                 <div class="user-profile-container">
                     <h2>User Personal Info</h2>
                     <hr>

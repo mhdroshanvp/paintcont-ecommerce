@@ -85,6 +85,8 @@ router.get('/profile/wallet',auth.isLoggedIn,auth.isBlocked,userController.getWa
 router.post('/apply-coupon/:cp/:amt/:prdId',auth.isLoggedIn,auth.isBlocked,userController.applyCoupon)
 //return order
 router.patch('/return-request/:id',auth.isLoggedIn, userController.return_Request)
+//invoice download
+router.get('/orders/invoice/:OrderId',auth.isLoggedIn,auth.isBlocked,userController.invoice)
 // ========================================================
 //404 page :(
 router.get('/error',userController.error)

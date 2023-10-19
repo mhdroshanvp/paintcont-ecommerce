@@ -257,27 +257,14 @@
                                         <label class="form-check-label" for="cashOnDelivery">Cash on Delivery</label>
                                     </div>
                                     
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input" id="walletAmount" name="paymentMethod" value="wallet" disabled>
-                                        <label class="custom-control-label" for="walletAmount">Use Wallet</label>
-                                    </div>
-                                    
-                                    <script>
-                                        const onlinePaymentRadio = document.getElementById("onlinePayment");
-                                        const cashOnDeliveryRadio = document.getElementById("cashOnDelivery");
-                                        const walletCheckbox = document.getElementById("walletAmount");
-                                    
-                                        onlinePaymentRadio.addEventListener("change", function () {
-                                            walletCheckbox.disabled = !onlinePaymentRadio.checked;
-                                        });
-                                    
-                                        cashOnDeliveryRadio.addEventListener("change", function () {
-                                            walletCheckbox.disabled = true;
-                                        });
-                                    </script>
-                                    
-                                    
-                                    
+                                    <%if(user.wallet.balance>0){%>
+                                        <div class="text-center">
+                                          <input type="checkbox" name="wallet" id="wallet" value="<%=user.wallet.balance%>"
+                                            disabled>
+                                          <span>Your wallet: ₹ <%=user.wallet.balance%></span>
+                                        </div>
+                                        <%}%>
+                                                                    
                                     <hr>
 
                                     <p class="text-danger" style="padding-bottom: 10px;" id="error"></p>
@@ -337,6 +324,7 @@
 
         /////////////////////////////////////////////////////////////////////////////////////////
         function checkout() {
+            console.log("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
             fetch("/cart/checkout", {
                 method: "POST",
                 body: new URLSearchParams($('#checkoutForm').serialize()),
@@ -373,12 +361,9 @@
 
                         const done = razorpay.open();
 
-                    }
-                    else if(res.error) {
-                        console.log(res.message)
-                        document.getElementById('error').innerHTML=`${res.message}`
-                    } else {
-                        window.location.href = '/cart/checkout/orderSuccess'
+                    }else if(res.walletSuccess) {
+                        // window.location.href = '/cart/checkout/orderSuccess'
+                   alert('jjjjjjjjjjjjj')
                     }
                 })
                 .catch(err => {
@@ -409,6 +394,38 @@
     </script>
 
     <script>
+
+
+
+        /////////////////////////wallet checkbox/////////////////////////////////
+  // Function to enable/disable wallet checkbox
+  function handlePaymentMethodChange() {
+    const onlinePaymentRadio = document.getElementById('onlinePayment');
+    const walletCheckbox = document.getElementById('wallet');
+
+    if (onlinePaymentRadio.checked) {
+      walletCheckbox.disabled = false;
+    } else {
+      walletCheckbox.disabled = true;
+      walletCheckbox.checked = false
+    }
+  }
+
+  // Add an event listener to the payment method radio buttons
+  const onlinePaymentRadio = document.getElementById('onlinePayment');
+  const cashOnDeliveryRadio = document.getElementById('cashOnDelivery');
+
+  onlinePaymentRadio.addEventListener('change', handlePaymentMethodChange);
+  cashOnDeliveryRadio.addEventListener('change', handlePaymentMethodChange);
+
+  // Initial check
+  handlePaymentMethodChange();
+        /////////////////////////wallet checkbox/////////////////////////////////
+
+
+
+
+
         function updateCartTotal() {
             let cartTotal = 0;
             $(".total").each(function () {

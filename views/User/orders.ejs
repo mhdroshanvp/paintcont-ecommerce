@@ -73,6 +73,7 @@
               <th>STATUS</th>
               <th>ACTION</th>
               <th>PRODUCTS</th>
+              <th>INVOICE</th>
             </tr>
           </thead>
           <tbody>
@@ -126,6 +127,7 @@
                                         <!-- Product image -->
                                         <%= product.productName %> (<%= order.products[0].qnty %>)
                                       </td>
+                                      <td><a href="/orders/invoice/<%= order._id %>"><button class="btn btn-warning">Invoice  </button></a>  </td>
                       </tr>
                       <!-- Add modal code for each product here -->
                       <!-- /////////////////////////////////////////////////////////////////// -->

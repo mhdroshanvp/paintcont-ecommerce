@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { Decimal128 } = require("mongodb");
 const { ObjectId } = require("mongoose");
+const { v4: uuidv4 } = require('uuid');
 const { Date } = require("mongoose");
 // ========================================================
 const userSchema = mongoose.Schema({
@@ -94,6 +95,13 @@ const userSchema = mongoose.Schema({
     }],
 
   },
+
+  MyRefferalCode:{
+    type: String,
+    default: uuidv4(),
+    unique: true, 
+  },
+
 
   usedCoupons: [{ type: mongoose.Schema.Types.ObjectId, ref: "Coupons" }],
 });

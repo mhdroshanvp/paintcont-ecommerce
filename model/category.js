@@ -6,7 +6,7 @@ const categorySchema = mongoose.Schema({
         require:true
     },
     isDelete: {
-        type:Boolean,
+        type: Boolean,
         default:false
     }
 })

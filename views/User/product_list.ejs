@@ -166,7 +166,7 @@
                         <p style="font-size: medium; color: red; text-decoration: line-through;" class="card-text">Price: ₹<%= prd.productPrice %></p>
                       </div>
                       
-                <% } %>
+                <% }else{ %>
                       
                       <div class="card-body">
                         <h5 class="card-title">
@@ -178,6 +178,7 @@
                     </div>
                   </a>
                 </div>
+                <% } %>
                 
                 <% if ((index + 1) % 4 === 0) { %>
                 </div>

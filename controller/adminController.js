@@ -9,6 +9,7 @@ let Jimp = require("jimp");
 const { log } = require("console");
 const Category = require('../model/category')
 const Coupons = require('../model/coupons')
+const mongoose=require('mongoose')
 
 // Create an object to define various controller functions
 const controllers = {
@@ -708,19 +709,38 @@ postUpdtCat: async (req, res) => {
 
 
 DltCat: async (req, res) => {
-  console.log('DltCat route reached');
-  const categoryId = req.params.categoryId;
-  console.log('Deleting category with ID:', categoryId);
+
   try {
-    // Use the category ID to find and delete the category
-    const deletedCategory = await Category.findByIdAndDelete(categoryId);
 
-    // const deletedCategory = await Category.findByIdAndUpdate({categoryId},{$set: {isDeleted:true}});
+    console.log('sdfaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+    const categoryId = req.params.categoryId;
 
-    if (!deletedCategory) {
-      // Handle the case where the category with the given ID was not found
-      return res.status(404).json({ success: false, message: 'Category not found' });
-    }
+    const categoryIdObjectId = new mongoose.Types.ObjectId(categoryId);
+    const categories = await Category.findById(categoryIdObjectId);
+    console.log(categories, "llllllllllllllllllllllllllllllllll");
+    const catName = categories.category;
+    
+    // Find and unlist products with the specified category
+    const updateResult = await Product.updateMany(
+      { paintCategory: catName },
+      { $set: { list: true } }
+    );
+    
+    console.log(updateResult, "Products unlisted for category:", catName);
+
+
+    const deletedCategory = await Category.findById(categoryIdObjectId);
+
+    deletedCategory.isDelete = !deletedCategory.isDelete;
+   
+
+
+
+    await deletedCategory.save()
+
+
+    console.log(deletedCategory,"fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+
 
     // Successfully deleted the category  
     return res.status(200).json({ success: true, message: 'Category deleted successfully' });
