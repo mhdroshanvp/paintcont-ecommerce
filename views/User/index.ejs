@@ -84,10 +84,15 @@
     <header class="w3-container w3-red w3-center"
         style="padding:128px 16px; background-image: url(/images/user/home-office-2804083_1280.jpg); background-size: cover;">
 
-        <div class="blurry-background m-3">
-            <h1 class="m-0 p-0 w3-jumbo times-font" style="font-weight: bolder;">-PAINTCONT-</h1>
-            <p class="m-0 p-0 w3-xlarge courier-font" style="font-weight: bold;">Premium || Vibrant || Reliable</p>
-        </div>
+
+        <a href="/products">
+            <div class="blurry-background m-3">
+                <h1 class="m-0 p-0 w3-jumbo times-font" style="font-weight: bolder; font-family: 'Copperplate', sans-serif;">PAINTCONT</h1>
+                <p class="m-0 p-0 w3-xlarge" style="font-weight: bold; font-family: Georgia, 'Times New Roman', Times, serif;">Premium || Vibrant || Reliable</p>
+            </div>
+        </a>
+
+
         
         <style>
             .blurry-background {
@@ -102,13 +107,19 @@
         
         
         
-        <button class="w3-button w3-black w3-padding-large w3-large w3-margin-top"><a href="/products" class="">Get
-                Started</a></button>
+        <button class="w3-button padding-large w3-large w3-margin-top blurry-background" style="border-radius: 33px; ">
+            <a href="/products" class="">
+              <box-icon type='solid' name='backpack' color='white'></box-icon>
+            </a>
+          </button>
+          
+          
+        </a></button>
     </header>
 
 
     <!-- First Grid -->
-    <div class="w3-row-padding w3-padding-64 w3-container" style="text-align: center;">
+    <div class="w3-row-padding w3-padding-64 w3-container" style="text-align: center;margin-top: -17px">
         <h1>"Unleash Your Creativity with Every Can of Paint."</h1>
     </div>
     <br>
@@ -230,9 +241,7 @@
                         <span class="star">&#9733;</span>
                         <span class="star">&#9733;</span>
                     </div>
-                    <p class="card-text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                        vitae
-                        suscipit justo. Vestibulum eget ex at mauris consequat."</p>
+                    <p class="card-text">"I recently used paint from this company, and I was pleasantly surprised. The color selection was fantastic, and the paint quality was top-notch. It covered my walls evenly, and I didn't need multiple coats. Highly recommended!"</p>
                 </div>
             </div>
         </div>
@@ -248,9 +257,7 @@
                         <span class="star">&#9733;</span>
                         <span class="star">&#9733;</span>
                     </div>
-                    <p class="card-text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                        vitae
-                        suscipit justo. Vestibulum eget ex at mauris consequat."</p>
+                    <p class="card-text">"I've been a loyal customer of this paint company for years, and they never disappoint. The durability of their paint is impressive. It withstands wear and tear, and the colors stay vibrant. I wouldn't choose any other brand."</p>
                 </div>
             </div>
         </div>
@@ -266,9 +273,7 @@
                         <span class="star">&#9733;</span>
                         <span class="star">&#9733;</span>
                     </div>
-                    <p class="card-text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                        vitae
-                        suscipit justo. Vestibulum eget ex at mauris consequat."</p>
+                    <p class="card-text">"I had a great experience with this paint company. The customer service was exceptional, helping me choose the perfect shade for my home. The paint itself was easy to work with, and the result was fantastic. I'm extremely satisfied with their product and support." </p>
                 </div>
             </div>
         </div>
@@ -374,12 +379,28 @@
             color: #fff;
             /* Set text color to white or a suitable color for readability */
         }
+
+
+        .blurry-background {
+        /* background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(your-background-image.jpg); */
+        background-size: cover;
+        background-position: center;
+        transition: background 0.3s, color 0.3s;
+    }
+
+    .blurry-background:hover {
+        background: linear-gradient(rgba(255, 255, 255, 0.37), rgba(255, 255, 255, 0.666)), url(your-hover-background-image.jpg);
+        background-size: cover;
+        background-position: center;
+        color: rgba(255, 255, 255, 0.41);
+    }
     </style>
 
     <!-- bootstrap js -->
     <!-- <script src="/js/user/bootstrap.min.js"></script> -->
 
     <!-- carousel js -->
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

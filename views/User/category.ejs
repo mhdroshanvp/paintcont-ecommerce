@@ -193,7 +193,7 @@
 
     <script>
         function dlt(productId) {
-            console.log(productId);
+            // console.log(productId);
             console.log('inside function');
 
             fetch(`/remove-from-cart/${productId}`, {
@@ -226,8 +226,8 @@
         ///////////////////////////////////
 
         function quantity(actions, productId) {
-            console.log(actions);
-            console.log(productId);
+            // console.log(actions);
+            // console.log(productId);
 
             const url = `/updateqnty/${productId}/${actions}`;
 
@@ -247,7 +247,7 @@
                     // This is the data received from the server
                     // Access 'success' and 'quantity' properties from 'data'
                     const { success, quantity, total } = data;
-                    console.log(data.qnty); // 'true' if the request was successful
+                    // console.log(data.qnty); // 'true' if the request was successful
 
                     document.getElementById(`total${productId}`).innerHTML = total
                     document.getElementById(`quantity${productId}`).value = data.qnty
@@ -295,7 +295,7 @@
                 })
                 .then((data) => {
                     const { success, quantity, total } = data;
-                    console.log(data.qnty);
+                    // console.log(data.qnty);
 
                     document.getElementById(`total${productId}`).innerHTML = total;
                     document.getElementById(`quantity${productId}`).value = data.qnty;

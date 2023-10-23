@@ -53,7 +53,7 @@ const sendOTPByEmail = (email, otp) => {
         console.error(error);
         reject(error);
       } else {
-        console.log("OTP sent via email:", info.response);
+        // console.log("OTP sent via email:", info.response);
         resolve();
       }
     });
@@ -150,20 +150,15 @@ let refferal=userData.refferal
 
 
 
-const amountToIncrement = 100;
+// const amountToIncrement = parseInt(100); 
 let wallet=false
 
 const refferedUser = await User.findOne({ MyRefferalCode: refferal });
 
 if (refferedUser) {
-
-  refferedUser.wallet.balance += parseInt(amountToIncrement);
-
+  // Increment the referred user's wallet balance by 100
+  refferedUser.wallet.balance += 100;
   await refferedUser.save();
-
-
- wallet=true;
-
 } else {
   console.log(`User with referral code ${refferal} not found.`);
 }
@@ -267,7 +262,7 @@ const postLogin = async (req, res) => {
       });
     }
     req.session.user = user.email;
-    console.log(req.session.user);
+    // console.log(req.session.user);
 
     res.redirect("/home");
   } catch (error) {
@@ -421,9 +416,9 @@ const postResetPass = async (req, res) => {
     const password = req.body.new_password.trim(); // Trim white spaces from the new password
     const hashedPassword = bcrypt.hashSync(password, 5);
     const email = req.session.email;
-    console.log(email);
+    // console.log(email);
     const user = await User.findOne({ email: email });
-    console.log(user);
+    // console.log(user);
 
     const updt = await User.updateOne(
       { email: email },
@@ -447,6 +442,7 @@ const postResetPass = async (req, res) => {
 // Route to display product list
 const getProducts = async (req, res) => {
   if (req.session.user) {
+    const coupon = await Coupons.find()
     const categories = await Category.find();
     const page = parseInt(req.query.page) || 1;
     const limit = 8;
@@ -470,6 +466,7 @@ const getProducts = async (req, res) => {
 
     res.render("User/product_list", {
       products,
+      coupon,
       categories,
       currentPage: page,
       totalPages,
@@ -505,14 +502,14 @@ const PostMail4otp = async (req, res) => {
       res.redirect('/mail4otp')
     } else if (alreadymail) {
       req.session.email = email;
-      console.log(req.session.email, "<<<<<<<<<<<<<<<<<<<<<mail in the mail 4 OTP page");
+      // console.log(req.session.email, "<<<<<<<<<<<<<<<<<<<<<mail in the mail 4 OTP page");
       const otp = generateOTP();
       req.session.otp = otp;
       await sendOTPByEmail(email, otp);
       res.redirect("/forgetotp");
     }
   } catch (error) {
-    console.log("error 123");
+    console.log(error);
     res.redirect('/internal-error');
   }
 };
@@ -562,8 +559,8 @@ const getProductdetails = async (req, res) => {
     } else {
       const id = req.query.productId;
       const product = await Product.findOne({ _id: id });
-
-      res.render("User/productDetails", { product });
+      const coupon = await Coupons.find()
+      res.render("User/productDetails", { product,coupon });
     }
   } catch (error) {
     console.log(error.message);
@@ -581,7 +578,7 @@ const getProfile = async (req, res) => {
     if (req.session.user) {
       const email = req.session.user;
       const user = await User.findOne({ email: email });
-      console.log(user);
+      // console.log(user);
       res.render("User/profile", { user: user });
 
     } else {
@@ -624,13 +621,10 @@ const postProfileEdit = async (req, res) => {
     const currentEmail = req.session.user; // Rename the variable
     const user = await User.findOne({ email: currentEmail });
 
-    // Validate and trim white spaces from user inputs
     const name = req.body.name ? req.body.name.trim() : '';
-    // const newEmail = req.body.email ? req.body.email.trim() : ''; // Rename the variable
     const phone = req.body.phone ? req.body.phone.trim() : '';
 
     user.name = name;
-    // user.email = newEmail; // Use the renamed variable here
     user.phone = phone;
 
     await user.save();
@@ -658,7 +652,7 @@ const getAddressEdit = async (req, res) => {
     const email = req.session.user;
     const user = await User.findOne({ email: email });
     const userAddress = user.address[index];
-    console.log(userAddress);
+    // console.log(userAddress);
     res.render("User/edit_address", { user: user, userAddress });
   } else {
     res.redirect("/login");
@@ -671,11 +665,11 @@ const getAddressEdit = async (req, res) => {
 const postAddressEdit = async (req, res) => {
   try {
     const email = req.session.user;
-    console.log("here", req.body.addressId, email);
+    // console.log("here", req.body.addressId, email);
 
 
 
-console.log(req.body);
+// console.log(req.body);
 
 
 
@@ -732,9 +726,7 @@ const getAddAddress = async (req, res) => {
 // Route to post add address
 const postAddAddress = async (req, res) => {
   try {
-    console.log(
-      "Reached here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-    );
+
     if (!req.body.pincode ||!req.body.state ||!req.body.areaAndstreet ||!req.body.city) {
       return res.render("User/add_address",{error : "Required fields are missing" });
     }
@@ -752,10 +744,10 @@ const postAddAddress = async (req, res) => {
       areaAndstreet : trimArea,
       city : trimCity,
     };
-    console.log(address);
+    // console.log(address);
     const email = req.session.user;
     const isUpdated = await User.updateOne({ email }, { $push: { address } });
-    console.log(isUpdated);
+    // console.log(isUpdated);
     if (isUpdated.modifiedCount) {
       return res.redirect("/profile");
     } else {
@@ -798,10 +790,14 @@ const getOrders = async (req, res) => {
 
     const user = await User.findOne({ email: email });
 
+    
     const userId = user._id;
+    
+    let orderData = await order.findOne({ user: userId });
 
-    let orderData = await order.find({ user: userId });
 
+    // console.log(orderData,"{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{");
+    
     orderData = await order.aggregate([
       {
         $match: { user: userId },
@@ -820,7 +816,7 @@ const getOrders = async (req, res) => {
     ]);
 
     // console.log(user, '<===== user inside the user!!!!!!!!!');
-    console.log(orderData, "<===== user inside the order!!!!!!!");
+    // console.log(orderData, "<===== user inside the order!!!!!!!");
     res.render("User/orders", { user, orderData });
   } else {
     res.redirect("/login");
@@ -889,12 +885,7 @@ const getCart = async (req, res) => {
       })
       .exec();
 
-      // console.log(user,"UUUUUUUUSSSSSSSSSSSEEEEEEEEEEEEEEEERRRRRRRRRRRRRRR");
-
-      // console.log(user.ca);
-      // const category = await Category.find()
-      // console.log(category,"<<<<<<<<<<<<<<<<<<<==========================================="); 
-    console.log(user.cart,"hehehehhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+    // console.log(user,"hehehehhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
 
     res.render("User/cart", { user });
   } else {
@@ -912,22 +903,23 @@ const postCart = async (req, res) => {
     const userId = req.session.user;
     const user = await User.findOne({ email: userId });
 
+    
     const product = await Product.findById(productId);
     const prize = product.productPrice;
     const productPhoto = product.productPhoto;
     if (user) {
       const existingCartItem = user.cart.find(
         (item) => item.productId.toString() === productId
-      );
-
-      if (existingCartItem) {
+        );
         
-        if(existingCartItem.productQuantity < product.stock){
-        existingCartItem.productQuantity += quantity;
-
+        if (existingCartItem) {
+          
+          if(existingCartItem.productQuantity < product.stock){
+            existingCartItem.productQuantity += quantity;
+            
         existingCartItem.total =
-          existingCartItem.productQuantity * existingCartItem.unit;
-        }
+        existingCartItem.productQuantity * existingCartItem.unit;
+      }
       } else {
         user.cart.push({
           productPhoto: productPhoto,
@@ -939,6 +931,7 @@ const postCart = async (req, res) => {
       }
       await user.save();
       res.status(200).json({ message: "Product added to cart successfully" });
+      // console.log(user.cart,"555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555");
     } else {
       res.status(404).json({ message: "User not found" });
     }
@@ -966,7 +959,7 @@ const getCheckout = async (req, res) => {
     }).exec();
 
     const coupon = await Coupons.find({isDeleted:false})
-    console.log(coupon);
+    // console.log(coupon);
 
     
 
@@ -1008,9 +1001,9 @@ const postCheckout = async (req, res) => {
   try {
     const add=req.body.userAddress
 
-    if(!add){
-      return res.json({ error: true, message: "Please add an address , go to the profile for add address" });
-  }
+  //   if(!add){
+  //     return res.json({ error: true, message: "Please add an address , go to the profile for add address" });
+  // }
   
       const {
         userAddress,
@@ -1027,21 +1020,21 @@ const postCheckout = async (req, res) => {
       } = req.body;
 
       const Coupon = await Coupons.find({code:coupon})
-      console.log(Coupon,"couponnnnnnnnnnnnnnn");
+      // console.log(Coupon,"couponnnnnnnnnnnnnnn");
 
       let discount = Coupon.discount
 
-    console.log(req.body,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+    // console.log(req.body,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 
 
     const email = req.session.user;
     const user = await User.findOne({ email: email });
     const userData = user._id;
-    console.log(product,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    // console.log(product,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
     const address = await user.address.find((item) => item._id.toString() == userAddress);
 
-    console.log(req.body);
+    // console.log(req.body);
 
     // console.log(address,'<=====ADDRESS');
 
@@ -1053,25 +1046,26 @@ const postCheckout = async (req, res) => {
     };
 
     const productId = req.body.productId;
-    console.log(req.body);
+    // console.log(req.body);
     const productdata = await Product.findById(product);
-    console.log(productdata);
+    // console.log(productdata);
     let products = [];
 
     if (paymentMethod === "cash") {
 
+      
       if (Array.isArray(product)) {
-
+        
         product.forEach((prd, index) => {
-
+          
           products.push({
             product: new mongoose.Types.ObjectId(prd),
             qnty: parseInt(qnty[index]),
             price: parseInt(unit[index]),
           });
-
+          
         });
-
+        
       } else {
         
         products.push({
@@ -1079,9 +1073,10 @@ const postCheckout = async (req, res) => {
           qnty: parseInt(qnty),
           price: parseInt(unit),
         });
-
+        
+        // console.log("-------------------------===========================-----------------------------");
       }
-
+      
       const order = new orders({
         products,
         user: userData,
@@ -1106,14 +1101,14 @@ const postCheckout = async (req, res) => {
         await productdata.save();
       }
 
-      res.json({ success: true, message: "Order placed successfully!" });
+      res.json({ codSuccess: true, message: "Order placed successfully!" });
 
 
 
 
 
     }else if(paymentMethod === 'online'){
-      console.log(req.body,"''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''")
+      // console.log(req.body,"''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''")
       // console.log('<==================================================<<<<<<<<<<<<<<<</<<<<<<<<<<<<<<<<<<<<<<<<==============================');
      
 
@@ -1123,7 +1118,7 @@ const postCheckout = async (req, res) => {
 
       if(totalAmount > 0){
 
-        console.log();
+        // console.log();
 
         let walletused;
 
@@ -1131,7 +1126,7 @@ const postCheckout = async (req, res) => {
 
         if(wallet){
 
-          console.log('joooooo');
+          // console.log('joooooo');
 
           const userId = userData
           let userWallet = parseInt(user.wallet.balance)
@@ -1145,7 +1140,7 @@ const postCheckout = async (req, res) => {
 
 
 
-            console.log(userWallet)
+            // console.log(userWallet)
             
       if (Array.isArray(product)) {
 
@@ -1226,7 +1221,6 @@ const postCheckout = async (req, res) => {
           );
 
 
-          console.log(updatedUser,"ppppppppppppppppppppppppppppppppppppppppppppppppp")
 
             // req.session.ordered = true;
       return res.json({ walletSuccess: true });
@@ -1236,7 +1230,7 @@ const postCheckout = async (req, res) => {
         }else if(totalAmount > userWallet) {
 
           amount = totalAmount - userWallet
-          console.log('amount',amount);
+          // console.log('amount',amount);
           walletused = true;
 
         }          
@@ -1300,40 +1294,45 @@ const postCheckout = async (req, res) => {
 };
 
 
+
+
+
+
 const verifyPayment = async (req,res) =>{
 
+  // console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
   
-
+  
   const email = req.session.user
-    
-    const user = await User.findOne({email:email})
-    
-    const userId = user._id
   
-    try {
-
-
+  const user = await User.findOne({email:email})
+  
+  const userId = user._id
+  
+  try {
+    
+    
     if(req.session.usedwallet){
       const wallet =req.session.usedwallet
-
+      
       if(wallet){
         const updatedUser = await User.findOneAndUpdate(
           { _id: userId },
           { $set: { 'wallet.balance': 0} },
           { new: true }
-        );
+          );
 
 
         delete req.session.usedwallet
       }
       
     }
-
-
-
-
-  
+    
+    
+    
+    
+    
     const {
       userAddress,
       coupon,
@@ -1344,22 +1343,27 @@ const verifyPayment = async (req,res) =>{
       totalAmount,
       product,
     } = req.body;
+    
 
+
+    if(coupon){
     let Coupon  = await Coupons.findOne({code:coupon})
     let discount = Coupon.discount
-
+    }
+    
+    // console.log(coupon,"888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888");
     // console.log(req.body);
 
     const email = req.session.user;
     const user = await User.findOne({ email: email });
     const userData = user._id;
-    console.log(product);
+    // console.log(product);
 
     const address = await user.address.find(
       (item) => item._id.toString() == userAddress
     );
 
-    console.log(req.body);
+    // console.log(req.body);
 
     // console.log(address,'<=====ADDRESS');
 
@@ -1370,25 +1374,53 @@ const verifyPayment = async (req,res) =>{
       pincode: address.pincode,
     };
 
-    const productId = req.body.productId;
-    console.log(req.body);
+    // const productId = req.body.productId;
+    // console.log(req.body);
+    // console.log(coupon,"***************************************************");
+
     const productdata = await Product.findById(product);
-    console.log(productdata);
+    // console.log(productdata,"{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}");
     let products = [];
 
-
-      if (Array.isArray(product)) {
-
-        product.forEach((prd, index) => {
-
-          products.push({
-            product: new mongoose.Types.ObjectId(prd),
-            qnty: parseInt(qnty[index]),
-            price: parseInt(unit[index]),
-          });
+    
+    
+    if (Array.isArray(product)) {
+      
+      product.forEach((prd, index) => {
+        
+        products.push({
+          product: new mongoose.Types.ObjectId(prd),
+          qnty: parseInt(qnty[index]),
+          price: parseInt(unit[index]),
+        });
 
         });
 
+        const order = new orders({
+          products,
+          user: userData,
+          totalAmount,
+          status: "Pending",
+          paymentMethod: paymentMethod,
+          address: addresses,
+          orderDate: new Date(),
+        });
+  
+        await order.save();
+
+        await User.findByIdAndUpdate(userData, {
+          $pull: {
+            cart: { productId: { $in: products.map((item) => item.product) } },
+          },
+        });
+  
+        if (productdata && productdata.stock >= qnty) {
+          productdata.stock -= qnty;
+          await productdata.save();
+        }
+  
+        res.json({ success: true, message: "Order placed successfully!" });
+        
       } else {
         
         products.push({
@@ -1396,37 +1428,76 @@ const verifyPayment = async (req,res) =>{
           qnty: parseInt(qnty),
           price: parseInt(unit),
         });
+        
+        const order = new orders({
+          products,
+          user: userData,
+          totalAmount,
+          status: "Pending",
+          paymentMethod: paymentMethod,
+          address: addresses,
+          orderDate: new Date(),
+        });
+  
+        await order.save();
 
+        await User.findByIdAndUpdate(userData, {
+          $pull: {
+            cart: { productId: { $in: products.map((item) => item.product) } },
+          },
+        });
+  
+        if (productdata && productdata.stock >= qnty) {
+          productdata.stock -= qnty;
+          await productdata.save();
+        }
+  
+        res.json({ success: true, message: "Order placed successfully!" });
+        
       }
 
-      const order = new orders({
-        products,
-        user: userData,
-        totalAmount,
-        status: "Pending",
-        paymentMethod: paymentMethod,
-        address: addresses,
-        discount: discount,
-        orderDate: new Date(),
-      });
+     
 
-      await order.save();
+      
 
-      await User.findByIdAndUpdate(userData, {
-        $pull: {
-          cart: { productId: { $in: products.map((item) => item.product) } },
-        },
-      });
+      
+      
+      
+      // const order = new orders({
+      //   products,
+      //   user: userData,
+      //   totalAmount,
+      //   status: "Pending",
+      //   paymentMethod: paymentMethod,
+      //   address: addresses,
+      //   orderDate: new Date(),
+      // });
 
-      if (productdata && productdata.stock >= qnty) {
-        productdata.stock -= qnty;
-        await productdata.save();
-      }
+      // await order.save();
 
-      res.json({ success: true, message: "Order placed successfully!" });
+      // console.log(orderDate,"(((((((*************)))))))))")
+
+
+      // console.log(updatedUser,"pppppppp0000dasffdassdfasdfasffsasafadwerwrqesdasdfafsdppp")
+
+
+      
+
+      // await User.findByIdAndUpdate(userData, {
+      //   $pull: {
+      //     cart: { productId: { $in: products.map((item) => item.product) } },
+      //   },
+      // });
+
+      // if (productdata && productdata.stock >= qnty) {
+      //   productdata.stock -= qnty;
+      //   await productdata.save();
+      // }
+
+      // res.json({ success: true, message: "Order placed successfully!" });
 
 }catch (error) {
-    res.redirect('/internal-error')
+    // res.redirect('/internal-error')
 }
 }
 
@@ -1453,11 +1524,11 @@ const getRemoveCart = async (req, res) => {
     const email = req.session.user;
     const productId = req.params.id;
 
-    console.log("Email from session:", productId);
+    // console.log("Email from session:", productId);
 
     const user = await User.findOne({ email: req.session.user });
 
-    console.log("User found:", user); // Log the user object
+    // console.log("User found:", user); // Log the user object
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -1500,36 +1571,36 @@ const logout = (req, res) => {
 // Route to post update qnty
 const postUpdtqnty = async (req, res) => {
   try {
-    console.log("inside route");
+    // console.log("inside route");
     const productId = req.params.id;
     const email = req.session.user;
     const actions = req.params.actions;
 
-    console.log("Product ID:", productId);
-    console.log("Actions:", actions);
+    // console.log("Product ID:", productId);
+    // console.log("Actions:", ac/tions);
 
     const product = await Product.findById(productId);
     const user = await User.findOne({ email: email });
     const unitPrice = product.productPrice;
     const stock = product.stock;
-    console.log(stock, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    // console.log(stock, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     const cartItems = user.cart.find(
       (item) => item.productId.toString() === productId
     );
     
       if (actions === "increase") {
         if (cartItems.productQuantity < stock) {
-        console.log("Increasing quantity");
+        // console.log("Increasing quantity");
         cartItems.productQuantity++;
       }
       } else if (actions === "decrease" && cartItems.productQuantity > 1) {
-        console.log("Decreasing quantity");
+        // console.log("Decreasing quantity");
         cartItems.productQuantity--;
       }
     
 
     cartItems.total = parseInt(cartItems.productQuantity * unitPrice);
-    console.log("Updated:", cartItems);
+    // console.log("Updated:", cartItems);
     await user.save();
 
     const qnty = cartItems.productQuantity;
@@ -1606,7 +1677,7 @@ const applyCoupon = async (req, res) => {
   const couponCode = req.params.cp.trim();
   const prevTotal = req.params.amt;
   const productId=req.params.prdId
-  console.log(productId);
+  // console.log(productId);
   // const userCategory = req.body.userCategory; // Assuming you have a way to get the user's category
 
   // console.log(userCategory);
@@ -1619,15 +1690,15 @@ const applyCoupon = async (req, res) => {
     const product=await Product.findOne({_id:productId})
 
 
-    console.log(product);
+    // console.log(product);
 
     let cgt=[]
 
 
 
     let prdCategory = product.paintCategory
-    console.log(product.paintCategory,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-console.log(coupon.category,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    // console.log(product.paintCategory,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+// console.log(coupon.category,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     if (coupon && !coupon.isDeleted) {
       // Check if the coupon has expired
       const currentDate = new Date();
@@ -1719,7 +1790,7 @@ const cancelOrder = async (req,res) =>{
     const orderID = req.params.id
 
 
-    console.log(orderID);
+    // console.log(orderID);
     const email = req.session.user
 
     const user = await User.findOne({email:email});
@@ -1735,14 +1806,14 @@ const cancelOrder = async (req,res) =>{
     
  
     const cancelledOrder = await order.findById(orderID);
-    console.log(cancelledOrder,'===================================================');
+    // console.log(cancelledOrder,'===================================================');
     if (!cancelledOrder) {
       return res.status(404).json({ error: 'Order not found' });
     }
     const totalAmount = cancelledOrder.totalAmount;
     const payment=cancelledOrder.paymentMethod
 
-    console.log("payment method", cancelledOrder.paymentMethod)
+    // console.log("payment method", cancelledOrder.paymentMethod)
 
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
@@ -1752,7 +1823,7 @@ if(cancelledOrder.paymentMethod==="online"){
   const currentDate = new Date();
   const date =  currentDate.toDateString();
 
-  console.log(date,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Current date<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+  // console.log(date,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Current date<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 
 
   const updatedOrder = await order.findByIdAndUpdate(
@@ -1856,21 +1927,19 @@ const return_Request = async (req, res) => {
 //================================================
 //================================================
 
-const invoice = async (req,res) => {
+const invoice = async (req, res) => {
   try {
-    // console.log("gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg");
-    const orderId = req.params.OrderId
-    const email = req.session.user
-    const user = await User.findOne({email:email})
+    const orderId = req.params.OrderId;
+    const email = req.session.user;
+
+    const user = await User.findOne({ email: email });
+
     const userId = user._id
-    // console.log(orderId,"||||||||||||||||||||||||||||||||||||||||||||||||||||||||");
+    ;
 
+    let orderData = await order.find({ user: userId });
 
-
-
-    // let order = await order.find({ user: userId });
-
-   let order = await orders.aggregate([
+    orderData = await order.aggregate([
       {
         $match: { user: userId },
       },
@@ -1887,15 +1956,12 @@ const invoice = async (req,res) => {
       },
     ]);
 
-    // console.log(order.)
+    // console.log(orderData.productDetails,"pppppppppppppppppppppp");
 
-    
-      
-    // console.log(order,"//////////////////////////////////////////////////////");
-  res.render('User/invoice',{order , user})
+    res.render('User/invoice', { orderData,user });
   } catch (error) {
     console.log(error);
-    res.redirect('/internal-error')
+    res.redirect('/internal-error');
   }
 }
 
@@ -1960,8 +2026,7 @@ module.exports = {
   applyCoupon,
   return_Request,
   invoice,
-  logout,
+  logout
 };
-
 //================================================
 //================================================

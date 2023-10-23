@@ -83,6 +83,22 @@
             placeholder="Enter product stock" value="<%= product.stock %>" required>
         </div>
 
+
+        <!-- Package Information	  -->
+        <div class="form-group">
+          <label for="packageInfo" class="form-label">Package Information</label>
+          <input type="text" class="form-control" id="packageInfo" name="packageInfo" value="<%= product.packageInfo %>" required>
+        </div>
+
+
+
+        <!-- Country of origin  -->
+        <div class="form-group">
+          <label for="country" class="form-label">Country of Origin</label>
+          <input type="text" class="form-control" id="country" min="1" name="country" value="<%= product.country %>" required>
+        </div>
+
+
         <!-- Product Description -->
         <div class="form-group">
           <label for="productDescription" class="form-label">Product Description</label>

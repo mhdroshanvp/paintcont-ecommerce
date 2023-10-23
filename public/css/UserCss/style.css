@@ -9266,3 +9266,182 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+
+
+/* product list///////////////////////////////////////////////////////////////////////////////////////////// */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
+        body {
+            font-family: "Poppins", sans-serif;
+            color: #444444;
+        }
+
+        a,
+        a:hover {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .section-products {
+          /* padding: 80px 0 54px; */
+      }
+      
+      .section-products .single-product {
+          margin-bottom: 26px;
+          position: relative;
+          border: 1px solid gray;
+          border-radius: 5px;
+          transition: transform 0.3s ease;
+          overflow: hidden;
+      }
+      
+      .section-products .single-product:hover {
+          transform: scale(1.05);
+          box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+      }
+      
+      .section-products .single-product .part-1 {
+          position: relative;
+          height: 202px;
+          max-height: 290px;
+          margin-bottom: 20px;
+          overflow: hidden;
+      }
+      
+      .section-products .single-product .part-1::before {
+          position: absolute;
+          content: "";
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: -1;
+          transition: all 0.3s;
+      }
+      
+      .section-products .single-product:hover .part-1::before {
+          transform: scale(1.2, 1.2) rotate(5deg);
+      }
+      
+      /* Remove these specific IDs for background images */
+      .section-products #product-1 .part-1::before {
+          background: url("https://i.ibb.co/L8Nrb7p/1.jpg") no-repeat center;
+          background-size: cover;
+          transition: all 0.3s;
+      }
+      
+      .section-products #product-2 .part-1::before {
+          background: url("https://i.ibb.co/cLnZjnS/2.jpg") no-repeat center;
+          background-size: cover;
+      }
+      
+      .section-products #product-3 .part-1::before {
+          background: url("https://i.ibb.co/L8Nrb7p/1.jpg") no-repeat center;
+          background-size: cover;
+      }
+      
+      .section-products #product-4 .part-1::before {
+          background: url("https://i.ibb.co/cLnZjnS/2.jpg") no-repeat center;
+          background-size: cover;
+      }
+      
+      /* Rest of your CSS remains the same */
+      
+
+        .section-products .single-product .part-1 .discount,
+        .section-products .single-product .part-1 .new {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            color: #ffffff;
+            background-color: #fe302f;
+            padding: 2px 8px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        .section-products .single-product .part-1 .new {
+            left: 0;
+            background-color: #444444;
+        }
+
+        .section-products .single-product .part-1 ul {
+            position: absolute;
+            bottom: -41px;
+            left: 20px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            opacity: 0;
+            transition: bottom 0.5s, opacity 0.5s;
+        }
+
+        .section-products .single-product:hover .part-1 ul {
+            bottom: 30px;
+            opacity: 1;
+        }
+
+        .section-products .single-product .part-1 ul li {
+            display: inline-block;
+            margin-right: 4px;
+        }
+
+        .section-products .single-product .part-1 ul li a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            background-color: #ffffff;
+            color: #444444;
+            text-align: center;
+            box-shadow: 0 2px 20px rgb(50 50 50 / 10%);
+            transition: color 0.2s;
+        }
+
+        .section-products .single-product .part-1 ul li a:hover {
+            color: #fe302f;
+        }
+
+        .section-products .single-product .part-2 .product-title {
+            font-size: 1rem;
+        }
+
+        .section-products .single-product .part-2 h4 {
+            display: inline-block;
+            font-size: 1rem;
+        }
+
+        .section-products .single-product .part-2 .product-old-price {
+            position: relative;
+            padding: 0 7px;
+            margin-right: 2px;
+            opacity: 0.6;
+        }
+
+        .section-products .single-product .part-2 .product-old-price::after {
+            position: absolute;
+            content: "";
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: #444444;
+            transform: translateY(-50%);
+        }
+
+/*PDF BUTTON///////////////////////////////////////////////////////////////////////////////////////////// */
+:root {
+  --custom-transition-color: grey; /* Change to your desired grey color */
+}
+
+.download-btn {
+  width: 142px;
+  transition: background-color 0.3s var(--custom-transition-color), color 0.3s var(--custom-transition-color);
+}
+
+.download-btn:hover {
+  background-color: var(--custom-transition-color);
+  color: #fff; /* Change to your desired text color */
+}

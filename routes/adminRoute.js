@@ -70,7 +70,8 @@ router.post('/category',adminController.postCategory)
 
 router.get('/user-stats',adminController.userStatus)
 
-router.get('/dashboard/sales',adminAuth.loggedIn,adminController.salesReport)
+router.get('/adminsales',adminAuth.loggedIn,adminController.adminSales)
+router.post('/adminsales/download',adminAuth.loggedIn,adminController.salesReportDownload)
 // ========================================================
 //404 / 505 errors 
 router.get('/error',adminController.error)

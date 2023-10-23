@@ -42,10 +42,10 @@
         <!-- Paint Category -->
         <div class="form-group">
           <label for="productCategory" class="form-label">Paint Category</label>
-          <select class="form-select" id="productCategory" required name="category">
+          <select class="form-select" id="productCategory" required name="paintCategory">
             <option value="">Select a category</option>
             <% categories.forEach((ctgry, ind)=> { %>
-              <option value="<%= ctgry._id %>">
+              <option name="paintCategory" value="<%= ctgry._id %>">
                 <%= ctgry.category %>
               </option>
               <% }) %>
@@ -54,8 +54,8 @@
 
         <!-- Paint Color -->
         <div class="form-group">
-          <label for="productQuantity" class="form-label">Paint Color (hex code)</label>
-          <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="#fff" required
+          <label for="productQuantity" class="form-label">Paint Color</label>
+          <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="white" required
             name="paintColor">
         </div>
 
@@ -72,6 +72,24 @@
         <div class="form-group">
           <label for="productStock" class="form-label">Paint Stock </label>
           <input type="number" class="form-control" id="productStock" min="1" name="stock" placeholder="Enter product stock"
+            required>
+        </div>
+
+
+
+        <!-- Package Information	  -->
+        <div class="form-group">
+          <label for="packageInfo" class="form-label">Package Information</label>
+          <input type="text" class="form-control" id="packageInfo" name="packageInfo" placeholder="Enter Package Information"
+            required>
+        </div>
+
+
+
+        <!-- Country of origin  -->
+        <div class="form-group">
+          <label for="country" class="form-label">Country of Origin</label>
+          <input type="text" class="form-control" id="country" min="1" name="country" placeholder="Enter the Country of Origin"
             required>
         </div>
 

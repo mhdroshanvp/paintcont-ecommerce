@@ -66,7 +66,7 @@
                         <div class="shipping-address">
                             <h2>User Address</h2>
                             <hr>
-                            <div class="form-group">
+                            <div class="form-group" style="height: px;">
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -78,15 +78,22 @@
                                                         <%= user.address[i].city %>, <%= user.address[i].state %>,
                                                                 Pincode - <%= user.address[i].pin %>
                                                     </option>
-                                                    <% } %>
+                                                    
+                                                <% } %>
 
 
 
+                                           
                                             </select>
                                         </div>
                                     </div>
                                 </div>
+                                
                                 <br>
+                                
+                                <a href="/profile/add_address" class="btn btn-border">Add Address <i class="fas fa-plus"></i></a>
+                                <a href="/profile" class="btn btn-border">Manage Address <i class="fas fa-paint-roller"></i></a>
+                                
                                 <hr>
                             </div>
                         </div>
@@ -128,10 +135,15 @@
                                     <p class="text-success" id="alert_tag"></p>
                                 </div>
 
+
+
+
                                 <!-- modals!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
                                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
                                     data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
                                     aria-hidden="true">
+
+
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -143,31 +155,29 @@
                                                     <table class="table">
                                                         <thead>
                                                         <tbody>
-                                                            <% console.log(coupon,"============================================="); %>
-                                                    <% if(coupon.length > 0) { %>
-                                                    <% for(let i=0; i<coupon.length; i++) { %>
-                                                <tr>
-                                                    <h4> <b><%= coupon[i].code %></b> </h4> <h6><%= coupon[i].type %> <%= coupon[i].discount %>!!!</h6>
-                                                    <hr>
-                                                </tr>
-                                                <!-- Add more rows as needed -->
-                                                <% } %>
-                                                <% }else { %> 
-                                                    <p>No coupons Available :(</p>
-                                                <% } %> 
-                                                
-                                            </tbody>
-                                            </table>
-                                          </div>
-                                          
-                                      </div>
-                                      <div class=" modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-bs-dismiss="modal">Close</button>
+                                                            <% if (coupon.length > 0) { %>
+                                                                <% for (let i = 0; i < coupon.length; i++) { %>
+                                                                    <tr>
+                                                                        <h4><b><%= coupon[i].code %></b></h4>
+                                                                        <h6><%= coupon[i].type %> <%= coupon[i].discount %>!!!</h6>
+                                                                       <hr>
+                                                                    </tr>
+                                                                <% } %>
+                                                            <% } else { %>
+                                                                <p>No coupons Available :(</p>
+                                                            <% } %>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                             </div>
                                         </div>
                                     </div>
+                                    
+                                    
+                                    
                                     <!-- modals!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 
 
@@ -225,7 +235,8 @@
                                                         <%= item.productQuantity * item.unit %>
                                                     </td>
                                                     <input type="hidden" name="unit" value="<%= item.unit %>">
-                                                    <input type="hidden" name="id" id="prdId" value="<%= item.productId._id %>">
+                                                    <input type="hidden" name="id" id="prdId"
+                                                        value="<%= item.productId._id %>">
                                                 </tr>
                                                 <!-- Add more product rows as needed -->
                                                 <% sum +=item.productQuantity * item.unit %>
@@ -248,37 +259,54 @@
 
                                     <!-- Add this checkbox for payment method -->
                                     <div class="form-check">
-                                        <input type="radio" class="form-check-input" id="onlinePayment" name="paymentMethod" value="online">
+                                        <input type="radio" class="form-check-input" id="onlinePayment"
+                                            name="paymentMethod" value="online">
                                         <label class="form-check-label" for="onlinePayment">Pay Online</label>
                                     </div>
-                                    
+
                                     <div class="form-check">
-                                        <input type="radio" class="form-check-input" id="cashOnDelivery" name="paymentMethod" value="cash">
+                                        <input type="radio" class="form-check-input" id="cashOnDelivery"
+                                            name="paymentMethod" value="cash">
                                         <label class="form-check-label" for="cashOnDelivery">Cash on Delivery</label>
                                     </div>
-                                    
+                                    <hr>
                                     <%if(user.wallet.balance>0){%>
-                                        <div class="text-center">
-                                          <input type="checkbox" name="wallet" id="wallet" value="<%=user.wallet.balance%>"
-                                            disabled>
-                                          <span>Your wallet: ₹ <%=user.wallet.balance%></span>
+                                        <div>
+                                            <input type="checkbox" name="wallet" id="wallet"
+                                                value="<%=user.wallet.balance%>" disabled>
+                                            <span>Your wallet: ₹ <%=user.wallet.balance%></span>
                                         </div>
                                         <%}%>
-                                                                    
-                                    <hr>
 
-                                    <p class="text-danger" style="padding-bottom: 10px;" id="error"></p>
-                                                                          
-                                    <button type="submit" class="btn btn-success">Place Order</button>
-                                    <% } else { %>
-                                        <p>Sorry !!!</p>
-                                        <% } %>
+                                            <hr>
+
+                                            <p class="text-danger" style="padding-bottom: 10px;" id="error"></p>
+
+                                            <button type="submit" class="btn btn-success">Place Order</button>
+                                            <% } else { %>
+                                                <p>Sorry !!!</p>
+                                                <% } %>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
     </main>
+
+    <style>
+        /* Add hover styles for the buttons */
+        .btn-border {
+            border: 1px solid #333; /* Default border */
+            padding: 5px 10px;
+            text-decoration: none;
+            color: #333;
+        }
+    
+        .btn-border:hover {
+            background-color: #333; /* Change background color on hover */
+            color: #fff; /* Change text color on hover */
+        }
+    </style>
     <script>
         /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -292,7 +320,6 @@
             const subtotalElement = document.getElementById('cartTotal');
             const discountInput = document.getElementById('discountinput');
 
-            console.log(selectedCoupon);
 
             // Send a request to your server to apply the selected coupon
             const response = await fetch(`/apply-coupon/${selectedCoupon}/${prevAmount}/${productId}`, {
@@ -304,9 +331,7 @@
 
             const data = await response.json();
 
-            console.log(data);
             if (data.success) {
-                console.log('======fsdfdsfsadf========================ff');
                 // Update the displayed subtotal with the discounted price
                 document.getElementById('cartTotal').innerHTML = `Total: ₹ ${data.discountedPrice}`;
 
@@ -324,7 +349,7 @@
 
         /////////////////////////////////////////////////////////////////////////////////////////
         function checkout() {
-            console.log("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+            // console.log("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
             fetch("/cart/checkout", {
                 method: "POST",
                 body: new URLSearchParams($('#checkoutForm').serialize()),
@@ -335,9 +360,10 @@
                 .then(response => response.json())
                 .then(res => {
                     if (res.codSuccess) {
-                        alert("order")
+
+                        window.location.href = '/cart/checkout/orderSuccess'
                     } else if (res.razorSuccess) {
-                        console.log('inside front < ===========================');
+                        // console.log('inside front < ===========     ================');
                         const order = {
                             "key": "" + res.key_id + "",
                             "amount": "" + res.amount + "",
@@ -355,15 +381,15 @@
                             },
 
                         }
-                        console.log('<<<<<<<<<<<<<<<<<<<<<<<<');
+                        // console.log('<<<<<<<<<<<<<<<<<<<<<<<<');
 
                         const razorpay = new Razorpay(order);
 
                         const done = razorpay.open();
 
-                    }else if(res.walletSuccess) {
+                    } else if (res.walletSuccess) {
                         // window.location.href = '/cart/checkout/orderSuccess'
-                   alert('jjjjjjjjjjjjj')
+                        alert('jjjjjjjjjjjjj')
                     }
                 })
                 .catch(err => {
@@ -379,7 +405,7 @@
             })
                 .then((response) => {
                     if (response.ok) {
-                        // Handle success, e.g., show a modal or redirect
+                        // Handle success, e.g., show a modal or redirectal
                         window.location.href = '/cart/checkout/orderSuccess'
                     } else {
                         // Handle error
@@ -398,28 +424,47 @@
 
 
         /////////////////////////wallet checkbox/////////////////////////////////
-  // Function to enable/disable wallet checkbox
-  function handlePaymentMethodChange() {
-    const onlinePaymentRadio = document.getElementById('onlinePayment');
-    const walletCheckbox = document.getElementById('wallet');
+        // Function to enable/disable wallet checkbox
+        function handlePaymentMethodChange() {
+            const onlinePaymentRadio = document.getElementById('onlinePayment');
+            const walletCheckbox = document.getElementById('wallet');
 
-    if (onlinePaymentRadio.checked) {
-      walletCheckbox.disabled = false;
-    } else {
-      walletCheckbox.disabled = true;
-      walletCheckbox.checked = false
-    }
-  }
+            if (onlinePaymentRadio.checked) {
+                walletCheckbox.disabled = false;
+            } else {
+                walletCheckbox.disabled = true;
+                walletCheckbox.checked = false
+            }
+        }
 
-  // Add an event listener to the payment method radio buttons
-  const onlinePaymentRadio = document.getElementById('onlinePayment');
-  const cashOnDeliveryRadio = document.getElementById('cashOnDelivery');
+        // function deleteAddress(addressId) {
+        //     if (confirm("Are you sure you want to delete this address?")) {
+        //         fetch(`/profile/edit_address/dltAddress?addressId=${addressId}`, {
+        //             method: 'DELETE',
+        //         })
+        //             .then((response) => {
+        //                 if (response.ok) {
+        //                     console.log(`Address ${addressId} has been deleted.`);
+        //                     window.location.reload();
+        //                 } else {
+        //                     console.error(`Failed to delete address ${addressId}.`);
+        //                 }
+        //             })
+        //             .catch((error) => {
+        //                 console.error('Error:', error);
+        //             });
+        //     }
+        // }
 
-  onlinePaymentRadio.addEventListener('change', handlePaymentMethodChange);
-  cashOnDeliveryRadio.addEventListener('change', handlePaymentMethodChange);
+        // Add an event listener to the payment method radio buttons
+        const onlinePaymentRadio = document.getElementById('onlinePayment');
+        const cashOnDeliveryRadio = document.getElementById('cashOnDelivery');
 
-  // Initial check
-  handlePaymentMethodChange();
+        onlinePaymentRadio.addEventListener('change', handlePaymentMethodChange);
+        cashOnDeliveryRadio.addEventListener('change', handlePaymentMethodChange);
+
+        // Initial check
+        handlePaymentMethodChange();
         /////////////////////////wallet checkbox/////////////////////////////////
 
 

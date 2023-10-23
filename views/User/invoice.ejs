@@ -65,25 +65,18 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="invoice-title">
-                                    <h4 class="float-end font-size-15">Invoice of OrderId =  <span class="badge bg-success font-size-12 ms-2"></span></h4>
-                                    <div class="mb-4">
-                                       <h2 class="mb-1 text-muted">PaintCont</h2>
-                                    </div>
-                                    <div class="text-muted">
-                                        <p class="mb-1">3184 Spruce Drive Pittsburgh, PA 15201</p>
-                                        <p class="mb-1"><i class="uil uil-envelope-alt me-1"></i> xyz@987.com</p>
-                                        <p><i class="uil uil-phone me-1"></i> 012-345-6789</p>
+                                  <div class="mb-4">
+                                    <h2 class="mb-1 text-muted">PaintCont</h2>
+                                    <h4 class="float-end font-size-15">Invoice of OrderId =  <span class="badge bg-success font-size-12 ms-2"><%= orderData[0]._id %></span></h4>
                                     </div>
                                 </div>
             
                                 <hr class="my-4">
             
-                                <div class="row">
+                                <div class="row d-flex justify-content-center">
                                     <div class="col-sm-6">
                                         <div class="text-muted">
-                                            <h5 class="font-size-16 mb-3">Billed To:</h5>
-                                            <h5 class="font-size-15 mb-2"><%= user.name %></h5>
-                                            <p class="mb-1">Addresses</p>
+                                            <h5 class="font-size-16 mb-3">Billed To:     <span style="color: red;"><%= user.name %></span></h5>   
                                             <p class="mb-1"><%= user.email %></p>
                                             <p><%= user.phone %></p>
                                         </div>
@@ -91,42 +84,63 @@
                                     <!-- end col -->
                                     <!-- end col -->
                                 </div>
+                                <hr>
                                 <!-- end row -->
                                 
                                 <div class="py-2">
                                     <h5 class="font-size-15">Order Summary</h5>
+            <hr>  
+
+<table class="table table-bordered table-striped order-table">
+          <tbody>                     
+          </tbody>
+        </table>
+        <div class="table-responsive">
+          <table class="table align-middle table-nowrap table-centered mb-0">
+              <thead>
+                  <tr>
+                      <th style="width: 70px;">No.</th>
+                      <th>Item</th>
+                      <th>Price</th>
+                      <th>Quantity</th>
+                      <th class="text-end" style="width: 120px;">Total</th>
+                  </tr>
+              </thead><!-- end thead -->
+             <!-- ... your previous HTML code ... -->
+
+             <tbody>
+              <% if (orderData.length > 0) { %>
+                <% for (let orderIndex = 0; orderIndex < orderData.length; orderIndex++) { %>
+                  <% const order = orderData[orderIndex]; %>
+                  <% if (order.productDetails && order.productDetails.length > 0) { %>
+                    <% order.productDetails.forEach((product, productIndex) => { %>
+                      <tr>
+                        <th scope="row"><%= orderIndex + 1 %></th>
+                        <td>
+                          <div>
+                            <h5 class="text-truncate font-size-14 mb-1"><%= product.productName %></h5>
+                            <p class="text-muted mb-0"><%= product.paintCategory %>, <%= product.paintColor %></p>
+                          </div>
+                        </td>
+                        <td>₹<%= product.productPrice %></td>
+                        <td>1</td> <!-- Corrected to access the quantity from the product -->
+                        <td class="text-end">₹<%= product.productPrice * 1 %></td>
+                      </tr>
+                    <% }); %>
+                  <% } %>
+                <% } %>
+              <% } %>
+            </tbody>
             
-                                    <div class="table-responsive">
-                                        <table class="table align-middle table-nowrap table-centered mb-0">
-                                            <% if (order.length > 0) { %>
-                                                <table>
-                                                  <thead>
-                                                    <tr>
-                                                      <th>No.</th>
-                                                      <th>Item</th>
-                                                      <th>Price</th>
-                                                      <th>Quantity</th>
-                                                      <th>Total</th>
-                                                    </tr>
-                                                  </thead>
-                                                  <tbody>
-                                                    <% order[0].products.forEach((product, index) => { %>
-                                                      <tr>
-                                                        <td><%= index + 1 %></td>
-                                                        <td>
-                                                          <h5><%= product.productDetails[0].productName %></h5>
-                                                          <p><%= product.productDetails[0].productDescription %></p>
-                                                        </td>
-                                                        <td>$<%= product.price %></td>
-                                                        <td><%= product.qnty %></td>
-                                                        <td>$<%= product.total %></td>
-                                                      </tr>
-                                                    <% }); %>
-                                                  </tbody>
-                                                </table>
-                                              <% } %>
-                                        </table><!-- end table -->
-                                    </div><!-- end table responsive -->
+
+<!-- ... your previous HTML code ... -->
+
+          </table><!-- end table -->
+      </div>
+
+
+
+                                    </div>
                                     <div class="d-print-none mt-4">
                                         <div class="float-end">
                                             <a href="javascript:window.print()" class="btn btn-success me-1"><i class="fa fa-print">Print</i></a>
@@ -134,7 +148,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
                     </div><!-- end col -->
 
                 </div>

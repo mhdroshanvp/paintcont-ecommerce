@@ -37,13 +37,17 @@ const productSchema = mongoose.Schema({
     type: Number,
     require: true,
   },
-  reviews: [
-    {
-      user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-      rating: Number,
-      comment: String,
-    },
-  ],
+
+  packageInfo: {
+    type: String,
+    require: true,
+  },
+
+  country: {
+    type: String,
+    require: true,
+  },
+
 });
 // ========================================================
 module.exports = mongoose.model("Product", productSchema);

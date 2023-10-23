@@ -38,6 +38,10 @@ app.use(
 
 app.use("/", userRoutes);
 app.use("/admin", adminRoutes);
+app.use((req,res)=>{
+  res.status(404)
+  res.render('User/404page')
+})
 
 
 app.listen(process.env.PORT || 3000, () => {

@@ -6,10 +6,12 @@ const order = require("../model/orders");
 const banner = require("../model/banner");
 const path = require("path");
 let Jimp = require("jimp");
-const { log } = require("console");
+const { log, Console } = require("console");
 const Category = require('../model/category')
 const Coupons = require('../model/coupons')
-const mongoose=require('mongoose')
+const mongoose=require('mongoose');
+const category = require("../model/category");
+const { Parser } = require('json2csv');
 
 // Create an object to define various controller functions
 const controllers = {
@@ -43,7 +45,8 @@ const controllers = {
       if (adminMail === email) {
         if (password === adminPass) {
           req.session.admin = adminMail;
-          console.log(req.session.admin);
+          // console.log(req.session.admin);
+
           res.redirect("/admin/dashboard");
         } else {
           req.session.errormsg = "Incorrect password!";
@@ -67,7 +70,7 @@ const controllers = {
             const totalProducts = await Product.countDocuments();
 
             // Calculate the total sales amount for delivered orders
-            const deliveredOrders = await order.find({ status: 'delivered' }); // Assuming 'delivered' is the status for delivered orders
+            const deliveredOrders = await order.find({ status: 'delivered' });
             let totalSales = 0;
             for (const order of deliveredOrders) {
                 totalSales += order.totalAmount; // Assuming your order schema has a field called totalAmount for each order
@@ -121,7 +124,7 @@ const controllers = {
               }
             ]);
             ///////////////////////////////////////////////////////////////////////////////////////////
-            console.log(monthSales);
+            // console.log(monthSales,"###################################################################################");
 
             res.render("Admin/index", { totalOrders, totalProducts, totalSales, blockedUsers, unblockedUsers , monthSales});
         } else {
@@ -247,27 +250,40 @@ const controllers = {
         productQuantity,
         productDescription,
         stock,
+        packageInfo,
+        country
       } = req.body;
 
+
+// console.log(req.body.paintCategory);
+
+const ctry = await Category.findById(paintCategory)
+console.log(ctry);
+
+const categoryName = ctry.category
 
       trimmedProductName = productName.trim()
       trimmedPaintColor = paintColor.trim()
       trimmedDescription = productDescription.trim()
+      trimmedPackageInfo = packageInfo.trim()
+      trimmedCountry = country.trim()
 
 
       const productPhoto = req.files.map((file) => file.filename )
 
-      console.log(productPhoto,'<=================photo');
+      // console.log(productPhoto,'<=================photo');
 
       const newProduct = new Product({
         productPhoto,
         productName : trimmedProductName,
         productPrice,
-        paintCategory,
+        paintCategory : categoryName,
         paintColor : trimmedPaintColor,
         paintQuantity: productQuantity,
         productDescription :trimmedDescription,
         stock,
+        packageInfo : trimmedPackageInfo,
+        country : trimmedCountry
       });
 
       await newProduct.save();
@@ -283,7 +299,7 @@ const controllers = {
   getProductListing: async (req, res) => {
     try {
       const products = await Product.find();
-      console.log(products);
+      // console.log(products);
       res.render("Admin/productListing", { products });
     } catch (error) {
       console.log(error.message);
@@ -296,7 +312,7 @@ const controllers = {
   patchList: async (req, res) => {
     try {
       const id = req.body.id;
-      console.log(id);
+      // console.log(id);
       let isUpdated;
       if (id) {
         isUpdated = await Product.updateOne(
@@ -372,12 +388,14 @@ const controllers = {
       }
 
 
-      const {productName,productPrice,paintCategory,paintColor,productQuantity,productDescription,stock} = req.body;
+      const {productName,productPrice,paintCategory,paintColor,productQuantity,productDescription,stock,packageInfo,country} = req.body;
 
 
       const trimmedProductName = productName.trim()
       const trimmedPaintColor = paintColor.trim()
       const trimmedProductDescription = productDescription.trim()
+      const trimmedPackageInfo = packageInfo.trim()
+      const trimmedCountry = country.trim()
 
 
       const updatedProductData = {
@@ -387,7 +405,9 @@ const controllers = {
       paintColor : trimmedPaintColor,
       paintQuantity:productQuantity,
       productDescription : trimmedProductDescription,
-      stock
+      stock,
+      packageInfo : trimmedPackageInfo,
+      country : trimmedCountry
       }
 
       if (req.files && req.files.length > 0) {
@@ -467,7 +487,7 @@ const controllers = {
           },
         ]);
   
-      console.log(orders, "========================================================================");
+      // console.log(orders, "========================================================================");
   
       res.render("Admin/orderlisting", { orders, products });
     } catch (error) {
@@ -581,14 +601,17 @@ const controllers = {
         { _id: userId },
         { $inc: { "wallet.balance": totalAmount },
           $push: { "wallet.transactions": orderdata._id.toString() } }
-      );``
+      );
+
+
     }
 
     // Send a success response
     res.redirect('/admin/orders')
+    
   } catch (error) {
-    console.error('Error updating order status:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    // console.error('Error updating order status:', error);
+    // res.status(500).json({ error: 'Internal server error' });
     // res.redirect('/Admin/internal-error')
   }
 },
@@ -633,7 +656,7 @@ const controllers = {
       category = category.trim()
 
 
-      console.log(category);
+      // console.log(category);
 
       await Category.create({category})
 
@@ -659,7 +682,7 @@ postCategory: async (req, res) => {
     // Trim the category string to remove leading and trailing white spaces
     category = category.trim();
 
-    console.log(category);
+    // console.log(category);
 
     const newCategory = await Category.create({ category });
 
@@ -677,14 +700,12 @@ postCategory: async (req, res) => {
 
 postUpdtCat: async (req, res) => {
   const categoryId = req.params.categoryId;
-  const updCat = req.body.editCat;
-
+  let updCat = req.body.category;
+  
   try {
     if (updCat !== undefined) {
       updCat = updCat.trim();
     } else {
-      // Handle the case where editCat is undefined
-      // You can choose to skip the trimming or handle it differently here
       console.log('cannot trim :(');
     }
 
@@ -693,6 +714,7 @@ postUpdtCat: async (req, res) => {
       { category: updCat },
       { new: true }
     );
+
 
     if (!updatedCategory) {
       return res.redirect('/admin/category');
@@ -712,12 +734,12 @@ DltCat: async (req, res) => {
 
   try {
 
-    console.log('sdfaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+    // console.log('sdfaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     const categoryId = req.params.categoryId;
 
     const categoryIdObjectId = new mongoose.Types.ObjectId(categoryId);
     const categories = await Category.findById(categoryIdObjectId);
-    console.log(categories, "llllllllllllllllllllllllllllllllll");
+    // console.log(categories, "llllllllllllllllllllllllllllllllll");
     const catName = categories.category;
     
     // Find and unlist products with the specified category
@@ -726,7 +748,7 @@ DltCat: async (req, res) => {
       { $set: { list: true } }
     );
     
-    console.log(updateResult, "Products unlisted for category:", catName);
+    // console.log(updateResult, "Products unlisted for category:", catName);
 
 
     const deletedCategory = await Category.findById(categoryIdObjectId);
@@ -739,7 +761,7 @@ DltCat: async (req, res) => {
     await deletedCategory.save()
 
 
-    console.log(deletedCategory,"fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+    // console.log(deletedCategory,"fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
 
 
     // Successfully deleted the category  
@@ -789,7 +811,7 @@ getAllCoupons : async (req, res) => {
   try {
     const coupons = await Coupons.find();
     const categories = await Category.find()
-    console.log(categories,'<<<<<<<<<<<<<<<<<<<<<<<<<<<+++++++++++++++++++++++++++++++++++');
+    // console.log(categories,'<<<<<<<<<<<<<<<<<<<<<<<<<<<+++++++++++++++++++++++++++++++++++');
     res.render('admin/coupons', { coupons, users: false , categories})
   } catch (error) {
     throw new Error(error)
@@ -852,14 +874,102 @@ userStatus: async (req,res) =>{
 },
 
 
-salesReport: async (req,res) =>{
+
+adminSales: async (req,res) =>{
+  const from = req.query.from 
+  const to = req.query.to
+  let selectedStatus = ''
+  let salesReport
+
   try {
-    res.render('Admin/salesReport')
+
+
+     
+      salesReport = await order.aggregate([
+
+        { $unwind: "$products" },
+        { $match: { "status": "delivered" } },
+        {
+          $lookup: {
+            from: "products",
+            localField: "products.product",
+            foreignField: "_id",
+            as: "products_details"
+          }
+        },
+        { $unwind: "$products_details" },
+        {
+          $project: {
+            order_id: "$_id",
+            products_details: "$products_details",
+            qty: "$products.qnty",
+            total_amount: "$products.price",
+            order_date: "$orderDate",
+            payment_method: "$paymentMethod",
+
+          }
+        },
+        { $sort: { "_id": -1 } }
+        
+      ])
+
+      // console.log(salesReport,"sales");
+    
+
+
+
+
+    if (from && to) {
+      const fromDate = new Date(from);
+      const toDate = new Date(to);
+    
+      salesReport = salesReport.filter((prd) => {
+        const orderDate = new Date(prd.order_date);
+        return orderDate >= fromDate && orderDate <= new Date(toDate.getTime() + 24 * 60 * 60 * 1000);
+      });
+     
+    }
+
+    res.render('Admin/salesReport', { salesReport, selectedStatus })
+
+  } catch (e) {
+    console.log(e);
+  }
+},
+
+
+salesReportDownload: async (req, res) => {
+  try {
+    const data = req.body;
+
+    if (!data || !Array.isArray(data.date)) {
+      // Check if the data is empty or not in the expected format
+      return res.status(400).json({ error: 'Invalid data format' });
+    }
+
+    let file = [];
+    for (let i = 0; i < data.date.length; i++) {
+      const row = {
+        date: data.date[i],
+        order_id: data.order_id[i], // Correct the key here
+        product: data.product[i],
+        qty: data.qty[i],
+        payment: data.payment[i],
+        amount: data.amount[i],
+      };
+      file.push(row);
+    }
+
+    const json2csv = new Parser();
+    const csv = json2csv.parse(file);
+
+    res.attachment(`report-${Date.now()}.csv`);
+    res.status(200).send(csv);
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 }
-
 
 
 

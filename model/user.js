@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
 const { Decimal128 } = require("mongodb");
 const { ObjectId } = require("mongoose");
-const { v4: uuidv4 } = require('uuid');
+const crypto = require("crypto"); 
 const { Date } = require("mongoose");
 // ========================================================
+const existingCodes = [];
+
 const userSchema = mongoose.Schema({
   name: {
     type: String,
@@ -75,7 +77,7 @@ const userSchema = mongoose.Schema({
   wallet: {
 
     balance: {
-      type: Decimal128,
+      type: Number,
       default: 0.0,
     },
 
@@ -96,14 +98,29 @@ const userSchema = mongoose.Schema({
 
   },
 
-  MyRefferalCode:{
+  MyRefferalCode: {
     type: String,
-    default: uuidv4(),
-    unique: true, 
+    default: generateUniqueShortCode,
+    unique: true,
   },
 
 
   usedCoupons: [{ type: mongoose.Schema.Types.ObjectId, ref: "Coupons" }],
 });
+
+
+// =========================================================
+function generateUniqueShortCode() {
+  const codeLength = 6;
+  let shortCode;
+
+  do {
+    shortCode = crypto.randomBytes(codeLength).toString("hex").toUpperCase().substring(0, codeLength);
+  } while (existingCodes.includes(shortCode)); // Ensure it's unique
+
+  existingCodes.push(shortCode); // Add the code to the existingCodes array
+
+  return shortCode;
+}
 // ========================================================
 module.exports = mongoose.model("User", userSchema);

@@ -76,13 +76,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                        <% user.cart.forEach((item, index)=> { %>
+                                    <% user.cart.forEach((item, index)=> { %>
+
+
                                             <tr>
                                                 <td>
                                                     <%= index + 1 %>
                                                 </td>
                                                 <td><a
-                                                        href="/products/product-details?productId=<%= item.productId._id %>"><img
+                                                        href="/products/product-details?productId=<%= item.productId%>"><img
                                                             src="/userimages/<%= item.productId.productPhoto[0] %>"
                                                             alt="Product Image" class="img-fluid" width="100"></a></td>
                                                 <td>
@@ -148,7 +150,7 @@
 
     <script>
         function dlt(productId) {
-            console.log(productId);
+            // console.log(productId);
             console.log('inside function');
 
             fetch(`/remove-from-cart/${productId}`, {
@@ -250,7 +252,7 @@
                 })
                 .then((data) => {
                     const { success, quantity, total } = data;
-                    console.log(data.qnty);
+                    // console.log(data.qnty);
 
                     document.getElementById(`total${productId}`).innerHTML = total;
                     document.getElementById(`quantity${productId}`).value = data.qnty;
