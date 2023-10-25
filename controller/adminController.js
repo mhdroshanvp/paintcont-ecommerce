@@ -812,7 +812,7 @@ getAllCoupons : async (req, res) => {
     const coupons = await Coupons.find();
     const categories = await Category.find()
     // console.log(categories,'<<<<<<<<<<<<<<<<<<<<<<<<<<<+++++++++++++++++++++++++++++++++++');
-    res.render('admin/coupons', { coupons, users: false , categories})
+    res.render('Admin/coupons', { coupons, users: false , categories})
   } catch (error) {
     throw new Error(error)
     res.redirect('/Admin/internal-error')
