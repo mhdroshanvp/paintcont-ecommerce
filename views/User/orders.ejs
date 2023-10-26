@@ -115,6 +115,7 @@
                                   <button class="btn btn-danger "
                                     onclick="event.preventDefault(); cancelOrder('<%= order._id %>')">Cancel</button>
                                 </td>
+                                
                                 <% }else{ %>
                                   <td rowspan="<%= order.productDetails.length %>">
                                     <h4>
@@ -127,7 +128,11 @@
                                         <!-- Product image -->
                                         <%= product.productName %> (<%= order.products[0].qnty %>)
                                       </td>
+                                      <% if(order.status==="delivered") { %>
                                       <td><a href="/orders/invoice/<%= order._id %>"><button class="btn btn-warning">Invoice  </button></a>  </td>
+                                      <% }else { %>
+                                        <td><a><button disabled  class="btn btn-warning">Invoice  </button></a>  </td>
+                                        <% } %>
                       </tr>
                       <!-- Add modal code for each product here -->
                       <!-- /////////////////////////////////////////////////////////////////// -->
@@ -198,7 +203,6 @@
 
     function cancelOrder(orderId) {
 
-      // console.log("hhhhhhhhhhhhjhjhhhhhhhhhhhhhhh");
       alert("Are You Sure !!!")
       if (!orderId) {
         console.error('Invalid orderId');

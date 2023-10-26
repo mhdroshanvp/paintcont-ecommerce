@@ -296,13 +296,7 @@ const getSignup = (req, res) => {
 
 // Route to handle signup
 const postSignup = async (req, res) => {
-  // const userEmail = req.session.user
-  
 
-  // console.log(refferal,"lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll");
-  // const usersRefferal = user.MyRefferalCode
-
-  // console.log(usersRefferal,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>USERR>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
   try {
     if (
@@ -372,7 +366,7 @@ const postSignup = async (req, res) => {
 
    
   
-    return res.render("user/otp");
+    return res.render("User/otp");
    
   } catch (error) {
     console.error(error);
