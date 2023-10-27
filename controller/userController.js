@@ -94,7 +94,7 @@ const resendOtp = async (req, res) => {
 // Route to display the OTP sending form
 const getSendOTPmail = (req, res) => {
   if (req.session.otp) {
-    res.render("user/sendOTPto");
+    res.render("User/sendOTPto");
   } else {
     res.redirect("/signup");
   }
@@ -251,7 +251,7 @@ const postLogin = async (req, res) => {
     const user = await User.findOne({ email: email });
 
     if (!user) {
-      return res.render("user/login", { errorMessage: "type something" });
+      return res.render("User/login", { errorMessage: "type something" });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
