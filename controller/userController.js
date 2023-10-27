@@ -479,7 +479,7 @@ const getProducts = async (req, res) => {
 
 const PostMail4otp = async (req, res) => {
   try {
-    const email = req.body.email.trim(); // Trim white spaces from the provided email
+    const email = req.body.email.trim();
 
     req.session.email = email;
     const alreadymail = await User.findOne({ email });
@@ -500,7 +500,7 @@ const PostMail4otp = async (req, res) => {
       const otp = generateOTP();
       req.session.otp = otp;
       await sendOTPByEmail(email, otp);
-      res.redirect("/forgetotp");
+      res.render("User/forgetOTP");
     }
   } catch (error) {
     console.log(error);
