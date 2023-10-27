@@ -84,15 +84,15 @@
                     <% order.productDetails.forEach((product, productIndex)=> { %>
                       <tr>
                         <!-- Display order-related information only in the first row -->
-                        <% if (productIndex===0) { %>
+                        <% if (productIndex === 0) { %>
                           <td rowspan="<%= order.productDetails.length %>">
                             <%= orderIndex + 1 %>
                           </td>
                           <td rowspan="<%= order.productDetails.length %>">
                             <%= order.orderDate.toLocaleDateString() %>
-                              <br>
-                              <button class="btn btn-dark" data-bs-toggle="modal"
-                                data-bs-target="#modalorder<%= order._id %>">Details</button>
+                            <br>
+                            <button class="btn btn-dark" data-bs-toggle="modal"
+                              data-bs-target="#modalorder<%= order._id %>">Details</button>
                           </td>
                           <!-- Display the total order price only in the first row of each order -->
                           <td rowspan="<%= order.productDetails.length %>">
@@ -102,38 +102,46 @@
                             <%= order.status %>
                           </td>
                           <!-- Show the cancel button only in the first row of each order -->
-                          <% if(order.status==="cancelled" ) { %>
+                          <% if (order.status === "cancelled") { %>
                             <td rowspan="<%= order.productDetails.length %>">
                               <button class="btn btn-danger " disabled>Cancel</button>
                             </td>
-                            <% }else if(order.status==="delivered" ){ %>
-                              <td rowspan="<%= order.productDetails.length %>">
-                                <button class="btn btn-warning " onclick="event.preventDefault(); returnOrder('<%= order._id %>')" >Return</button>
-                              </td>
-                              <% }else if(order.status==="Pending" || order.status==="processing" ){ %>
-                                <td rowspan="<%= order.productDetails.length %>">
-                                  <button class="btn btn-danger "
-                                    onclick="event.preventDefault(); cancelOrder('<%= order._id %>')">Cancel</button>
-                                </td>
-                                
-                                <% }else{ %>
-                                  <td rowspan="<%= order.productDetails.length %>">
-                                    <h4>
-                                      <p style="font-size:40px">&#128578;</p>
-                                    </h4>
-                                  </td>
-                                  <% } %>
-                                    <% } %>
-                                      <td>
-                                        <!-- Product image -->
-                                        <%= product.productName %> (<%= order.products[0].qnty %>)
-                                      </td>
-                                      <% if(order.status==="delivered") { %>
-                                      <td><a href="/orders/invoice/<%= order._id %>"><button class="btn btn-warning">Invoice  </button></a>  </td>
-                                      <% }else { %>
-                                        <td><a><button disabled  class="btn btn-warning">Invoice  </button></a>  </td>
-                                        <% } %>
+                          <% } else if (order.status === "delivered") { %>
+                            <td rowspan="<%= order.productDetails.length %>">
+                              <button class="btn btn-warning " onclick="event.preventDefault(); returnOrder('<%= order._id %>')">Return</button>
+                            </td>
+                          <% } else if (order.status === "Pending" || order.status === "processing") { %>
+                            <td rowspan="<%= order.productDetails.length %>">
+                              <button class="btn btn-danger " onclick="event.preventDefault(); cancelOrder('<%= order._id %>')">Cancel</button>
+                            </td>
+                          <% } else { %>
+                            <td rowspan="<%= order.productDetails.length %>">
+                              <h4>
+                                <p style="font-size:40px">&#128578;</p>
+                              </h4>
+                            </td>
+                          <% } %>
+                        <% } %>
+                        <td>
+                          <!-- Product image -->
+                          <%= product.productName %> (<%= order.products[productIndex].qnty %>)
+                        </td>
+                        <!-- Display the "Invoice" button only in the first row -->
+                        <% if (order.status === "delivered" && productIndex === 0) { %>
+                          <td rowspan="<%= order.productDetails.length %>">
+                            <a href="/orders/invoice/<%= order._id %>">
+                              <button class="btn btn-warning">Invoice</button>
+                            </a>
+                          </td>
+                        <% } else if (productIndex === 0) { %>
+                          <td rowspan="<%= order.productDetails.length %>">
+                            <a>
+                              <button disabled class="btn btn-warning">Invoice</button>
+                            </a>
+                          </td>
+                        <% } %>
                       </tr>
+                      
                       <!-- Add modal code for each product here -->
                       <!-- /////////////////////////////////////////////////////////////////// -->
                       <div class="modal fade" id="modalorder<%= order._id %>" tabindex="-1"
@@ -260,7 +268,7 @@
           return response.json();
         })
         .then(data => {
-          // window.location.reload();
+          alert("are you sure")
         })
         .catch(error => {
           console.error('Error:', error);

@@ -618,6 +618,12 @@ const postProfileEdit = async (req, res) => {
     const name = req.body.name ? req.body.name.trim() : '';
     const phone = req.body.phone ? req.body.phone.trim() : '';
 
+
+    if(trimPincode==="" || trimState==="" || trimArea==="" || trimCity===""){
+      return res.render("User/add_address",{error : "Required fields are missing" });
+    }
+
+
     user.name = name;
     user.phone = phone;
 
@@ -731,6 +737,10 @@ const postAddAddress = async (req, res) => {
     const trimState = state.trim()
     const trimArea = areaAndstreet.trim()
     const trimCity = city.trim()
+
+    if(trimPincode==="" || trimState==="" || trimArea==="" || trimCity===""){
+      return res.render("User/add_address",{error : "Required fields are missing" });
+    }
 
     const address = {
       pincode : trimPincode,

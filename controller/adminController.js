@@ -640,8 +640,9 @@ const categoryName = ctry.category
   },
   getCateogory: async (req, res) => {
     try {
+      let errorMSG
       const categories = await Category.find(); 
-      res.render('Admin/category', { categories });
+      res.render('Admin/category', { categories,errorMSG });
     } catch (error) {
       console.log(error);
       res.redirect('/Admin/internal-error');
@@ -655,8 +656,10 @@ const categoryName = ctry.category
 
       category = category.trim()
 
+      if(category===""){
+        return res.render("Admin/category",{errorMSG : "Required fields are missing" });
+      }
 
-      // console.log(category);
 
       await Category.create({category})
 
