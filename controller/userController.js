@@ -257,7 +257,7 @@ const postLogin = async (req, res) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      return res.render("user/login", {
+      return res.render("User/login", {
         errorMessage: "Invalid username or password",
       });
     }
