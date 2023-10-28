@@ -409,7 +409,7 @@ const postResetPass = async (req, res) => {
   try {
     const password = req.body.new_password.trim(); // Trim white spaces from the new password
     const hashedPassword = bcrypt.hashSync(password, 5);
-    const email = req.session.email;
+    const email = req.session.email;  
     // console.log(email);
     const user = await User.findOne({ email: email });
     // console.log(user);
