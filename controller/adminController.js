@@ -946,7 +946,6 @@ salesReportDownload: async (req, res) => {
     const data = req.body;
 
     if (!data || !Array.isArray(data.date)) {
-      // Check if the data is empty or not in the expected format
       return res.status(400).json({ error: 'Invalid data format' });
     }
 
@@ -954,7 +953,7 @@ salesReportDownload: async (req, res) => {
     for (let i = 0; i < data.date.length; i++) {
       const row = {
         date: data.date[i],
-        order_id: data.order_id[i], // Correct the key here
+        order_id: data.order_id[i],
         product: data.product[i],
         qty: data.qty[i],
         payment: data.payment[i],

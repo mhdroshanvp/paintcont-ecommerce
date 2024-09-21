@@ -5,10 +5,10 @@ const user = require('../model/user');
 const auth = require('../middleware/auth')
 // ===========================================================
 
-//home page
-router.get('/home',auth.isLoggedIn,auth.isBlocked,userController.getHome)
 //default route
 router.get('/',auth.isLoggedIn,auth.isBlocked,userController.getLogin);
+//home page
+router.get('/home',auth.isLoggedIn,auth.isBlocked,userController.getHome)
 //login page
 router.get('/login', userController.getLogin);
 //login post

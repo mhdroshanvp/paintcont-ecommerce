@@ -22,7 +22,7 @@ const transporter = nodemailer.createTransport({
   service: "Gmail",
   auth: {
     user: "roshanvp2004@gmail.com",
-    pass: "nyurzfypcfdjfevx",
+    pass: "hnwe rsuv wfmf mejt",
   },
 });
 
@@ -40,9 +40,10 @@ const generateOTP = () => {
 
 // Function to send OTP via email
 const sendOTPByEmail = (email, otp) => {
+  
   return new Promise((resolve, reject) => {
     const mailOptions = {
-      from: "roshanvp2004@gmail.com",
+      from: "roshanv p2004@gmail.com",
       to: email,
       subject: "OTP Verification",
       text: `Your OTP for registration: ${otp}`,
@@ -299,67 +300,73 @@ const postSignup = async (req, res) => {
 
 
   try {
+
+    
+    
     if (
       !req.body.name ||!req.body.phone ||!req.body.email ||!req.body.password) {
-      const errorMessage = "Required fields are missing";
-      return res.render("User/signup", { errorMessage });
-    }
+        const errorMessage = "Required fields are missing";
+        return res.render("User/signup", { errorMessage });
+      }
+      
+      
+      if(req.body.phone < 0){
+        
+        const errorMessage = "Values must be greater than or equal to 0"
+        return res.render("User/signup", {errorMessage})
 
-    if(req.body.phone < 0){
-
-      const errorMessage = "Values must be greater than or equal to 0"
-      return res.render("User/signup", {errorMessage})
-
-    }
-
-    let { name, phone, email, password,refferal } = req.body;
-
-    name = name.trim()
-    phone = phone.trim();
-    email = email.trim();
-    password = password.trim();
-
-    if(!name||!phone||!email||!password) {
-     errorMessage = "Required fields are missing";
-      return res.render("User/signup", { errorMessage });
-    }
-
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      const errorMessage = "Invalid email format";
-      return res.render("User/signup", { errorMessage });
-    }
-
-    
-    
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      const errorMessage =
-      "Email is already registered. Please choose a different email.";
-      return res.render("User/signup", { errorMessage });
-    }
-    
-    
-    const otp = generateOTP();
-
-    req.session.email = email;
-    req.session.otp = otp;
-    
-    const hashedPassword = await bcrypt.hash(password, 10);
-    
-    let user={
-      name,
-      phone,
-      email,
-      hashedPassword,
-      refferal
-    }
-    
-    req.session.signup=user
-    
+      }
+      
+      
+      let { name, phone, email, password,refferal } = req.body;
+      
+      name = name?.trim()
+      phone = phone?.trim();
+      email = email?.trim();
+      password = password?.trim();
+      
+      
+      if(!name||!phone||!email||!password) {
+        errorMessage = "Required fields are missing";
+        return res.render("User/signup", { errorMessage });
+      }
+      
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        const errorMessage = "Invalid email format";
+        return res.render("User/signup", { errorMessage });
+      }
+      
+      
+      
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        const errorMessage =
+        "Email is already registered. Please choose a different email.";
+        return res.render("User/signup", { errorMessage });
+      }
+      
+      
+      const otp = generateOTP();
+      
+      req.session.email = email;
+      req.session.otp = otp;
+      
+      const hashedPassword = await bcrypt.hash(password, 10);
+      
+      let user={
+        name,
+        phone,
+        email,
+        hashedPassword,
+        refferal
+      }
+      
+      req.session.signup = user
+      
+      
   
-    
     
 
     await sendOTPByEmail(email, otp);
