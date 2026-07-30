@@ -25,6 +25,8 @@
     <link rel="stylesheet" href="/css/UserCss/slick.css">
     <!-- style CSS -->
     <link rel="stylesheet" href="/css/UserCss/style.css">
+
+    <link rel="stylesheet" href="/css/UserCss/paintcont-theme.css">
 </head>
 
 <body>
@@ -161,18 +163,17 @@
                                 <div class="col-md-6 col-lg-4 col-xl-3">
                                     <a href="/products/product-details?productId=<%= prd._id %>">
                                         
-                                        <div id="product-3" class="single-product" style="border: 1px solid gray; border-radius: 5px; height: 312px; position: relative;">
+                                        <div id="product-3" class="single-product">
 
-                                            <div style="position: relative;">
-                                                
-                                                <img class="mx-auto" style="width: 200px;" src="/userimages/<%= prd.productPhoto[0] %>" alt="<%= prd.productName %>" />
+                                            <div class="product-thumb-wrap">
+                                                <img class="mx-auto" src="/userimages/<%= prd.productPhoto[0] %>" alt="<%= prd.productName %>" />
                                             </div>
                                 
                                                                           
                                             <div class="part-2">
                                                 <% if (prd.stock < 1) { %>
                                                     <br>
-                                                    <h4 class="product-price" style="color: red;">OUT OF STOCK</h4>
+                                                    <h4 class="product-price text-danger">OUT OF STOCK</h4>
                                                     <h3 class="product-title"><%= prd.productName %></h3>
                                                 <% } else { %>
                                                     <h3 class="product-title"><%= prd.productName %></h3>
@@ -184,7 +185,7 @@
                                                     <h4 class="product-old-price">₹<%= index * 5 + prd.productPrice %></h4>
                                                     <h4 class="product-price">₹<%= prd.productPrice %></h4>
                                                     <br>
-                                                    <h4><span style="color: red;"><%= prd.stock < 1 ? "NO" : prd.stock  %></span> More Left</h4>
+                                                    <h4><span class="text-danger"><%= prd.stock < 1 ? "NO" : prd.stock  %></span> More Left</h4>
                                                 <% } %>
                                             </div>
                                         </div>

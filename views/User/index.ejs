@@ -24,7 +24,9 @@
     <!-- style CSS -->
     <link rel="stylesheet" href="/css/UserCss/style.css">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
+    <link rel="stylesheet" href="/css/UserCss/paintcont-theme.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.0/css/boxicons.min.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
@@ -82,46 +84,28 @@
 
     <!-- Header -->
     <header class="w3-container w3-red w3-center"
-        style="padding:128px 16px; background-image: url(/images/user/21481.jpg); background-size: cover;">
+        style="background-image: url(/images/user/21481.jpg);">
 
 
         <a href="/products">
             <div class="blurry-background m-3">
-                <h1 class="m-0 p-0 w3-jumbo times-font" style="font-weight: bolder; font-family: 'Copperplate', sans-serif;">PAINTCONT</h1>
-                <p class="m-0 p-0 w3-xlarge" style="font-weight: bold; font-family: Georgia, 'Times New Roman', Times, serif;">Premium || Vibrant || Reliable</p>
+                <h1 class="m-0 p-0 w3-jumbo times-font">PAINTCONT</h1>
+                <p class="m-0 p-0 w3-xlarge">Premium || Vibrant || Reliable</p>
             </div>
         </a>
-
-
-        
-        <style>
-            .blurry-background {
-                background: rgba(204, 204, 204, 0.5); /* Transparent gray background */
-                padding: 20px; /* Adjust padding as needed */
-                border-radius: 50px; /* Rounded corners */
-                backdrop-filter: blur(5px); /* Apply blur effect */
-            }
-        </style>
-        
-        
-        
-        
-        
 
     </header>
 
 
     <!-- First Grid -->
-    <div class="w3-row-padding w3-padding-64 w3-container" style="text-align: center;margin-top: -17px">
+    <div class="w3-row-padding w3-padding-64 w3-container text-center">
         <h1>"Unleash Your Creativity with Every Can of Paint."</h1>
     </div>
-    <br>
-    <br>
 
 
 
-    <section>
-        <div class="bg-danger mx-auto text-center" style="width: 800px; height: 300px; position: relative;">
+    <section class="container px-3 mb-5">
+        <div class="bg-danger mx-auto text-center banner-carousel-wrap" style="position: relative;">
             <div id="carouselExample" class="carousel slide" data-ride="carousel" data-interval="3000">
                 <div class="carousel-inner">
                     <% if (Banner.length> 0) { %>
@@ -154,10 +138,9 @@
                         <img src="/images/user/maxresdefault.jpg" class="card-img" alt="#">
                         <div class="card-body card-height"> <!-- Added card-height class -->
                             <h3 class="card-title">New Exterior Painting Collections</h3>
-                            <p class="card-text" style="font-size: 14px;">Eco Paint: Recyclable, zero CO2 during
+                            <p class="card-text">Eco Paint: Recyclable, zero CO2 during
                                 production.</p>
-                            <a href="/products" class="btn btn-primary btn-block" style="margin-top: 100px;">Explore
-                                Now</a> <!-- Make the button full-width -->
+                            <a href="/products" class="btn btn-primary btn-block">Explore Now</a>
                         </div>
                     </div>
                 </div>
@@ -168,10 +151,9 @@
                         <img src="/images/user/maxresdefault-1.jpg" class="card-img" alt="#">
                         <div class="card-body card-height"> <!-- Added card-height class -->
                             <h3 class="card-title">New Wood Painting Collections</h3>
-                            <p class="card-text" style="font-size: 14px;">Hypoallergenic Paint: 100% natural,
+                            <p class="card-text">Hypoallergenic Paint: 100% natural,
                                 safe for all indoors.</p>
-                            <a href="/products" class="btn btn-primary btn-block" style="margin-top: 100px;">Explore
-                                Now</a> <!-- Make the button full-width -->
+                            <a href="/products" class="btn btn-primary btn-block">Explore Now</a>
                         </div>
                     </div>
                 </div>
@@ -182,10 +164,9 @@
                         <img src="/images/user/maxresdefault-2.jpg" class="card-img" alt="#">
                         <div class="card-body card-height"> <!-- Added card-height class -->
                             <h3 class="card-title">New Interior Painting Collections</h3>
-                            <p class="card-text" style="font-size: 14px;">Artisanal Paint: Handmade strokes
+                            <p class="card-text">Artisanal Paint: Handmade strokes
                                 filled with passion.</p>
-                            <a href="/products" class="btn btn-primary btn-block" style="margin-top: 100px;">Explore
-                                Now</a> <!-- Make the button full-width -->
+                            <a href="/products" class="btn btn-primary btn-block">Explore Now</a>
                         </div>
                     </div>
                 </div>
@@ -200,9 +181,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section_tittle text-center">
-                        <h2
-                            style="color: white; font-weight: bolder; font-family: Verdana, Geneva, Tahoma, sans-serif;">
-                            Why Our Paints ?</h2>
+                        <h2>Why Our Paints ?</h2>
                     </div>
                 </div>
             </div>
@@ -219,12 +198,12 @@
 
 
     <!--testimonial start-->
-
+    <div class="container pc-testimonials">
     <div class="row">
 
         <div class="col-lg-4 mb-4">
             <div class="card h-100">
-                <img src="/images/user/icon-5359553_1280.png" class="card-img-top" alt="John Doe" class="ind-img">
+                <img src="/images/user/icon-5359553_1280.png" class="card-img-top ind-img" alt="John Doe">
                 <div class="card-body">
                     <h5 class="card-title">John Doe</h5>
                     <div class="rating">
@@ -240,7 +219,7 @@
         </div>
         <div class="col-lg-4 mb-4">
             <div class="card h-100">
-                <img src="/images/user/icon-5359553_1280.png" class="card-img-top" alt="John Doe" class="ind-img">
+                <img src="/images/user/icon-5359553_1280.png" class="card-img-top ind-img" alt="Muhammed">
                 <div class="card-body">
                     <h5 class="card-title">Muhammed</h5>
                     <div class="rating">
@@ -256,7 +235,7 @@
         </div>
         <div class="col-lg-4 mb-4">
             <div class="card h-100">
-                <img src="/images/user/icon-5359553_1280.png" class="card-img-top" alt="John Doe" class="ind-img">
+                <img src="/images/user/icon-5359553_1280.png" class="card-img-top ind-img" alt="Karthik shankar">
                 <div class="card-body">
                     <h5 class="card-title">Karthik shankar</h5>
                     <div class="rating">
@@ -277,26 +256,20 @@
 
     <!--testimonial end-->
     <!-- Footer section -->
-    <hr class="my-4" style="width: 100%;">
+    <hr class="my-4">
 
     <footer class="footer_part">
         <div class="footer_iner">
             <div class="container">
                 <div class="row align-items-center">
-                    <div class="col-lg-8">
+                    <div class="col-lg-8 mb-3 mb-lg-0">
                         <div class="footer_menu">
                             <div class="footer_logo">
-                                <a href="/home"><img src="/images/user/FAV LOGO.png" style="width: 185px;" alt="#"></a>
+                                <a href="/home"><img src="/images/user/FAV LOGO.png" alt="PaintCont"></a>
                             </div>
                             <h1><b>Create your dream home with our Paints</b></h1>
                         </div>
                     </div>
-                    <style>
-                        .footer_part {
-                            padding: 20px 0;
-                            /* Adjust the values to your preference */
-                        }
-                    </style>
                     <div class="col-lg-4">
                         <div class="social_icon">
                             <h1><b>PAINTCONT</b></h1>
@@ -310,84 +283,6 @@
             </div>
         </div>
     </footer>
-
-    <style>
-        body,
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            font-family: "Lato", sans-serif
-        }
-
-        .w3-bar,
-        h1,
-        button {
-            font-family: "Montserrat", sans-serif
-        }
-    </style>
-
-    <!-- cards -->
-    <style>
-        .card-with-border {
-            border: 2px solid #ccc;
-            /* Default border color */
-            transition: border-color 0.3s ease;
-            /* Smooth transition for border color */
-        }
-
-        .card-with-border:hover {
-            border-color: #562424;
-            /* Border color on hover */
-        }
-
-        .card-height {
-            min-height: 250px;
-            /* Adjust the desired height */
-        }
-    </style>
-
-    <!-- why out product -->
-    <style>
-        .img-hover:hover {
-            /* Add your hover effect styles here */
-            transform: scale(1.1);
-            /* Example: Enlarge the image on hover */
-            transition: transform 0.3s ease;
-            /* Add a smooth transition */
-        }
-
-        .trending_items {
-            background-image: url(/images/user/backgroundBanner.png);
-            /* Replace with the path to your background image */
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            padding: 100px 0;
-            /* Add padding as needed */
-            text-align: center;
-            /* Center the content within the section */
-            color: #fff;
-            /* Set text color to white or a suitable color for readability */
-        }
-
-
-        .blurry-background {
-        /* background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(your-background-image.jpg); */
-        background-size: cover;
-        background-position: center;
-        transition: background 0.3s, color 0.3s;
-    }
-
-    .blurry-background:hover {
-        background: linear-gradient(rgba(255, 255, 255, 0.37), rgba(255, 255, 255, 0.666)), url(your-hover-background-image.jpg);
-        background-size: cover;
-        background-position: center;
-        color: rgba(255, 255, 255, 0.41);
-    }
-    </style>
 
     <!-- bootstrap js -->
     <!-- <script src="/js/user/bootstrap.min.js"></script> -->

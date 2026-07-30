@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="/css/UserCss/slick.css">
     <!-- style CSS -->
     <link rel="stylesheet" href="/css/UserCss/style.css">
+
+    <link rel="stylesheet" href="/css/UserCss/paintcont-theme.css">
 </head>
 
 <body>
@@ -128,12 +130,12 @@
 
                 <!-- text copiable field -->
 <!-- ... Your HTML ... -->
-<div class="refferal-coupon-container border rounded d-flex justify-content-center align-items-center" style="width: 580px; height: 100px;">
+<div class="refferal-coupon-container border rounded d-flex justify-content-center align-items-center flex-wrap">
     <div class="text-center">
-        <p style="color: black;">Refer your friend using this referral code, and you can receive <span style="color: red;">₹100</span> in your Wallet!</p>
-        <label class="btn border rounded" style="margin-top: 7px;"><%= user.MyRefferalCode %></label>
-        <button class="btn border rounded" id="copyButton">copy</button>
-        <div id="copyMessage" style="display: none; color: rgb(255, 0, 0); margin-left: 10px;">Copied</div>
+        <p class="mb-2">Refer your friend using this referral code, and you can receive <span class="text-danger font-weight-bold">₹100</span> in your Wallet!</p>
+        <label class="btn border rounded mt-1"><%= user.MyRefferalCode %></label>
+        <button class="btn border rounded btn-dark" id="copyButton">copy</button>
+        <div id="copyMessage" class="copy-feedback">Copied</div>
     </div>
     <input type="hidden" id="refferal" value="<%= user.MyRefferalCode %>">
 

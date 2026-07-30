@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="/css/UserCss/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="/css/UserCss/style.css">
+
+    <link rel="stylesheet" href="/css/UserCss/paintcont-theme.css">
 </head>
 
 <body>
@@ -66,13 +68,13 @@
                         <div class="shipping-address">
                             <h2>User Address</h2>
                             <hr>
-                            <div class="form-group" style="height: px;">
+                            <div class="form-group">
                                 <div class="container">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-12">
                                             <label for="userAddress">Select Address</label>
                                             <select id="userAddress" name="userAddress"
-                                                class="form-control dropDown-address" style="height: 40px;">
+                                                class="form-control dropDown-address">
                                                 <% for(let i=0; i<user.address.length; i++) { %>
                                                     <option value="<%= user.address[i]._id %>">
                                                         <%= user.address[i].city %>, <%= user.address[i].state %>,
@@ -108,15 +110,12 @@
                             <hr>
                             <form>
                                 <!-- Add coupon code input field here -->
-                                <div class="form-group">
-                                    <input type="text" id="coupon" name="coupon" placeholder="Enter your coupon code"
-                                        style="border-radius: 10px; background-color: transparent; width: 300px; height: 40px;">
-                                    <button class="btn btn-outline-dark" id="applyCouponBtn" type="button"
-                                        style="border-radius: 10px; margin-left: .2rem; letter-spacing: .2px; padding: 1px 5px 1px 5px;">Apply
+                                <div class="form-group coupon-apply-row">
+                                    <input type="text" id="coupon" name="coupon" placeholder="Enter your coupon code" class="coupon-input">
+                                    <button class="btn btn-outline-dark coupon-btn" id="applyCouponBtn" type="button">Apply
                                     </button>
-                                    <button class="btn btn-dark" type="button" data-bs-toggle="modal"
-                                        data-bs-target="#staticBackdrop"
-                                        style="border-radius: 10px; margin-left: .2rem; letter-spacing: .2px; padding: 1px 5px 1px 5px;">Available
+                                    <button class="btn btn-dark coupon-btn" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop">Available
                                         Coupons
                                     </button>
                                 </div>
